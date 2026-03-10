@@ -1,7 +1,8 @@
-"""OpenTelemetry SDK initialization and metric instrument definitions.
+"""OpenTelemetry SDK initialization: metrics + logs.
 
-Initializes the OTel SDK with OTLP gRPC exporter and returns a
-TelemetryInstruments dataclass holding all metric instruments.
+Initializes the OTel SDK with OTLP gRPC exporters for both metrics and logs,
+then returns a TelemetryInstruments dataclass holding all metric instruments.
+Logs are sent to OpenObserve via OTLP while still appearing on stdout.
 Fire-and-forget: silently ignores export failures so the app continues normally.
 """
 
@@ -12,6 +13,9 @@ from dataclasses import dataclass, field
 
 from opentelemetry import metrics
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
+from opentelemetry.exporter.otlp.proto.grpc._log_exporter import OTLPLogExporter
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
+from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.sdk.resources import Resource
@@ -59,21 +63,17 @@ class TelemetryInstruments:
     # Server histogram
     server_request_duration_seconds: metrics.Histogram = field(init=False)
 
-    # Server gauges
+    # Server gauges (UpDownCounter for gauge semantics)
     server_products_count: metrics.UpDownCounter = field(init=False)
-    server_availability_slots_count: metrics.UpDownCounter = field(init=False)
 
     # ------------------------------------------------------------------
     # Product gauges
     # ------------------------------------------------------------------
     product_options_count: metrics.UpDownCounter = field(init=False)
     product_units_count: metrics.UpDownCounter = field(init=False)
-    product_availability_slots_count: metrics.UpDownCounter = field(init=False)
-    product_availability_days_count: metrics.UpDownCounter = field(init=False)
 
     # Product counters
     product_requests_total: metrics.Counter = field(init=False)
-    product_availability_queries_total: metrics.Counter = field(init=False)
 
     # Product histogram
     product_generation_duration_seconds: metrics.Histogram = field(init=False)
@@ -175,10 +175,6 @@ def _create_instruments(meter: metrics.Meter) -> TelemetryInstruments:
         "otas_server_products_count",
         description="Current number of products in state manager",
     )
-    t.server_availability_slots_count = meter.create_up_down_counter(
-        "otas_server_availability_slots_count",
-        description="Current number of availability slots in state manager",
-    )
 
     # --- Product gauges ---
     t.product_options_count = meter.create_up_down_counter(
@@ -189,23 +185,11 @@ def _create_instruments(meter: metrics.Meter) -> TelemetryInstruments:
         "otas_product_units_count",
         description="Number of units per product-option",
     )
-    t.product_availability_slots_count = meter.create_up_down_counter(
-        "otas_product_availability_slots_count",
-        description="Number of availability slots per product-option",
-    )
-    t.product_availability_days_count = meter.create_up_down_counter(
-        "otas_product_availability_days_count",
-        description="Number of available days per product-option",
-    )
 
     # --- Product counters ---
     t.product_requests_total = meter.create_counter(
         "otas_product_requests_total",
         description="Total requests referencing a specific product",
-    )
-    t.product_availability_queries_total = meter.create_counter(
-        "otas_product_availability_queries_total",
-        description="Total availability queries per product-option",
     )
 
     # --- Product histogram ---
@@ -219,7 +203,7 @@ def _create_instruments(meter: metrics.Meter) -> TelemetryInstruments:
 
 
 def init_telemetry(settings: Settings) -> TelemetryInstruments:
-    """Initialize OTel SDK, OTLP gRPC exporter, return metric instruments.
+    """Initialize OTel SDK, OTLP gRPC exporters for metrics + logs.
 
     Fire-and-forget: silently ignores export failures.
     """
@@ -233,20 +217,39 @@ def init_telemetry(settings: Settings) -> TelemetryInstruments:
         credentials = base64.b64encode(
             f"{settings.otlp_user}:{settings.otlp_password}".encode()
         ).decode()
-        exporter = OTLPMetricExporter(
+        common_headers = (
+            ("authorization", f"Basic {credentials}"),
+            ("organization", "default"),
+        )
+
+        # --- Metrics exporter ---
+        metric_exporter = OTLPMetricExporter(
             endpoint=settings.otlp_endpoint,
             insecure=True,
-            headers=(
-                ("authorization", f"Basic {credentials}"),
-                ("organization", "default"),
-            ),
+            headers=common_headers,
         )
         reader = PeriodicExportingMetricReader(
-            exporter,
+            metric_exporter,
             export_interval_millis=10_000,
         )
         provider = MeterProvider(resource=resource, metric_readers=[reader])
         metrics.set_meter_provider(provider)
+
+        # --- Log exporter ---
+        log_exporter = OTLPLogExporter(
+            endpoint=settings.otlp_endpoint,
+            insecure=True,
+            headers=common_headers,
+        )
+        log_provider = LoggerProvider(resource=resource)
+        log_provider.add_log_record_processor(BatchLogRecordProcessor(log_exporter))
+        otel_handler = LoggingHandler(
+            level=logging.INFO,
+            logger_provider=log_provider,
+        )
+        # Attach to root logger so all app logs flow to OpenObserve
+        logging.getLogger().addHandler(otel_handler)
+
     except Exception:
         logger.warning("Failed to initialize OTel exporter; telemetry disabled")
 

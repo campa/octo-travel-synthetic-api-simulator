@@ -1,0 +1,192 @@
+# Extracted from api-spec/octo-spec.yaml — GET /products response schema
+# This file describes the response body: an array of Product objects.
+# Used at runtime by the seeder to provide schema context to the LLM.
+
+endpoint: GET /products
+summary: Get Products
+description: A bookable product listed by a supplier.
+
+response:
+  type: array
+  items:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: >
+          The id used for checking for availability and creating bookings
+          for the product. This MUST be unique within the scope of the Supplier.
+      internalName:
+        type: string
+        description: The name the supplier calls the product.
+      reference:
+        type: [string, "null"]
+        description: An optional code this supplier might use to identify the product.
+      locale:
+        type: string
+        description: >
+          A language code indicating what language this product content is in.
+          This MUST be a valid BCP 47 / RFC 5646 / RFC 4647 language tag.
+      timeZone:
+        type: string
+        description: The IANA TimeZone name this product is located in.
+      allowFreesale:
+        type: boolean
+        description: >
+          Whether a booking can be made for this product without having to
+          query availability first.
+      instantConfirmation:
+        type: boolean
+        description: >
+          Whether bookings will be immediately confirmed when a sale is made,
+          otherwise the supplier will later either accept or reject the booking.
+      instantDelivery:
+        type: boolean
+        description: >
+          Whether the Reseller can expect immediate delivery of the customer's
+          tickets.
+      availabilityRequired:
+        type: boolean
+        description: >
+          Whether an availabilityId is required when creating a booking.
+      availabilityType:
+        type: string
+        enum: [START_TIME, OPENING_HOURS]
+        description: >
+          START_TIME — fixed departure times which you must pick one.
+          OPENING_HOURS — select a date and visit any time when the venue is open.
+      deliveryFormats:
+        type: array
+        items:
+          type: string
+          enum: [PDF_URL, QRCODE]
+        description: >
+          Formats the API will deliver the tickets as.
+          QRCODE — a code to be presented as a QR CODE barcode.
+          PDF_URL — a URL to a PDF file with all ticket details.
+      deliveryMethods:
+        type: array
+        items:
+          type: string
+          enum: [VOUCHER, TICKET]
+        description: >
+          TICKET — individually per unit in the order (single ticket per person).
+          VOUCHER — one ticket for the whole booking.
+      redemptionMethod:
+        type: string
+        enum: [DIGITAL, PRINT, MANIFEST]
+        description: >
+          DIGITAL — tickets/voucher must be scanned, can be on mobile.
+          PRINT — tickets/voucher must be printed and presented on arrival.
+          MANIFEST — guest name written down, just need to show up.
+      options:
+        type: array
+        description: >
+          An array of all options for this product.
+          All products must have at least one option.
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              description: >
+                The id that identifies this option, it is only unique within
+                the product.
+            default:
+              type: boolean
+              description: >
+                TRUE identifies the option as default, and should be rendered
+                and selected first.
+            internalName:
+              type: string
+              description: The name the supplier calls the option by.
+            reference:
+              type: [string, "null"]
+              description: An optional code this supplier might use to identify the option.
+            availabilityLocalStartTimes:
+              type: array
+              items:
+                type: string
+              description: >
+                Array of all possible start times that can be returned during
+                availability. E.g. ["09:00", "14:00", "17:00"].
+            cancellationCutoff:
+              type: string
+              description: How long before the tour the booking can still be cancelled.
+            cancellationCutoffAmount:
+              type: integer
+              description: The numeric amount for the cutoff.
+            cancellationCutoffUnit:
+              type: string
+              enum: [hour, minute, day]
+              description: Time unit for the cancellation cutoff.
+            requiredContactFields:
+              type: array
+              items:
+                type: string
+                enum: [firstName, lastName, emailAddress, phoneNumber, country, notes, locales]
+              description: >
+                Contact fields required to confirm a booking. Applies to the
+                lead traveller on the booking, not for every ticket.
+            restrictions:
+              type: object
+              properties:
+                minUnits:
+                  type: [integer, "null"]
+                  description: Minimum number of tickets per booking (null = 0).
+                maxUnits:
+                  type: [integer, "null"]
+                  description: Maximum number of tickets per booking (null = unlimited).
+              required: [minUnits, maxUnits]
+            units:
+              type: array
+              description: The list of ticket types (units) available for sale.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Unique identifier within the scope of the option.
+                  internalName:
+                    type: string
+                    description: Name to help identify the unit. Should NOT be shown to the customer.
+                  reference:
+                    type: [string, "null"]
+                    description: Internal reference identifier the Supplier wishes to use.
+                  type:
+                    type: string
+                    enum: [ADULT, YOUTH, CHILD, INFANT, FAMILY, SENIOR, STUDENT, MILITARY, OTHER]
+                    description: Base unit type for this unit definition.
+                  requiredContactFields:
+                    type: array
+                    items:
+                      type: string
+                      enum: [firstName, lastName, emailAddress, phoneNumber, country, notes, locales]
+                    description: Contact information per ticket that the supplier expects.
+                  restrictions:
+                    type: object
+                    properties:
+                      minAge:
+                        type: integer
+                        description: Minimum age this unit can be sold to.
+                      maxAge:
+                        type: integer
+                        description: Maximum age this unit can be sold to.
+                      idRequired:
+                        type: boolean
+                        description: Whether a form of identification is required at redemption.
+                      minQuantity:
+                        type: [integer, "null"]
+                        description: Minimum amount of this unit to be chosen for purchase.
+                      maxQuantity:
+                        type: [integer, "null"]
+                        description: Maximum amount of this unit to be chosen for purchase.
+                      paxCount:
+                        type: integer
+                        description: Amount of people each unit counts as (e.g. family = 4 pax).
+                      accompaniedBy:
+                        type: array
+                        items:
+                          type: string
+                        description: Unit IDs that must accompany this unit.

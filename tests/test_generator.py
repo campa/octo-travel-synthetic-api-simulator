@@ -1,24 +1,14 @@
-"""Tests for ProductGenerator — retry logic, validation pipeline, UUID assignment, and data isolation."""
+"""Tests for ProductGenerator — retry logic, validation pipeline, and UUID assignment."""
 
 import json
 import uuid
 
 import pytest
 
-from models.product import (
-    AvailabilityType,
-    DeliveryFormat,
-    DeliveryMethod,
-    Option,
-    Product,
-    RedemptionMethod,
-    Unit,
-    UnitType,
-)
+from models.product import Product
 from seeder.generator import (
     ProductGenerator,
     _assign_fresh_uuids,
-    _extract_string_fields,
     _strip_code_fences,
 )
 from seeder.ollama_client import (
@@ -27,8 +17,6 @@ from seeder.ollama_client import (
     OllamaUnreachableError,
     SeedingFailedError,
 )
-from seeder.prompt_builder import PromptBuilder
-from seeder.sample_index import RealSamplesIndex
 
 
 # ---------------------------------------------------------------------------
@@ -90,27 +78,8 @@ def _ollama_response(product_dict: dict) -> OllamaResponse:
 class FakePromptBuilder:
     """Stub that returns a fixed prompt."""
 
-    def build_prompt(self) -> str:
+    def build_prompt(self, error_hints: list[str] | None = None) -> str:
         return "Generate a product"
-
-
-class FakeIndex:
-    """Stub RealSamplesIndex that never matches."""
-
-    def check(self, value: str) -> bool:
-        return False
-
-
-class MatchingIndex:
-    """Stub RealSamplesIndex that matches a specific value."""
-
-    def __init__(self, match_value: str) -> None:
-        self._match = match_value
-
-    def check(self, value: str) -> bool:
-        if len(value) < 4:
-            return False
-        return value == self._match
 
 
 class FakeOllamaClient:
@@ -172,22 +141,6 @@ class TestAssignFreshUuids:
         uuid.UUID(result.options[0].units[0].id, version=4)
 
 
-class TestExtractStringFields:
-    def test_extracts_product_strings(self):
-        product = Product.model_validate(_make_valid_product_dict())
-        fields = _extract_string_fields(product)
-        values = [v for _, v in fields]
-        assert "Fictional Tour" in values
-        assert "Standard Pass" in values
-        assert "Adult Ticket" in values
-
-    def test_includes_nested_option_and_unit_fields(self):
-        product = Product.model_validate(_make_valid_product_dict())
-        fields = _extract_string_fields(product)
-        paths = [p for p, _ in fields]
-        assert any("options" in p for p in paths)
-
-
 # ---------------------------------------------------------------------------
 # Unit tests: ProductGenerator
 # ---------------------------------------------------------------------------
@@ -199,7 +152,7 @@ class TestGenerateProductsSuccess:
         client = FakeOllamaClient(
             responses=[_ollama_response(product_dict)] * 3
         )
-        gen = ProductGenerator(client, FakePromptBuilder(), FakeIndex(), max_retries=3)
+        gen = ProductGenerator(client, FakePromptBuilder(), max_retries=3)
 
         products = await gen.generate_products(2)
 
@@ -211,16 +164,14 @@ class TestGenerateProductsSuccess:
     async def test_uuids_are_fresh(self):
         product_dict = _make_valid_product_dict()
         client = FakeOllamaClient(responses=[_ollama_response(product_dict)])
-        gen = ProductGenerator(client, FakePromptBuilder(), FakeIndex(), max_retries=3)
+        gen = ProductGenerator(client, FakePromptBuilder(), max_retries=3)
 
         products = await gen.generate_products(1)
         p = products[0]
 
-        # IDs should not be the old ones from the dict
         assert p.id != "old-id"
         assert p.options[0].id != "old-opt-id"
         assert p.options[0].units[0].id != "old-unit-id"
-        # Should be valid UUIDs
         uuid.UUID(p.id, version=4)
 
 
@@ -239,11 +190,10 @@ class TestRetryOnInvalidResponse:
                 valid,
             ]
         )
-        gen = ProductGenerator(client, FakePromptBuilder(), FakeIndex(), max_retries=3)
+        gen = ProductGenerator(client, FakePromptBuilder(), max_retries=3)
 
         products = await gen.generate_products(1)
         assert len(products) == 1
-
 
     @pytest.mark.anyio
     async def test_retries_on_schema_violation(self):
@@ -255,7 +205,7 @@ class TestRetryOnInvalidResponse:
         )
         valid = _ollama_response(_make_valid_product_dict())
         client = FakeOllamaClient(responses=[bad_schema, valid])
-        gen = ProductGenerator(client, FakePromptBuilder(), FakeIndex(), max_retries=3)
+        gen = ProductGenerator(client, FakePromptBuilder(), max_retries=3)
 
         products = await gen.generate_products(1)
         assert len(products) == 1
@@ -271,18 +221,16 @@ class TestRetryOnUnreachable:
             errors=[OllamaUnreachableError("down"), None],
         )
 
-        # Patch asyncio.sleep to avoid real delays
         sleep_calls = []
         async def fake_sleep(seconds):
             sleep_calls.append(seconds)
 
         monkeypatch.setattr("seeder.generator.asyncio.sleep", fake_sleep)
 
-        gen = ProductGenerator(client, FakePromptBuilder(), FakeIndex(), max_retries=3)
+        gen = ProductGenerator(client, FakePromptBuilder(), max_retries=3)
         products = await gen.generate_products(1)
 
         assert len(products) == 1
-        # Exponential backoff: 2^1 = 2 seconds
         assert sleep_calls == [2]
 
 
@@ -297,43 +245,10 @@ class TestExhaustedRetries:
                 OllamaInvalidResponseError("bad3"),
             ]
         )
-        gen = ProductGenerator(client, FakePromptBuilder(), FakeIndex(), max_retries=3)
+        gen = ProductGenerator(client, FakePromptBuilder(), max_retries=3)
 
         with pytest.raises(SeedingFailedError, match="after 3 attempts"):
             await gen.generate_products(1)
-
-
-class TestProductionDataIsolation:
-    @pytest.mark.anyio
-    async def test_rejects_product_matching_index(self):
-        """Product with a field matching the index is discarded, next attempt succeeds."""
-        matching_dict = _make_valid_product_dict(internalName="RealTourName")
-        clean_dict = _make_valid_product_dict(internalName="FictionalTour")
-
-        client = FakeOllamaClient(
-            responses=[
-                _ollama_response(matching_dict),
-                _ollama_response(clean_dict),
-            ]
-        )
-        index = MatchingIndex("RealTourName")
-        gen = ProductGenerator(client, FakePromptBuilder(), index, max_retries=3)
-
-        products = await gen.generate_products(1)
-        assert len(products) == 1
-        assert products[0].internal_name == "FictionalTour"
-
-    @pytest.mark.anyio
-    async def test_short_strings_not_checked(self):
-        """Strings shorter than 4 chars should not trigger rejection."""
-        product_dict = _make_valid_product_dict(locale="en")
-        client = FakeOllamaClient(responses=[_ollama_response(product_dict)])
-        # Index that would match "en" if length check wasn't in place
-        index = MatchingIndex("en")
-        gen = ProductGenerator(client, FakePromptBuilder(), index, max_retries=3)
-
-        products = await gen.generate_products(1)
-        assert len(products) == 1
 
 
 class TestCodeFenceStripping:
@@ -351,7 +266,7 @@ class TestCodeFenceStripping:
                 )
             ]
         )
-        gen = ProductGenerator(client, FakePromptBuilder(), FakeIndex(), max_retries=3)
+        gen = ProductGenerator(client, FakePromptBuilder(), max_retries=3)
 
         products = await gen.generate_products(1)
         assert len(products) == 1

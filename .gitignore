@@ -60,7 +60,9 @@ temp/
 
 # Data dir
 data/
+seed_data.json
 
 .kiro/
 
 real-samples/
+rewrite-fixed-dates.sh

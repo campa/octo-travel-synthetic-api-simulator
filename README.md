@@ -5,9 +5,7 @@ A stateful mock server that implements the [OCTO](https://www.octo.travel/) trav
 ## What it does
 
 1. Uses a local LLM (Ollama) to generate realistic tour/activity products
-2. Builds 90 days of availability data (calendar + time slots) in memory
-3. Serves it all through OCTO-compliant REST endpoints
-4. Validates that no real production data leaks into synthetic output
+2. Serves them through OCTO-compliant REST endpoints
 
 ## Prerequisites
 
@@ -48,8 +46,6 @@ uv run otas --skip-seed
 |--------|------|-------------|
 | `GET` | `/products` | List all products |
 | `GET` | `/products/{productId}` | Get a single product |
-| `POST` | `/availability/calendar` | Calendar availability (date range) |
-| `POST` | `/availability` | Slot availability (by date range or IDs) |
 
 These follow the [OCTO API specification](https://docs.octo.travel). The full OpenAPI spec is in `api-spec/octo-spec.yaml`.
 
@@ -61,16 +57,6 @@ curl http://localhost:8080/products
 
 # Get a specific product
 curl http://localhost:8080/products/<product-id>
-
-# Check calendar availability
-curl -X POST http://localhost:8080/availability/calendar \
-  -H "Content-Type: application/json" \
-  -d '{"productId": "<id>", "optionId": "<id>", "localDateStart": "2026-03-01", "localDateEnd": "2026-03-31"}'
-
-# Check slot availability
-curl -X POST http://localhost:8080/availability \
-  -H "Content-Type: application/json" \
-  -d '{"productId": "<id>", "optionId": "<id>", "localDateStart": "2026-03-01", "localDateEnd": "2026-03-07"}'
 ```
 
 ## CLI options
@@ -82,7 +68,6 @@ uv run otas [OPTIONS]
 --port              Bind port (default: 8080)
 --product-count     Number of products to generate (default: 10)
 --max-retries       Max Ollama retries per product (default: 3)
---availability-days Days of availability to generate (default: 90)
 --avg-slots-per-day Avg time slots per day for START_TIME products (default: 3)
 --seed-file         Path to seed data JSON file (default: seed_data.json)
 --skip-seed         Load from seed file instead of calling Ollama
@@ -101,13 +86,36 @@ All settings use the `OTAS_` environment variable prefix and can also be set via
 | `OTAS_OLLAMA_MODEL` | `qwen3:14b` | Ollama model name |
 | `OTAS_PRODUCT_COUNT` | `10` | Products to generate |
 | `OTAS_MAX_RETRIES` | `3` | Max retries per product |
-| `OTAS_AVAILABILITY_DAYS` | `90` | Days of availability data |
 | `OTAS_AVG_SLOTS_PER_DAY` | `3` | Avg time slots for START_TIME products |
 | `OTAS_OTLP_ENDPOINT` | `localhost:5081` | OTLP gRPC endpoint |
 | `OTAS_OTLP_USER` | `admin@otas.local` | OpenObserve basic auth user |
 | `OTAS_OTLP_PASSWORD` | `admin` | OpenObserve basic auth password |
 | `OTAS_SERVICE_NAME` | `otas` | OTel service name |
 | `OTAS_SEED_FILE` | `seed_data.json` | Seed data file path |
+| `OTAS_LOG_LEVEL` | `INFO` | Root log level (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
+
+### Per-module log levels
+
+Logging follows a hierarchical model (like log4j). Each module has its own logger, and you can override the level individually. When unset, the module inherits the root `OTAS_LOG_LEVEL`.
+
+| Variable | Module |
+|----------|--------|
+| `OTAS_LOG_LEVEL_SEEDER_GENERATOR` | `seeder.generator` — generation orchestration, retry logic, full prompt |
+| `OTAS_LOG_LEVEL_SEEDER_PROMPT_BUILDER` | `seeder.prompt_builder` — prompt construction |
+| `OTAS_LOG_LEVEL_SEEDER_OLLAMA_CLIENT` | `seeder.ollama_client` — HTTP calls to Ollama |
+| `OTAS_LOG_LEVEL_SERVER_APP` | `server.app` — FastAPI app factory |
+| `OTAS_LOG_LEVEL_SERVER_MIDDLEWARE` | `server.middleware` — request metrics middleware |
+| `OTAS_LOG_LEVEL_STATE_MANAGER` | `state.manager` — in-memory product store |
+| `OTAS_LOG_LEVEL_TELEMETRY_SETUP` | `telemetry.setup` — OpenTelemetry init |
+
+Example `.env` to debug only the seeder prompt:
+
+```bash
+OTAS_LOG_LEVEL=INFO
+OTAS_LOG_LEVEL_SEEDER_GENERATOR=DEBUG
+```
+
+This logs the full LLM prompt on each attempt (including error hints from previous failures) while keeping everything else at INFO.
 
 ## Observability
 
@@ -146,18 +154,17 @@ CI runs on GitHub Actions (push/PR to `main`).
 src/
 ├── cli.py              # CLI entrypoint, arg parsing, server startup
 ├── common/config.py    # Pydantic Settings (OTAS_ env prefix)
-├── models/             # Pydantic models (Product, Availability, Errors)
+├── models/             # Pydantic models (Product, Errors)
 ├── seeder/             # LLM-based product generation pipeline
 │   ├── generator.py    # Orchestrates generation with retry + validation
 │   ├── ollama_client.py # Async Ollama HTTP client
-│   ├── prompt_builder.py # Few-shot prompt construction
-│   └── sample_index.py # Production data leakage detection
+│   ├── prompt_builder.py # Prompt construction from OCTO spec
 ├── server/             # FastAPI app, routes, middleware, error handling
 │   ├── app.py          # App factory
-│   ├── routes/         # Product and availability endpoints
+│   ├── routes/         # Product endpoints
 │   ├── middleware.py   # Request metrics middleware
 │   └── error_handler.py # Structured error responses with correlation IDs
-├── state/manager.py    # In-memory state store + availability generation
+├── state/manager.py    # In-memory product store
 └── telemetry/setup.py  # OpenTelemetry SDK init + metric instruments
 ```
 

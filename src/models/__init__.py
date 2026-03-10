@@ -15,15 +15,6 @@ from models.product import (
     UnitType,
 )
 
-from models.availability import (
-    AvailabilityCalendarRequest,
-    AvailabilityRequest,
-    AvailabilitySlot,
-    AvailabilityStatus,
-    CalendarEntry,
-    OpeningHours,
-)
-
 from models.errors import ErrorResponse
 
 __all__ = [
@@ -41,15 +32,6 @@ __all__ = [
     "OptionRestrictions",
     "Option",
     "Product",
-    # Availability enums
-    "AvailabilityStatus",
-    # Availability models
-    "OpeningHours",
-    "CalendarEntry",
-    "AvailabilitySlot",
-    # Request models
-    "AvailabilityCalendarRequest",
-    "AvailabilityRequest",
     # Error models
     "ErrorResponse",
 ]

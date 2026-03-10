@@ -1,7 +1,6 @@
-"""Tests for FastAPI server: app factory, product routes, availability routes, middleware."""
+"""Tests for FastAPI server: app factory and product routes."""
 
 import uuid
-from datetime import date, timedelta
 
 import pytest
 from fastapi.testclient import TestClient
@@ -57,7 +56,7 @@ def _make_product(
 
 @pytest.fixture
 def state_with_products() -> StateManager:
-    sm = StateManager(availability_days=5)
+    sm = StateManager()
     sm.load_products([_make_product(), _make_product(AvailabilityType.OPENING_HOURS, ["09:00"])])
     return sm
 
@@ -161,170 +160,6 @@ class TestGetProduct:
         for item in list_resp.json():
             single_resp = client.get(f"/products/{item['id']}")
             assert single_resp.json() == item
-
-
-# ---------------------------------------------------------------------------
-# POST /availability/calendar
-# ---------------------------------------------------------------------------
-
-class TestAvailabilityCalendar:
-    def test_valid_request_returns_200(self, client, products):
-        p = products[0]
-        o = p.options[0]
-        today = date.today().isoformat()
-        end = (date.today() + timedelta(days=2)).isoformat()
-        resp = client.post("/availability/calendar", json={
-            "productId": p.id,
-            "optionId": o.id,
-            "localDateStart": today,
-            "localDateEnd": end,
-        })
-        assert resp.status_code == 200
-        data = resp.json()
-        assert isinstance(data, list)
-        assert len(data) <= 3  # up to 3 days
-
-    def test_calendar_entries_have_required_fields(self, client, products):
-        p = products[0]
-        o = p.options[0]
-        today = date.today().isoformat()
-        resp = client.post("/availability/calendar", json={
-            "productId": p.id,
-            "optionId": o.id,
-            "localDateStart": today,
-            "localDateEnd": today,
-        })
-        assert resp.status_code == 200
-        for entry in resp.json():
-            assert "localDate" in entry
-            assert "available" in entry
-            assert "status" in entry
-
-    def test_invalid_product_id_returns_400(self, client, products):
-        o = products[0].options[0]
-        resp = client.post("/availability/calendar", json={
-            "productId": str(uuid.uuid4()),
-            "optionId": o.id,
-            "localDateStart": "2026-01-01",
-            "localDateEnd": "2026-01-02",
-        })
-        assert resp.status_code == 400
-        assert resp.json()["error"] == "INVALID_PRODUCT_ID"
-
-    def test_invalid_option_id_returns_400(self, client, products):
-        p = products[0]
-        resp = client.post("/availability/calendar", json={
-            "productId": p.id,
-            "optionId": str(uuid.uuid4()),
-            "localDateStart": "2026-01-01",
-            "localDateEnd": "2026-01-02",
-        })
-        assert resp.status_code == 400
-        assert resp.json()["error"] == "INVALID_OPTION_ID"
-
-    def test_missing_fields_returns_400(self, client):
-        resp = client.post("/availability/calendar", json={"productId": "x"})
-        assert resp.status_code == 400
-        assert resp.json()["error"] == "BAD_REQUEST"
-
-
-# ---------------------------------------------------------------------------
-# POST /availability
-# ---------------------------------------------------------------------------
-
-class TestAvailability:
-    def test_date_range_query_returns_200(self, client, products):
-        p = products[0]
-        o = p.options[0]
-        today = date.today().isoformat()
-        end = (date.today() + timedelta(days=1)).isoformat()
-        resp = client.post("/availability", json={
-            "productId": p.id,
-            "optionId": o.id,
-            "localDateStart": today,
-            "localDateEnd": end,
-        })
-        assert resp.status_code == 200
-        data = resp.json()
-        assert isinstance(data, list)
-
-    def test_slots_have_required_fields(self, client, products):
-        p = products[0]
-        o = p.options[0]
-        today = date.today().isoformat()
-        resp = client.post("/availability", json={
-            "productId": p.id,
-            "optionId": o.id,
-            "localDateStart": today,
-            "localDateEnd": today,
-        })
-        for slot in resp.json():
-            assert "id" in slot
-            assert "localDateTimeStart" in slot
-            assert "localDateTimeEnd" in slot
-            assert "allDay" in slot
-            assert "status" in slot
-
-    def test_availability_ids_query(self, client, products):
-        p = products[0]
-        o = p.options[0]
-        today = date.today().isoformat()
-        # First get some slot IDs
-        slots_resp = client.post("/availability", json={
-            "productId": p.id,
-            "optionId": o.id,
-            "localDateStart": today,
-            "localDateEnd": today,
-        })
-        slots = slots_resp.json()
-        if slots:
-            target_ids = [slots[0]["id"]]
-            resp = client.post("/availability", json={
-                "productId": p.id,
-                "optionId": o.id,
-                "availabilityIds": target_ids,
-            })
-            assert resp.status_code == 200
-            assert len(resp.json()) <= len(target_ids)
-
-    def test_invalid_product_id_returns_400(self, client, products):
-        o = products[0].options[0]
-        resp = client.post("/availability", json={
-            "productId": str(uuid.uuid4()),
-            "optionId": o.id,
-            "localDateStart": "2026-01-01",
-            "localDateEnd": "2026-01-02",
-        })
-        assert resp.status_code == 400
-        assert resp.json()["error"] == "INVALID_PRODUCT_ID"
-
-    def test_invalid_option_id_returns_400(self, client, products):
-        p = products[0]
-        resp = client.post("/availability", json={
-            "productId": p.id,
-            "optionId": str(uuid.uuid4()),
-            "localDateStart": "2026-01-01",
-            "localDateEnd": "2026-01-02",
-        })
-        assert resp.status_code == 400
-        assert resp.json()["error"] == "INVALID_OPTION_ID"
-
-    def test_missing_date_range_and_ids_returns_400(self, client, products):
-        p = products[0]
-        o = p.options[0]
-        resp = client.post("/availability", json={
-            "productId": p.id,
-            "optionId": o.id,
-        })
-        assert resp.status_code == 400
-        body = resp.json()
-        assert body["error"] == "BAD_REQUEST"
-        assert "availabilityIds" in body["errorMessage"]
-
-    def test_missing_body_fields_returns_400(self, client):
-        resp = client.post("/availability", json={})
-        assert resp.status_code == 400
-        assert resp.json()["error"] == "BAD_REQUEST"
 
 
 # ---------------------------------------------------------------------------

@@ -8,7 +8,6 @@ from fastapi.responses import JSONResponse
 from common.config import Settings
 from server.error_handler import create_error_response
 from server.routes.products import create_products_router
-from server.routes.availability import create_availability_router
 from server.middleware import RequestMetricsMiddleware
 from state.manager import StateManager
 from telemetry.setup import TelemetryInstruments
@@ -31,7 +30,6 @@ def create_app(
 
     # Register routes
     app.include_router(create_products_router(state, telemetry))
-    app.include_router(create_availability_router(state, telemetry))
 
     # Request metrics middleware
     app.add_middleware(RequestMetricsMiddleware, telemetry=telemetry)
@@ -58,7 +56,9 @@ def create_app(
     @app.middleware("http")
     async def set_json_content_type(request: Request, call_next):
         response = await call_next(request)
-        response.headers["Content-Type"] = "application/json"
+        skip_paths = ("/docs", "/redoc", "/openapi.json", "/docs/oauth2-redirect")
+        if not request.url.path.startswith(skip_paths):
+            response.headers["Content-Type"] = "application/json"
         return response
 
     return app

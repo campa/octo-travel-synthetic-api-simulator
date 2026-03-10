@@ -8,6 +8,7 @@ import argparse
 import asyncio
 import json
 import logging
+import logging.config
 import sys
 from pathlib import Path
 
@@ -18,7 +19,6 @@ from models.product import Product
 from seeder.generator import ProductGenerator
 from seeder.ollama_client import OllamaClient, SeedingFailedError
 from seeder.prompt_builder import PromptBuilder
-from seeder.sample_index import RealSamplesIndex
 from server.app import create_app
 from state.manager import StateManager
 from telemetry.setup import init_telemetry
@@ -48,10 +48,6 @@ def parse_args() -> argparse.Namespace:
         help="Max Ollama retry attempts per product (default: 3)",
     )
     parser.add_argument(
-        "--availability-days", type=int, default=None,
-        help="Days of availability to generate (default: 90)",
-    )
-    parser.add_argument(
         "--avg-slots-per-day", type=int, default=None,
         help="Avg time slots per day for START_TIME products (default: 3)",
     )
@@ -70,7 +66,6 @@ def _apply_cli_overrides(settings: Settings, args: argparse.Namespace) -> Settin
         "port": "port",
         "product_count": "product_count",
         "max_retries": "max_retries",
-        "availability_days": "availability_days",
         "avg_slots_per_day": "avg_slots_per_day",
         "seed_file": "seed_file",
     }
@@ -91,14 +86,11 @@ async def _run_seeder(settings: Settings, telemetry) -> list[Product]:
         model=settings.ollama_model,
     )
     prompt_builder = PromptBuilder(
-        samples_dir="real-samples",
         avg_slots_per_day=settings.avg_slots_per_day,
     )
-    sample_index = RealSamplesIndex(samples_dir="real-samples")
     generator = ProductGenerator(
         ollama_client=ollama_client,
         prompt_builder=prompt_builder,
-        sample_index=sample_index,
         max_retries=settings.max_retries,
         telemetry=telemetry,
     )
@@ -135,13 +127,10 @@ def _count_entities(products: list[Product]) -> tuple[int, int, int]:
 
 def main() -> None:
     """Main entry point: parse args → seed → serve."""
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-    )
-
     args = parse_args()
     settings = _apply_cli_overrides(Settings(), args)
+
+    logging.config.dictConfig(settings.build_logging_config())
 
     # Init telemetry
     telemetry = init_telemetry(settings)
@@ -161,11 +150,8 @@ def main() -> None:
         if args.dump_seed:
             _dump_seed_file(products, settings.seed_file)
 
-    # Load into state manager (triggers availability generation)
-    state = StateManager(
-        availability_days=settings.availability_days,
-        telemetry=telemetry,
-    )
+    # Load into state manager
+    state = StateManager(telemetry=telemetry)
     state.load_products(products)
 
     p_count, o_count, u_count = _count_entities(products)

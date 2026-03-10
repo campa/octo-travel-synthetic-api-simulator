@@ -1,8 +1,7 @@
 """Orchestrates Product generation via Ollama with retry and validation.
 
 Calls the LLM, parses JSON output, validates against the Product model,
-assigns fresh UUIDs, and checks against the RealSamplesIndex to ensure
-zero production data leakage.
+and assigns fresh UUIDs.
 """
 
 import asyncio
@@ -11,11 +10,6 @@ import logging
 import re
 import time
 import uuid
-from typing import Any
-
-from enum import Enum
-
-from pydantic import BaseModel
 
 from models.product import Product
 from seeder.ollama_client import (
@@ -25,7 +19,6 @@ from seeder.ollama_client import (
     SeedingFailedError,
 )
 from seeder.prompt_builder import PromptBuilder
-from seeder.sample_index import RealSamplesIndex
 from telemetry.setup import TelemetryInstruments
 
 logger = logging.getLogger(__name__)
@@ -39,6 +32,51 @@ def _strip_code_fences(text: str) -> str:
     text = text.strip()
     m = _CODE_FENCE_RE.match(text)
     return m.group(1).strip() if m else text
+
+def _validation_error_to_hint(exc: Exception) -> str:
+    """Convert a Pydantic validation error into an LLM-friendly constraint hint.
+
+    Translates technical error messages into plain-English rules the LLM
+    can follow on the next attempt.
+    """
+    from pydantic import ValidationError
+
+    if not isinstance(exc, ValidationError):
+        return f"Schema validation failed: {exc}"
+
+    hints: list[str] = []
+    for error in exc.errors():
+        loc = ".".join(str(p) for p in error["loc"])
+        err_type = error["type"]
+        msg = error["msg"]
+        ctx = error.get("ctx", {})
+
+        if err_type == "greater_than":
+            limit = ctx.get("gt", "0")
+            hints.append(f"Field '{loc}' must be greater than {limit} (got {error.get('input', '?')})")
+        elif err_type == "greater_than_equal":
+            limit = ctx.get("ge", "0")
+            hints.append(f"Field '{loc}' must be >= {limit}")
+        elif err_type == "less_than":
+            limit = ctx.get("lt")
+            hints.append(f"Field '{loc}' must be less than {limit}")
+        elif err_type == "less_than_equal":
+            limit = ctx.get("le")
+            hints.append(f"Field '{loc}' must be <= {limit}")
+        elif err_type == "string_type":
+            hints.append(f"Field '{loc}' must be a string")
+        elif err_type == "missing":
+            hints.append(f"Field '{loc}' is required but was missing")
+        elif err_type == "enum":
+            expected = ctx.get("expected", "")
+            hints.append(f"Field '{loc}' must be one of: {expected}")
+        elif "value_error" in err_type or err_type == "value_error":
+            hints.append(f"Field '{loc}': {msg}")
+        else:
+            hints.append(f"Field '{loc}': {msg}")
+
+    return "; ".join(hints) if hints else f"Schema validation failed: {exc}"
+
 
 
 def _assign_fresh_uuids(product: Product) -> Product:
@@ -54,39 +92,6 @@ def _assign_fresh_uuids(product: Product) -> Product:
     return product
 
 
-def _extract_string_fields(obj: Any) -> list[tuple[str, str]]:
-    """Recursively extract all (field_path, string_value) pairs from a Pydantic model.
-
-    Enum values are skipped because they come from the OCTO spec (fixed vocabulary)
-    and will always match real samples — they cannot constitute production data leakage.
-    """
-    results: list[tuple[str, str]] = []
-
-    if isinstance(obj, Enum):
-        return []
-
-    if isinstance(obj, str):
-        return [("", obj)]
-
-    if isinstance(obj, BaseModel):
-        # Pydantic model — access model_fields from the class
-        for field_name in type(obj).model_fields:
-            value = getattr(obj, field_name)
-            for sub_path, sub_val in _extract_string_fields(value):
-                path = f"{field_name}.{sub_path}" if sub_path else field_name
-                results.append((path, sub_val))
-    elif isinstance(obj, list):
-        for i, item in enumerate(obj):
-            for sub_path, sub_val in _extract_string_fields(item):
-                path = f"[{i}].{sub_path}" if sub_path else f"[{i}]"
-                results.append((path, sub_val))
-    elif isinstance(obj, dict):
-        for key, value in obj.items():
-            for sub_path, sub_val in _extract_string_fields(value):
-                path = f"{key}.{sub_path}" if sub_path else key
-                results.append((path, sub_val))
-
-    return results
 
 
 class ProductGenerator:
@@ -96,13 +101,11 @@ class ProductGenerator:
         self,
         ollama_client: OllamaClient,
         prompt_builder: PromptBuilder,
-        sample_index: RealSamplesIndex,
         max_retries: int = 3,
         telemetry: TelemetryInstruments | None = None,
     ) -> None:
         self._client = ollama_client
         self._prompt_builder = prompt_builder
-        self._index = sample_index
         self._max_retries = max_retries
         self._tel = telemetry
 
@@ -122,9 +125,7 @@ class ProductGenerator:
         if self._tel:
             self._tel.seeder_generation_duration_seconds.record(gen_duration)
 
-        logger.info(
-            "Generated %d products, 0 production data matches found", count
-        )
+        logger.info("Generated %d products", count)
         return products
 
     async def _generate_single_product(self, product_num: int) -> Product:
@@ -132,10 +133,15 @@ class ProductGenerator:
 
         Raises SeedingFailedError if all retries exhausted.
         """
-        prompt = self._prompt_builder.build_prompt()
+        error_hints: list[str] = []
         product_start = time.monotonic()
 
         for attempt in range(1, self._max_retries + 1):
+            prompt = self._prompt_builder.build_prompt(
+                error_hints=error_hints if error_hints else None
+            )
+            logger.debug("Product %d, attempt %d — full prompt:\n%s", product_num, attempt, prompt)
+
             try:
                 logger.info(
                     "Product %d: Ollama attempt %d/%d",
@@ -170,6 +176,10 @@ class ProductGenerator:
                 try:
                     data = json.loads(raw_text)
                 except json.JSONDecodeError as exc:
+                    error_hints.append(
+                        f"Output was not valid JSON (parse error at position {exc.pos}). "
+                        "Return ONLY a raw JSON object, no markdown fences or extra text."
+                    )
                     raise OllamaInvalidResponseError(
                         f"Failed to parse LLM output as JSON: {exc}"
                     ) from exc
@@ -178,34 +188,15 @@ class ProductGenerator:
                 try:
                     product = Product.model_validate(data)
                 except Exception as exc:
+                    error_hints.append(
+                        _validation_error_to_hint(exc)
+                    )
                     raise OllamaInvalidResponseError(
                         f"LLM output does not conform to Product schema: {exc}"
                     ) from exc
 
                 # Assign fresh UUIDs
                 product = _assign_fresh_uuids(product)
-
-                # Check against RealSamplesIndex
-                match_found = False
-                for field_path, value in _extract_string_fields(product):
-                    if self._index.check(value):
-                        logger.warning(
-                            "Product %d: production data match on field '%s' = '%s', discarding",
-                            product_num, field_path, value,
-                        )
-                        if self._tel:
-                            self._tel.seeder_validation_failures_total.add(1)
-                            self._tel.seeder_errors_total.add(
-                                1, {"error_type": "VALIDATION_FAILURE"}
-                            )
-                        match_found = True
-                        break
-
-                if match_found:
-                    # Counts as a retry — re-generate
-                    if attempt < self._max_retries and self._tel:
-                        self._tel.seeder_ollama_retries_total.add(1)
-                    continue
 
                 # Success
                 product_duration = time.monotonic() - product_start

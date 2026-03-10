@@ -12,12 +12,6 @@ from models.product import (
     Unit,
     UnitType,
 )
-from models.availability import (
-    AvailabilitySlot,
-    AvailabilityStatus,
-    CalendarEntry,
-    OpeningHours,
-)
 from models.errors import ErrorResponse
 
 
@@ -65,11 +59,9 @@ class TestProductModel:
         assert "availabilityType" in data
         assert "deliveryFormats" in data
         assert "timeZone" in data
-        # Nested option
         opt = data["options"][0]
         assert "internalName" in opt
         assert "availabilityLocalStartTimes" in opt
-        # Nested unit
         unit = opt["units"][0]
         assert "internalName" in unit
 
@@ -78,45 +70,6 @@ class TestProductModel:
         data = p.model_dump(by_alias=True)
         text = json.dumps(data)
         assert isinstance(text, str)
-
-
-class TestAvailabilityModels:
-    def test_calendar_entry_round_trip(self):
-        entry = CalendarEntry(
-            local_date="2026-03-01",
-            available=True,
-            status=AvailabilityStatus.AVAILABLE,
-            vacancies=50,
-            capacity=100,
-        )
-        data = entry.model_dump(by_alias=True)
-        restored = CalendarEntry(**data)
-        assert restored == entry
-        assert data["localDate"] == "2026-03-01"
-
-    def test_availability_slot_round_trip(self):
-        slot = AvailabilitySlot(
-            id="slot-1",
-            local_date_time_start="2026-03-01T09:00:00",
-            local_date_time_end="2026-03-01T10:00:00",
-            all_day=False,
-            available=True,
-            status=AvailabilityStatus.AVAILABLE,
-            vacancies=20,
-            capacity=40,
-            utc_cutoff_at="2026-03-01T09:00:00Z",
-        )
-        data = slot.model_dump(by_alias=True)
-        restored = AvailabilitySlot(**data)
-        assert restored == slot
-        assert data["localDateTimeStart"] == "2026-03-01T09:00:00"
-        assert data["allDay"] is False
-
-    def test_opening_hours_alias(self):
-        oh = OpeningHours(from_time="09:00", to_time="17:00")
-        data = oh.model_dump(by_alias=True)
-        assert data["from"] == "09:00"
-        assert data["to"] == "17:00"
 
 
 class TestErrorResponse:
