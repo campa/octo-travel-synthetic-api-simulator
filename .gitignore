@@ -61,6 +61,7 @@ temp/
 # Data dir
 data/
 seed_data.json
+docs/synthetic-data-realism-analysis.md
 
 .kiro/
 
