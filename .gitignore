@@ -1,0 +1,66 @@
+# OS-specific
+.DS_Store
+
+# Python build artifacts
+__pycache__/
+*.py[oc]
+*.pyo
+*.pyd
+build/
+dist/
+wheels/
+*.egg-info/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Type checking and linting
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# IDE - Personal settings
+.idea/
+*.swp
+*.swo
+*~
+
+# VS Code - Ignore personal settings, keep shared project config
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Environment variables
+.env
+.env.local
+
+# Data dir
+data/
+
+.kiro/
+
+real-samples/

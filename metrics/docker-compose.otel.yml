@@ -1,0 +1,16 @@
+services:
+  openobserve:
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    ports:
+      - "5080:5080"   # Web UI + API
+      - "5081:5081"   # OTLP gRPC
+    environment:
+      - ZO_ROOT_USER_EMAIL=admin@otas.local
+      - ZO_ROOT_USER_PASSWORD=admin
+      - ZO_TELEMETRY=false
+    volumes:
+      - openobserve-data:/data
+    restart: unless-stopped
+
+volumes:
+  openobserve-data:
