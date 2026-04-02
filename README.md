@@ -5,7 +5,6 @@ A stateful mock server that implements the [OCTO](https://www.octo.travel/) trav
 ## Table of contents
 
 - [OCTO Travel Synthetic API Simulator (OTAS)](#octo-travel-synthetic-api-simulator-otas)
-  - [Table of contents](#table-of-contents)
   - [What it does](#what-it-does)
   - [Prerequisites](#prerequisites)
   - [Quick start](#quick-start)
