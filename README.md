@@ -2,6 +2,28 @@
 
 A stateful mock server that implements the [OCTO](https://www.octo.travel/) travel API standard using LLM-generated synthetic data. Built for dev, testing, and demo environments where you need realistic OCTO-compliant responses without connecting to a live supplier.
 
+## Table of contents
+
+- [OCTO Travel Synthetic API Simulator (OTAS)](#octo-travel-synthetic-api-simulator-otas)
+  - [Table of contents](#table-of-contents)
+  - [What it does](#what-it-does)
+  - [Prerequisites](#prerequisites)
+  - [Quick start](#quick-start)
+    - [Choosing a model](#choosing-a-model)
+  - [API endpoints](#api-endpoints)
+    - [Example requests](#example-requests)
+  - [CLI options](#cli-options)
+  - [Configuration](#configuration)
+    - [Per-module log levels](#per-module-log-levels)
+  - [Observability](#observability)
+  - [Data quality](#data-quality)
+  - [Generation performance](#generation-performance)
+  - [Architecture](#architecture)
+  - [Documentation](#documentation)
+  - [Development](#development)
+  - [Project structure](#project-structure)
+  - [License](#license)
+
 ## What it does
 
 1. Uses a local LLM (Ollama) to generate realistic tour/activity products
@@ -39,15 +61,7 @@ The recommended model is `nemotron-3-nano:30b` — it produces high-quality OCTO
 OTAS_OLLAMA_MODEL=nemotron-3-nano:30b
 ```
 
-Other models that work well:
-
-| Model | Size | Notes |
-|-------|------|-------|
-| `nemotron-3-nano:30b` | ~17 GB | Recommended. Best quality/speed balance |
-| `qwen3:14b` | ~9 GB | Lighter alternative, good for machines with less RAM |
-| `qwen3:32b` | ~19 GB | Larger, may improve diversity |
-
-Larger models (e.g., `nemotron-3-super`) may require more VRAM/RAM than available on consumer hardware.
+Larger models may improve diversity and realism but require more VRAM/RAM. Smaller models (14B and below) are faster but may need more retries.
 
 To skip LLM generation and use a cached seed file:
 
@@ -178,16 +192,17 @@ See [docs/data-quality.md](docs/data-quality.md) for the full scoring methodolog
 
 Data generation is LLM-bound and depends on your hardware and model. Each product requires one Ollama call (more if retries are needed due to validation errors or malformed JSON).
 
-Reference benchmark generating 3 products with `nemotron-3-nano:30b` on an Apple M3 Max (64 GB RAM):
+Reference benchmark generating 50 products with `nemotron-3-nano:30b` on an Apple M3 Max (64 GB RAM):
 
-| Product | Attempts | Time |
-|---------|----------|------|
-| 1 | 1 | ~1m 39s |
-| 2 | 3 (validation error, JSON parse error, success) | ~6m 33s |
-| 3 | 1 | ~1m 16s |
-| **Total (3 products)** | **5** | **~9m 28s** |
+| Metric | Value |
+|--------|-------|
+| Products requested | 50 |
+| Avg time per product | ~30-35s |
+| Retries (out of 50) | 1 (invalid IANA timezone `Europe/Riyadh`, fixed on attempt 2) |
+| First-attempt success rate | 98% |
+| Estimated total time (50 products) | ~25-30 min |
 
-Expect roughly 1-2 minutes per product on a first successful attempt. Retries (validation or JSON errors) add another 1-3 minutes each. For the default 10 products, plan for 15-30 minutes on similar hardware.
+The error hint feedback mechanism resolves most validation issues on the next attempt. Common retry causes: invalid timezones, malformed JSON.
 
 To avoid regenerating every time, use `--dump-seed` on the first run and `--skip-seed` afterwards.
 
