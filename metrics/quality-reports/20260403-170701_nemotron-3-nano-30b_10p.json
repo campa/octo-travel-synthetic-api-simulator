@@ -1,0 +1,275 @@
+{
+  "timestamp": "2026-04-03T17:07:01.340720",
+  "model": "nemotron-3-nano:30b",
+  "product_count": 10,
+  "seed_file": "seed_data.json",
+  "scores": {
+    "composite": 0.805,
+    "realism": 0.762,
+    "coherence": 0.94,
+    "completeness": 1.0,
+    "diversity": 0.473
+  },
+  "per_product": [
+    {
+      "id": "d38e28b0-89ff-438f-82c4-e57fcd95297e",
+      "title": "Sunset River Cruise",
+      "realism": 0.75,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "ecd964e4-7aa7-4dcd-a184-99b197e32290",
+      "title": "Cave Exploration Full Tour",
+      "realism": 0.917,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "5a55a245-9e27-4824-b981-134562868871",
+      "title": "Cultural Heritage Walking Tour",
+      "realism": 0.583,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "096072bd-73ca-450f-b1da-a88906a03209",
+      "title": "Historic Castle Tour with Audio Guide",
+      "realism": 0.5,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "5df90f24-a0be-4e11-aad6-dd96c852fce4",
+      "title": "Valley Vineyard Wine Tasting with Cellar Tour",
+      "realism": 0.857,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "5e17a4e3-8f6a-46ca-82d4-41e0b8aca686",
+      "title": "Historic Castle Evening Tour",
+      "realism": 0.857,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "d0cd43c8-eab0-4de8-8f7d-6999001835b9",
+      "title": "Historic Castle Evening Tour",
+      "realism": 0.538,
+      "coherence": 0.8,
+      "completeness": 1.0
+    },
+    {
+      "id": "e154cae1-f856-44af-878c-5d87972b67da",
+      "title": "Valley Vineyard Wine Tasting with Cellar Tour",
+      "realism": 0.9,
+      "coherence": 0.6,
+      "completeness": 1.0
+    },
+    {
+      "id": "ccb2dcee-fd49-4fd0-8ab8-f5f345879fd5",
+      "title": "Historic Castle Evening Tour",
+      "realism": 0.857,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "5b138128-0962-40e2-9c0b-105190bcdd9f",
+      "title": "Historic Castle Evening Tour",
+      "realism": 0.857,
+      "coherence": 1.0,
+      "completeness": 1.0
+    }
+  ],
+  "issues": [
+    {
+      "dimension": "diversity",
+      "check": "low_country_diversity",
+      "message": "Only 4/10 unique countries",
+      "product_id": ""
+    },
+    {
+      "dimension": "diversity",
+      "check": "duplicate_titles",
+      "message": "Duplicate product titles: {'Historic Castle Evening Tour', 'Valley Vineyard Wine Tasting with Cellar Tour'}",
+      "product_id": ""
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Hudson River Pier 42'",
+      "product_id": "d38e28b0-89ff-438f-82c4-e57fcd95297e"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '22051064-1865-46a4-81c7-2639c8fdd19b' in option 'Sunset Cruise' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "d38e28b0-89ff-438f-82c4-e57fcd95297e"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '10a974af-72d6-4c17-be56-b1fad6008a24' in option 'Full Exploration Package' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "ecd964e4-7aa7-4dcd-a184-99b197e32290"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Reichstag Information Desk': lat=52.5255 (ent=1.46), lon=13.3667 (ent=1.92)",
+      "product_id": "5a55a245-9e27-4824-b981-134562868871"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJN1t_tDeuEkcRUUSeI4U6GQU' reused across products: ['Cultural Heritage Walking Tour', 'Cultural Heritage Walking Tour']",
+      "product_id": "5a55a245-9e27-4824-b981-134562868871"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Brandenburg Gate': lat=52.5163 (ent=2.25), lon=13.3777 (ent=1.46)",
+      "product_id": "5a55a245-9e27-4824-b981-134562868871"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJN1t_tDeuEkcRUUSeI4U6GQU' reused across products: ['Cultural Heritage Walking Tour', 'Cultural Heritage Walking Tour']",
+      "product_id": "5a55a245-9e27-4824-b981-134562868871"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '37d49146-2f0d-42f9-b2cd-b2cecbc43bd8' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "5a55a245-9e27-4824-b981-134562868871"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Castle Heritage Centre' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "096072bd-73ca-450f-b1da-a88906a03209"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Castle Heritage Centre'",
+      "product_id": "096072bd-73ca-450f-b1da-a88906a03209"
+    },
+    {
+      "dimension": "realism",
+      "check": "currency_country_mismatch",
+      "message": "Currency 'EUR' unexpected for country 'GB' (expected {'GBP'})",
+      "product_id": "096072bd-73ca-450f-b1da-a88906a03209"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'db6c788b-4d40-4022-abc8-116367bdf7e9' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "096072bd-73ca-450f-b1da-a88906a03209"
+    },
+    {
+      "dimension": "realism",
+      "check": "timezone_country_mismatch",
+      "message": "Timezone 'Europe/Berlin' unexpected for country 'FR' (expected prefix ['Europe/Paris'])",
+      "product_id": "5df90f24-a0be-4e11-aad6-dd96c852fce4"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Castle Hollow'",
+      "product_id": "5e17a4e3-8f6a-46ca-82d4-41e0b8aca686"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Castle Heritage Centre' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "d0cd43c8-eab0-4de8-8f7d-6999001835b9"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Castle Heritage Centre'",
+      "product_id": "d0cd43c8-eab0-4de8-8f7d-6999001835b9"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Castle Gardens': lat=51.508 (ent=1.25), lon=-0.128 (ent=1.79)",
+      "product_id": "d0cd43c8-eab0-4de8-8f7d-6999001835b9"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Castle Gardens' match a known city centroid: lat=51.508, lon=-0.128",
+      "product_id": "d0cd43c8-eab0-4de8-8f7d-6999001835b9"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Castle Gardens'",
+      "product_id": "d0cd43c8-eab0-4de8-8f7d-6999001835b9"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'b8cc382d-b27f-430e-81cf-caf0dcf793aa' in option 'Evening Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "d0cd43c8-eab0-4de8-8f7d-6999001835b9"
+    },
+    {
+      "dimension": "coherence",
+      "check": "duration_mismatch",
+      "message": "Option 'Evening Premium Tour' duration 180.0min outside product range [120, 150]",
+      "product_id": "d0cd43c8-eab0-4de8-8f7d-6999001835b9"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Valley Vineyard' match a known city centroid: lat=48.8566, lon=2.3522",
+      "product_id": "e154cae1-f856-44af-878c-5d87972b67da"
+    },
+    {
+      "dimension": "coherence",
+      "check": "duration_mismatch",
+      "message": "Option 'Standard Tasting' duration 90.0min outside product range [180, 240]",
+      "product_id": "e154cae1-f856-44af-878c-5d87972b67da"
+    },
+    {
+      "dimension": "coherence",
+      "check": "duration_mismatch",
+      "message": "Option 'Premium Tasting' duration 120.0min outside product range [180, 240]",
+      "product_id": "e154cae1-f856-44af-878c-5d87972b67da"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Castle Main Gate' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "ccb2dcee-fd49-4fd0-8ab8-f5f345879fd5"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Castle Main Gate' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "5b138128-0962-40e2-9c0b-105190bcdd9f"
+    }
+  ],
+  "issue_summary": {
+    "by_dimension": {
+      "diversity": 2,
+      "realism": 23,
+      "coherence": 3
+    },
+    "by_check": {
+      "low_country_diversity": 1,
+      "duplicate_titles": 1,
+      "known_dummy_place_id": 5,
+      "adult_age_range": 5,
+      "coordinate_entropy": 3,
+      "duplicate_place_id": 2,
+      "city_centroid": 6,
+      "currency_country_mismatch": 1,
+      "timezone_country_mismatch": 1,
+      "duration_mismatch": 3
+    },
+    "total": 28
+  }
+}
