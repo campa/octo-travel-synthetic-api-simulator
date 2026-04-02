@@ -1,6 +1,6 @@
-"""Real_Samples_Index builder and checker.
+"""Samples index builder and checker.
 
-Extracts all string field values from JSON files in the real-samples directory
+Extracts all string field values from JSON files in a reference samples directory
 and provides O(1) lookup to detect production data leakage in synthetic entities.
 """
 
@@ -10,8 +10,8 @@ from pathlib import Path
 from typing import Any
 
 
-class RealSamplesIndex:
-    """Builds an index of all string values from real sample JSON files."""
+class SamplesIndex:
+    """Builds an index of all string values from reference sample JSON files."""
 
     def __init__(self, samples_dir: str = "real-samples") -> None:
         self._index: set[str] = set()

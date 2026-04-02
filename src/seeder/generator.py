@@ -7,6 +7,7 @@ and assigns fresh UUIDs.
 import asyncio
 import json
 import logging
+import random
 import re
 import time
 import uuid
@@ -19,6 +20,7 @@ from seeder.ollama_client import (
     SeedingFailedError,
 )
 from seeder.prompt_builder import PromptBuilder
+from seeder.quality import QualityScorer
 from telemetry.setup import TelemetryInstruments
 
 logger = logging.getLogger(__name__)
@@ -77,18 +79,158 @@ def _validation_error_to_hint(exc: Exception) -> str:
 
     return "; ".join(hints) if hints else f"Schema validation failed: {exc}"
 
+_CUTOFF_RE = re.compile(r"^(\d+)\s+(hours?|minutes?|days?)$")
+
+# ---------------------------------------------------------------------------
+# Fictional fallback pools for when the LLM omits fields.
+# Inspired by real OCTO product patterns but entirely made up.
+# ---------------------------------------------------------------------------
+
+_FALLBACK_PRODUCT_NAMES = [
+    "City Sightseeing Tour",
+    "General Admission",
+    "Harbor Cruise 60 Min",
+    "Guided Walking Tour Old Town",
+    "Hop-On Hop-Off Bus 24h",
+    "Sunset Boat Trip",
+    "Museum & Gallery Entry",
+    "Wine Tasting Experience",
+    "Bike Rental Half Day",
+    "Airport Transfer Shuttle",
+    "River Kayak Adventure",
+    "Observation Deck Fast Track",
+    "Food & Market Walking Tour",
+    "Aquarium Family Pass",
+    "Historic Castle Guided Visit",
+    "Snorkeling Excursion Morning",
+    "Panoramic Cable Car Ride",
+    "Cooking Class Traditional Cuisine",
+    "Segway City Highlights 2h",
+    "Whale Watching Expedition",
+]
+
+_FALLBACK_OPTION_NAMES = [
+    "Standard",
+    "Premium",
+    "Morning Departure",
+    "Afternoon Session",
+    "Full Day Pass",
+    "Express Entry",
+    "Group Package",
+    "Private Tour",
+    "Economy",
+    "Guided Option",
+    "Self-Guided Option",
+    "Family Bundle",
+    "Sunset Slot",
+    "Early Bird",
+    "Last Minute",
+    "Weekend Special",
+]
+
+_FALLBACK_START_TIMES = [
+    ["09:00"],
+    ["10:00"],
+    ["09:00", "14:00"],
+    ["08:30", "11:00", "14:30"],
+    ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00"],
+]
+
+
+def _normalize_llm_output(data: dict) -> dict:
+    """Fix common LLM output quirks before Pydantic validation.
+
+    This keeps the Product model clean (matching the OCTO spec) while
+    tolerating predictable LLM mistakes like missing optional fields
+    or wrong types for optional values.
+
+    Backfills spec-defined defaults for fields the local LLM commonly omits.
+    """
+    # --- product-level defaults ---
+    data.setdefault("internalName",
+                    data.get("title") or random.choice(_FALLBACK_PRODUCT_NAMES))
+
+    for option in data.get("options", []):
+        # --- structural option fields the LLM sometimes omits ---
+        option.setdefault("default", False)
+        option.setdefault("internalName",
+                          option.get("title") or random.choice(_FALLBACK_OPTION_NAMES))
+        option.setdefault("availabilityLocalStartTimes",
+                          [] if data.get("availabilityType") == "OPENING_HOURS"
+                          else random.choice(_FALLBACK_START_TIMES))
+        option.setdefault("cancellationCutoff", "0 hours")
+
+        # --- cancellation cutoff derivation ---
+        cutoff = option.get("cancellationCutoff", "")
+        if isinstance(cutoff, str):
+            m = _CUTOFF_RE.match(cutoff)
+            if m:
+                if "cancellationCutoffAmount" not in option:
+                    option["cancellationCutoffAmount"] = int(m.group(1))
+                if "cancellationCutoffUnit" not in option:
+                    option["cancellationCutoffUnit"] = m.group(2).rstrip("s")
+
+        # --- option-level defaults the LLM often omits ---
+        option.setdefault("requiredContactFields", [])
+        if "restrictions" not in option:
+            option["restrictions"] = {"minUnits": 0, "maxUnits": None}
+        else:
+            option["restrictions"].setdefault("minUnits", 0)
+            option["restrictions"].setdefault("maxUnits", None)
+
+        # Coerce durationAmount int -> str (LLM sends 3 instead of "3")
+        dur = option.get("durationAmount")
+        if dur is not None and not isinstance(dur, str):
+            option["durationAmount"] = str(dur)
+
+        for unit in option.get("units", []):
+            # --- unit-level defaults the LLM often omits ---
+            unit.setdefault("requiredContactFields", [])
+
+            restrictions = unit.get("restrictions")
+            if restrictions is None:
+                unit["restrictions"] = {
+                    "minAge": 0,
+                    "maxAge": 0,
+                    "idRequired": False,
+                    "minQuantity": None,
+                    "maxQuantity": None,
+                    "paxCount": 1,
+                    "accompaniedBy": [],
+                }
+            else:
+                restrictions.setdefault("minAge", 0)
+                restrictions.setdefault("maxAge", 0)
+                restrictions.setdefault("idRequired", False)
+                restrictions.setdefault("minQuantity", None)
+                restrictions.setdefault("maxQuantity", None)
+                restrictions.setdefault("paxCount", 1)
+                restrictions.setdefault("accompaniedBy", [])
+
+    return data
+
+
 
 
 def _assign_fresh_uuids(product: Product) -> Product:
-    """Overwrite all id and reference fields with fresh UUID v4 values."""
+    """Overwrite id fields with fresh UUID v4 values.
+
+    References are set to None — suppliers typically use null or short
+    alphanumeric codes, never UUIDs.  Pickup location IDs also get
+    fresh UUIDs.
+    """
     product.id = str(uuid.uuid4())
-    product.reference = str(uuid.uuid4())
+    product.reference = None
     for option in product.options:
         option.id = str(uuid.uuid4())
-        option.reference = str(uuid.uuid4())
+        option.reference = None
+        # Pickup location IDs (octo/pickups capability)
+        if option.pickup_locations:
+            for loc in option.pickup_locations:
+                loc.id = str(uuid.uuid4())
         for unit in option.units:
             unit.id = str(uuid.uuid4())
-            unit.reference = str(uuid.uuid4())
+            unit.reference = None
     return product
 
 
@@ -109,6 +251,16 @@ class ProductGenerator:
         self._max_retries = max_retries
         self._tel = telemetry
 
+    @staticmethod
+    def _product_summary(product: Product) -> dict:
+        """Extract a compact diversity fingerprint from a generated product."""
+        return {
+            "title": product.title or product.internal_name,
+            "country": product.country,
+            "availabilityType": product.availability_type.value,
+            "categoryLabels": product.category_labels or [],
+        }
+
     async def generate_products(self, count: int) -> list[Product]:
         """Generate `count` Products via Ollama with retry + validation.
 
@@ -118,17 +270,43 @@ class ProductGenerator:
         products: list[Product] = []
         for i in range(count):
             logger.info("Generating product %d/%d", i + 1, count)
-            product = await self._generate_single_product(product_num=i + 1)
+            previously_generated = [
+                self._product_summary(p) for p in products
+            ]
+            product = await self._generate_single_product(
+                product_num=i + 1,
+                previously_generated=previously_generated if previously_generated else None,
+            )
             products.append(product)
 
         gen_duration = time.monotonic() - gen_start
         if self._tel:
             self._tel.seeder_generation_duration_seconds.record(gen_duration)
 
+        # --- Quality scoring ---
+        scorer = QualityScorer()
+        batch_score = scorer.score_batch(products)
+        if self._tel:
+            self._tel.quality_score.record(batch_score.composite)
+            self._tel.quality_diversity_score.record(batch_score.diversity)
+            for ps in batch_score.product_scores:
+                attrs = {"product_id": ps.product_id}
+                self._tel.quality_realism_score.record(ps.realism, attrs)
+                self._tel.quality_coherence_score.record(ps.coherence, attrs)
+                self._tel.quality_completeness_score.record(ps.completeness, attrs)
+            for issue in batch_score.all_issues:
+                self._tel.quality_issues_total.add(
+                    1, {"dimension": issue.dimension, "check": issue.check}
+                )
+
         logger.info("Generated %d products", count)
         return products
 
-    async def _generate_single_product(self, product_num: int) -> Product:
+    async def _generate_single_product(
+        self,
+        product_num: int,
+        previously_generated: list[dict] | None = None,
+    ) -> Product:
         """Generate one product with retry logic.
 
         Raises SeedingFailedError if all retries exhausted.
@@ -138,7 +316,8 @@ class ProductGenerator:
 
         for attempt in range(1, self._max_retries + 1):
             prompt = self._prompt_builder.build_prompt(
-                error_hints=error_hints if error_hints else None
+                error_hints=error_hints if error_hints else None,
+                previously_generated=previously_generated,
             )
             logger.debug("Product %d, attempt %d — full prompt:\n%s", product_num, attempt, prompt)
 
@@ -186,6 +365,7 @@ class ProductGenerator:
 
                 # Validate against Product model
                 try:
+                    data = _normalize_llm_output(data)
                     product = Product.model_validate(data)
                 except Exception as exc:
                     error_hints.append(
@@ -202,6 +382,9 @@ class ProductGenerator:
                 product_duration = time.monotonic() - product_start
                 if self._tel:
                     self._tel.seeder_products_generated_total.add(1)
+                    self._tel.product_attempts.record(
+                        attempt, {"product_id": product.id}
+                    )
                     self._tel.product_generation_duration_seconds.record(
                         product_duration, {"product_id": product.id}
                     )

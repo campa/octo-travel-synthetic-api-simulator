@@ -36,7 +36,6 @@ class TelemetryInstruments:
     seeder_products_failed_total: metrics.Counter = field(init=False)
     seeder_ollama_requests_total: metrics.Counter = field(init=False)
     seeder_ollama_retries_total: metrics.Counter = field(init=False)
-    seeder_validation_failures_total: metrics.Counter = field(init=False)
     seeder_errors_total: metrics.Counter = field(init=False)
     seeder_ollama_errors_total: metrics.Counter = field(init=False)
 
@@ -77,6 +76,17 @@ class TelemetryInstruments:
 
     # Product histogram
     product_generation_duration_seconds: metrics.Histogram = field(init=False)
+    product_attempts: metrics.Histogram = field(init=False)
+
+    # ------------------------------------------------------------------
+    # Quality metrics
+    # ------------------------------------------------------------------
+    quality_score: metrics.Histogram = field(init=False)
+    quality_realism_score: metrics.Histogram = field(init=False)
+    quality_coherence_score: metrics.Histogram = field(init=False)
+    quality_completeness_score: metrics.Histogram = field(init=False)
+    quality_diversity_score: metrics.Histogram = field(init=False)
+    quality_issues_total: metrics.Counter = field(init=False)
 
 
 def _create_instruments(meter: metrics.Meter) -> TelemetryInstruments:
@@ -99,10 +109,6 @@ def _create_instruments(meter: metrics.Meter) -> TelemetryInstruments:
     t.seeder_ollama_retries_total = meter.create_counter(
         "otas_seeder_ollama_retries_total",
         description="Total Ollama request retries",
-    )
-    t.seeder_validation_failures_total = meter.create_counter(
-        "otas_seeder_validation_failures_total",
-        description="Total entities rejected by RealSamplesIndex validation",
     )
     t.seeder_errors_total = meter.create_counter(
         "otas_seeder_errors_total",
@@ -198,6 +204,36 @@ def _create_instruments(meter: metrics.Meter) -> TelemetryInstruments:
         description="Duration to generate a single product via Ollama",
         unit="s",
     )
+    t.product_attempts = meter.create_histogram(
+        "otas_product_attempts",
+        description="Number of Ollama attempts needed per product",
+    )
+
+    # --- Quality metrics ---
+    t.quality_score = meter.create_histogram(
+        "otas_quality_score",
+        description="Composite quality score per batch (0.0-1.0)",
+    )
+    t.quality_realism_score = meter.create_histogram(
+        "otas_quality_realism_score",
+        description="Realism score per product (0.0-1.0)",
+    )
+    t.quality_coherence_score = meter.create_histogram(
+        "otas_quality_coherence_score",
+        description="Coherence score per product (0.0-1.0)",
+    )
+    t.quality_completeness_score = meter.create_histogram(
+        "otas_quality_completeness_score",
+        description="Completeness score per product (0.0-1.0)",
+    )
+    t.quality_diversity_score = meter.create_histogram(
+        "otas_quality_diversity_score",
+        description="Diversity score per batch (0.0-1.0)",
+    )
+    t.quality_issues_total = meter.create_counter(
+        "otas_quality_issues_total",
+        description="Total quality issues found (by dimension and check)",
+    )
 
     return t
 
@@ -209,9 +245,23 @@ def init_telemetry(settings: Settings) -> TelemetryInstruments:
     """
     try:
         import base64
+        import subprocess
+
+        # Grab git commit SHA for metric labeling
+        try:
+            commit_sha = subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"],
+                stderr=subprocess.DEVNULL,
+                text=True,
+            ).strip()
+        except Exception:
+            commit_sha = "unknown"
 
         resource = Resource.create({
             "service.name": settings.service_name,
+            "service.version": commit_sha,
+            "llm.model": settings.ollama_model,
+            "llm.temperature": settings.ollama_temperature,
         })
         # OpenObserve requires basic auth on OTLP gRPC
         credentials = base64.b64encode(
@@ -249,6 +299,21 @@ def init_telemetry(settings: Settings) -> TelemetryInstruments:
         )
         # Attach to root logger so all app logs flow to OpenObserve
         logging.getLogger().addHandler(otel_handler)
+
+        # Register shutdown hooks so metrics/logs flush before process exit
+        import atexit
+
+        def _flush_telemetry():
+            try:
+                provider.shutdown(timeout_millis=5_000)
+            except Exception:
+                pass
+            try:
+                log_provider.shutdown()
+            except Exception:
+                pass
+
+        atexit.register(_flush_telemetry)
 
     except Exception:
         logger.warning("Failed to initialize OTel exporter; telemetry disabled")

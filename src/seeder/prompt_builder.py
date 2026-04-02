@@ -2,7 +2,8 @@
 
 Builds a system prompt that includes the OCTO Product JSON schema
 (loaded from the ``octo-std/`` spec files) and explicit instructions
-to generate entirely fictional data.
+to generate synthetic data with realistic patterns matching
+typical OCTO supplier responses.
 """
 
 import logging
@@ -54,53 +55,38 @@ class PromptBuilder:
     ) -> None:
         self._avg_slots_per_day = avg_slots_per_day
 
-    def build_prompt(self, error_hints: list[str] | None = None) -> str:
+    def build_prompt(
+        self,
+        error_hints: list[str] | None = None,
+        previously_generated: list[dict] | None = None,
+    ) -> str:
         """Build the full prompt for generating one OCTO Product.
 
         Args:
             error_hints: Optional list of validation error messages from
                 previous failed attempts. These are injected as explicit
                 constraints so the LLM avoids repeating the same mistakes.
+            previously_generated: Optional list of compact product summaries
+                (dicts with keys: title, country, availabilityType,
+                categoryLabels) from products already generated in this batch.
+                Used to steer the LLM toward diverse output.
         """
         parts: list[str] = []
 
         # System instruction
         parts.append(
             "You are a data generator for the OCTO Travel API standard. "
-            "Your task is to generate exactly ONE valid OCTO Product JSON object."
+            "Your task is to generate exactly ONE valid OCTO Product JSON object "
+            "that looks indistinguishable from a typical supplier's response."
         )
 
         # Schema — loaded from octo-std/ spec files
         parts.append("\n## OCTO Product JSON Schema\n")
         parts.append(_load_spec_schema("get-products.yaml"))
 
-        # Generation instructions
+        # Generation instructions — rewritten per P1 analysis findings
         parts.append("\n## Generation Instructions\n")
-        parts.append(
-            "Generate exactly ONE fictional OCTO Product JSON object following "
-            "these rules:\n\n"
-            "1. Generate fresh UUID v4 values for the product id, each option "
-            "id, and each unit id.\n"
-            "2. The product MUST have at least one Option, and each Option "
-            "MUST have at least one Unit.\n"
-            "3. Use realistic but fictional product names (e.g. invented tour "
-            "names, fictional attractions, made-up cities).\n"
-            "4. Choose a valid availabilityType: either 'START_TIME' or "
-            "'OPENING_HOURS'.\n"
-            f"5. For START_TIME products, include approximately "
-            f"{self._avg_slots_per_day} entries in availabilityLocalStartTimes "
-            f"(vary between {max(1, self._avg_slots_per_day - 1)} and "
-            f"{self._avg_slots_per_day + 1}). "
-            "For OPENING_HOURS products, leave availabilityLocalStartTimes "
-            "as an empty array.\n"
-            "6. Use realistic age ranges in unit restrictions (e.g. Adult "
-            "18-64, Child 5-12, Infant 0-4).\n"
-            "7. Set exactly one option as default (default: true).\n"
-            "8. Include a mix of unit types from: ADULT, YOUTH, CHILD, "
-            "INFANT, FAMILY, SENIOR, STUDENT, MILITARY, OTHER.\n"
-            "9. Return ONLY the raw JSON object. No markdown, no "
-            "explanation, no wrapping.\n"
-        )
+        parts.append(self._build_generation_instructions(previously_generated))
 
         # Error hints from previous failed attempts
         if error_hints:
@@ -113,3 +99,109 @@ class PromptBuilder:
                 parts.append(f"{i}. {hint}")
 
         return "\n".join(parts)
+
+    def _build_generation_instructions(
+        self,
+        previously_generated: list[dict] | None = None,
+    ) -> str:
+        """Build detailed generation instructions for realistic OCTO products."""
+        text = (
+            "Generate exactly ONE fictional OCTO Product JSON object following "
+            "these rules:\n\n"
+            "### IDs and References\n"
+            "1. Generate fresh UUID v4 values for the product id, each option "
+            "id, and each unit id.\n"
+            "2. Set `reference` to null for all products, options, and units. "
+            "Suppliers use null or short codes — never UUIDs.\n\n"
+            "### Product Structure\n"
+            "3. The product MUST have at least one Option, and each Option "
+            "MUST have at least one Unit.\n"
+            "4. Generate 1 to 5 options per product (average ~3). Multiple "
+            "options represent tiers, departure points, or packages.\n\n"
+            "### Product Names\n"
+            "5. Use descriptive, production-style product names that describe "
+            "the actual activity. Good: 'General Admission', 'Sunset Cruise', "
+            "'Tour & Tasting Standard', 'Explorer Pass 4-Choice'. "
+            "Bad: 'Enchanted Forest Adventure', 'Magical Journey Tour'.\n\n"
+            "### Locale\n"
+            "6. Use 'en' for locale (~85% of products). "
+            "Only occasionally use 'en-US' or other regional tags.\n\n"
+            "### Availability Type\n"
+            "7. Choose availabilityType randomly: ~55% START_TIME, ~45% "
+            "OPENING_HOURS.\n"
+            f"8. For START_TIME products, include between 1 and 20 entries in "
+            f"availabilityLocalStartTimes (vary the count — some have 1-3, "
+            f"venues may have 10-27 at 30-min intervals). "
+            "For OPENING_HOURS products, availabilityLocalStartTimes MUST be "
+            "an empty array [].\n\n"
+            "### Cancellation Cutoff\n"
+            "9. cancellationCutoff MUST match the pattern '{amount} {unit}(s)'. "
+            "Examples: '0 hours', '24 hours', '48 hours', '7 days', '365 days'. "
+            "NEVER use bare unit names like 'hour'.\n\n"
+            "### Options\n"
+            "10. Set `default` to false for most options. Only sometimes set "
+            "one option to true. ~70% of products have ALL options as "
+            "default=false.\n\n"
+            "### Unit Types and Names\n"
+            "11. Use ADULT and CHILD as the common base. Add YOUTH, STUDENT, "
+            "FAMILY, INFANT as needed. Use SENIOR less frequently.\n"
+            "12. Unit internalName MUST be bare names: 'Adult', 'Child', "
+            "'Student', 'Infant', 'Youth'. Do NOT add 'Ticket' suffix.\n\n"
+            "### Contact Fields\n"
+            "13. requiredContactFields for units: almost always an empty "
+            "array []. Do NOT add firstName/lastName to units.\n"
+            "14. requiredContactFields for options: use [] or at most "
+            "['emailAddress']. Do NOT over-specify.\n\n"
+            "### Restrictions\n"
+            "15. maxQuantity on units: use null frequently (means unlimited). "
+            "Only sometimes use a specific number.\n"
+            "16. maxUnits on options: use null frequently (means unlimited).\n"
+            "17. Adult maxAge: use 0 (no limit) most often, or realistic "
+            "values like 99, 100, 65. Never use 120.\n\n"
+            "### Delivery Formats\n"
+            "18. Vary deliveryFormats. Common combos: "
+            "['QRCODE', 'PNG_URL', 'PKPASS_URL', 'GOOGLE_WALLET_URL', 'PDF_URL'], "
+            "or ['HTML_URL', 'PDF_URL'], or just ['QRCODE'].\n\n"
+            "### OCTO Pricing Capability (octo/pricing)\n"
+            "19. Include pricing fields on the product: defaultCurrency (ISO 4217, "
+            "e.g. 'USD', 'EUR', 'GBP'), availableCurrencies (usually just "
+            "[defaultCurrency]), pricingPer ('UNIT'), includeTax (boolean).\n"
+            "20. Include pricingFrom on each unit: an array with one object per "
+            "currency. Amounts are integers in cents (e.g. 3500 = $35.00). "
+            "net <= retail <= original. net can be null. currencyPrecision is "
+            "typically 2. includedTaxes can be an empty array.\n\n"
+            "### OCTO Content Capability (octo/content)\n"
+            "21. Product level: include title, shortDescription (1-2 sentences), "
+            "country (ISO 3166-1 alpha-2). Optionally include description, "
+            "features (array of {shortDescription, type}), faqs, media, "
+            "locations, categoryLabels, durationMinutesFrom/To.\n"
+            "22. Option level: include title. Optionally include shortDescription, "
+            "duration, durationAmount, durationUnit.\n"
+            "23. Unit level: include title (e.g. 'Adult'), titlePlural "
+            "(e.g. 'Adults'), subtitle (e.g. '18 - 65 Years').\n\n"
+            "### OCTO Pickups Capability (octo/pickups)\n"
+            "24. For some products (especially tours with transport), include "
+            "pickupAvailable, pickupRequired on options. If pickupAvailable is "
+            "true, include pickupLocations array with {id (UUID), title, "
+            "shortDescription, place{latitude, longitude, postalAddress}}.\n"
+            "25. Most products do NOT have pickup. Only include it for ~20% "
+            "of products.\n\n"
+            "### Output Format\n"
+            "26. Return ONLY the raw JSON object. No markdown, no explanation, "
+            "no wrapping.\n"
+        )
+
+        if previously_generated:
+            lines = [
+                "\n### Diversity\n"
+                "27. The following products have already been generated in this "
+                "batch. You MUST generate a product that is a DIFFERENT type of "
+                "activity, in a DIFFERENT country if possible, and MUST NOT "
+                "reuse the same title. Vary the availabilityType, categoryLabels, "
+                "and pricing.\n"
+            ]
+            for i, summary in enumerate(previously_generated, 1):
+                lines.append(f"  {i}. {summary}")
+            text += "\n".join(lines) + "\n"
+
+        return text

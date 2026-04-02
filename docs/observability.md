@@ -78,8 +78,34 @@ All metrics use the `otas_` prefix.
 | `otas_product_units_count` | Gauge | Units per product-option |
 | `otas_product_requests_total` | Counter | Requests per product |
 | `otas_product_generation_duration_seconds` | Histogram | Single product generation time |
+| `otas_product_attempts` | Histogram | Ollama attempts needed per product |
+
+### Quality metrics
+
+Emitted after each batch generation by the deterministic quality scorer. All scores range from 0.0 (worst) to 1.0 (best).
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `otas_quality_score` | Histogram | Composite quality score per batch |
+| `otas_quality_realism_score` | Histogram | Realism score per product (coordinates, place IDs, currency/tz consistency) |
+| `otas_quality_coherence_score` | Histogram | Coherence score per product (duration alignment, FAQ/pricing consistency) |
+| `otas_quality_completeness_score` | Histogram | Completeness score per product (presence of optional fields) |
+| `otas_quality_diversity_score` | Histogram | Diversity score per batch (country, title, category spread) |
+| `otas_quality_issues_total` | Counter | Quality issues found (by `dimension`, `check`) |
 
 ## Configuration
+
+### Resource labels
+
+All metrics and logs carry these OTel resource attributes:
+
+| Attribute | Source | Example |
+|-----------|--------|---------|
+| `service.name` | `OTAS_SERVICE_NAME` | `otas` |
+| `service.version` | `git rev-parse --short HEAD` | `a3f7b2c` |
+| `llm.model` | `OTAS_OLLAMA_MODEL` | `nemotron-3-nano:30b` |
+
+Use these to filter/group metrics by commit or model in your observability tool.
 
 ### Logging
 

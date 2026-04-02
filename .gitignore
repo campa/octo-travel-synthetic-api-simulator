@@ -65,5 +65,7 @@ docs/synthetic-data-realism-analysis.md
 
 .kiro/
 
+analysis/
+
 real-samples/
 rewrite-fixed-dates.sh

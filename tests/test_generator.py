@@ -9,6 +9,7 @@ from models.product import Product
 from seeder.generator import (
     ProductGenerator,
     _assign_fresh_uuids,
+    _normalize_llm_output,
     _strip_code_fences,
 )
 from seeder.ollama_client import (
@@ -28,7 +29,7 @@ def _make_valid_product_dict(**overrides) -> dict:
     base = {
         "id": "old-id",
         "internalName": "Fictional Tour",
-        "reference": "old-ref",
+        "reference": None,
         "locale": "en",
         "timeZone": "Europe/Berlin",
         "allowFreesale": False,
@@ -44,17 +45,29 @@ def _make_valid_product_dict(**overrides) -> dict:
                 "id": "old-opt-id",
                 "default": True,
                 "internalName": "Standard Pass",
-                "reference": "old-opt-ref",
+                "reference": None,
                 "availabilityLocalStartTimes": ["09:00", "14:00"],
                 "cancellationCutoff": "24 hours",
                 "cancellationCutoffAmount": 24,
                 "cancellationCutoffUnit": "hour",
+                "requiredContactFields": [],
+                "restrictions": {"minUnits": 0, "maxUnits": None},
                 "units": [
                     {
                         "id": "old-unit-id",
                         "internalName": "Adult Ticket",
-                        "reference": "old-unit-ref",
+                        "reference": None,
                         "type": "ADULT",
+                        "requiredContactFields": [],
+                        "restrictions": {
+                            "minAge": 18,
+                            "maxAge": 64,
+                            "idRequired": False,
+                            "minQuantity": 1,
+                            "maxQuantity": None,
+                            "paxCount": 1,
+                            "accompaniedBy": [],
+                        },
                     }
                 ],
             }
@@ -78,7 +91,15 @@ def _ollama_response(product_dict: dict) -> OllamaResponse:
 class FakePromptBuilder:
     """Stub that returns a fixed prompt."""
 
-    def build_prompt(self, error_hints: list[str] | None = None) -> str:
+    def __init__(self) -> None:
+        self.last_previously_generated: list[dict] | None = None
+
+    def build_prompt(
+        self,
+        error_hints: list[str] | None = None,
+        previously_generated: list[dict] | None = None,
+    ) -> str:
+        self.last_previously_generated = previously_generated
         return "Generate a product"
 
 
@@ -134,11 +155,14 @@ class TestAssignFreshUuids:
         assert result.id != old_id
         assert result.options[0].id != old_opt_id
         assert result.options[0].units[0].id != old_unit_id
-        # All should be valid UUID v4
+        # All IDs should be valid UUID v4
         uuid.UUID(result.id, version=4)
-        uuid.UUID(result.reference, version=4)
         uuid.UUID(result.options[0].id, version=4)
         uuid.UUID(result.options[0].units[0].id, version=4)
+        # References should be None (not UUIDs)
+        assert result.reference is None
+        assert result.options[0].reference is None
+        assert result.options[0].units[0].reference is None
 
 
 # ---------------------------------------------------------------------------
@@ -270,3 +294,299 @@ class TestCodeFenceStripping:
 
         products = await gen.generate_products(1)
         assert len(products) == 1
+
+
+# ---------------------------------------------------------------------------
+# Unit tests: _normalize_llm_output
+# ---------------------------------------------------------------------------
+
+class TestNormalizeLlmOutput:
+    """Tests for the LLM output normalizer that backfills omitted defaults."""
+
+    def test_backfills_unit_required_contact_fields(self):
+        data = _make_valid_product_dict()
+        del data["options"][0]["units"][0]["requiredContactFields"]
+        result = _normalize_llm_output(data)
+        assert result["options"][0]["units"][0]["requiredContactFields"] == []
+
+    def test_backfills_unit_restrictions_entirely_missing(self):
+        data = _make_valid_product_dict()
+        del data["options"][0]["units"][0]["restrictions"]
+        result = _normalize_llm_output(data)
+        r = result["options"][0]["units"][0]["restrictions"]
+        assert r == {
+            "minAge": 0,
+            "maxAge": 0,
+            "idRequired": False,
+            "minQuantity": None,
+            "maxQuantity": None,
+            "paxCount": 1,
+            "accompaniedBy": [],
+        }
+
+    def test_backfills_individual_restriction_fields(self):
+        data = _make_valid_product_dict()
+        # Keep only minAge and maxAge, omit the rest
+        data["options"][0]["units"][0]["restrictions"] = {
+            "minAge": 18,
+            "maxAge": 65,
+        }
+        result = _normalize_llm_output(data)
+        r = result["options"][0]["units"][0]["restrictions"]
+        assert r["idRequired"] is False
+        assert r["minQuantity"] is None
+        assert r["maxQuantity"] is None
+        assert r["paxCount"] == 1
+        assert r["accompaniedBy"] == []
+        # Existing values preserved
+        assert r["minAge"] == 18
+        assert r["maxAge"] == 65
+
+    def test_backfills_option_required_contact_fields(self):
+        data = _make_valid_product_dict()
+        del data["options"][0]["requiredContactFields"]
+        result = _normalize_llm_output(data)
+        assert result["options"][0]["requiredContactFields"] == []
+
+    def test_backfills_option_restrictions_missing(self):
+        data = _make_valid_product_dict()
+        del data["options"][0]["restrictions"]
+        result = _normalize_llm_output(data)
+        r = result["options"][0]["restrictions"]
+        assert r == {"minUnits": 0, "maxUnits": None}
+
+    def test_backfills_option_restrictions_partial(self):
+        data = _make_valid_product_dict()
+        data["options"][0]["restrictions"] = {"minUnits": 2}
+        result = _normalize_llm_output(data)
+        r = result["options"][0]["restrictions"]
+        assert r["minUnits"] == 2
+        assert r["maxUnits"] is None
+
+    def test_derives_cutoff_amount_and_unit(self):
+        data = _make_valid_product_dict()
+        del data["options"][0]["cancellationCutoffAmount"]
+        del data["options"][0]["cancellationCutoffUnit"]
+        data["options"][0]["cancellationCutoff"] = "48 hours"
+        result = _normalize_llm_output(data)
+        assert result["options"][0]["cancellationCutoffAmount"] == 48
+        assert result["options"][0]["cancellationCutoffUnit"] == "hour"
+
+    def test_coerces_duration_amount_int_to_str(self):
+        data = _make_valid_product_dict()
+        data["options"][0]["durationAmount"] = 3
+        result = _normalize_llm_output(data)
+        assert result["options"][0]["durationAmount"] == "3"
+
+    def test_preserves_existing_values(self):
+        """Normalizer should not overwrite values the LLM did provide."""
+        data = _make_valid_product_dict()
+        data["options"][0]["units"][0]["requiredContactFields"] = ["emailAddress"]
+        data["options"][0]["units"][0]["restrictions"]["paxCount"] = 4
+        result = _normalize_llm_output(data)
+        assert result["options"][0]["units"][0]["requiredContactFields"] == ["emailAddress"]
+        assert result["options"][0]["units"][0]["restrictions"]["paxCount"] == 4
+
+    def test_normalized_output_validates_as_product(self):
+        """A minimal LLM output with many fields omitted should validate
+        after normalization."""
+        minimal = {
+            "id": "test-id",
+            "internalName": "City Walking Tour",
+            "reference": None,
+            "locale": "en",
+            "timeZone": "Europe/London",
+            "allowFreesale": False,
+            "instantConfirmation": True,
+            "instantDelivery": True,
+            "availabilityRequired": True,
+            "availabilityType": "START_TIME",
+            "deliveryFormats": ["QRCODE"],
+            "deliveryMethods": ["VOUCHER"],
+            "redemptionMethod": "DIGITAL",
+            "options": [
+                {
+                    "id": "opt-1",
+                    "default": False,
+                    "internalName": "Standard",
+                    "reference": None,
+                    "availabilityLocalStartTimes": ["10:00"],
+                    "cancellationCutoff": "24 hours",
+                    # omitted: cancellationCutoffAmount, cancellationCutoffUnit
+                    # omitted: requiredContactFields, restrictions
+                    "units": [
+                        {
+                            "id": "unit-1",
+                            "internalName": "Adult",
+                            "reference": None,
+                            "type": "ADULT",
+                            # omitted: requiredContactFields, restrictions
+                        }
+                    ],
+                }
+            ],
+        }
+        normalized = _normalize_llm_output(minimal)
+        product = Product.model_validate(normalized)
+        assert product.options[0].cancellation_cutoff_amount == 24
+        assert product.options[0].units[0].restrictions.pax_count == 1
+
+
+    def test_backfills_option_default(self):
+        data = _make_valid_product_dict()
+        del data["options"][0]["default"]
+        result = _normalize_llm_output(data)
+        assert result["options"][0]["default"] is False
+
+    def test_backfills_option_availability_local_start_times_opening_hours(self):
+        data = _make_valid_product_dict()
+        data["availabilityType"] = "OPENING_HOURS"
+        del data["options"][0]["availabilityLocalStartTimes"]
+        result = _normalize_llm_output(data)
+        assert result["options"][0]["availabilityLocalStartTimes"] == []
+
+    def test_backfills_option_availability_local_start_times_start_time(self):
+        data = _make_valid_product_dict()
+        data["availabilityType"] = "START_TIME"
+        del data["options"][0]["availabilityLocalStartTimes"]
+        result = _normalize_llm_output(data)
+        times = result["options"][0]["availabilityLocalStartTimes"]
+        assert isinstance(times, list)
+        assert len(times) >= 1  # picked from fallback pool
+
+    def test_backfills_option_cancellation_cutoff(self):
+        data = _make_valid_product_dict()
+        del data["options"][0]["cancellationCutoff"]
+        del data["options"][0]["cancellationCutoffAmount"]
+        del data["options"][0]["cancellationCutoffUnit"]
+        result = _normalize_llm_output(data)
+        assert result["options"][0]["cancellationCutoff"] == "0 hours"
+        assert result["options"][0]["cancellationCutoffAmount"] == 0
+        assert result["options"][0]["cancellationCutoffUnit"] == "hour"
+
+    def test_backfills_option_internal_name_from_title(self):
+        data = _make_valid_product_dict()
+        del data["options"][0]["internalName"]
+        data["options"][0]["title"] = "Premium Tour"
+        result = _normalize_llm_output(data)
+        assert result["options"][0]["internalName"] == "Premium Tour"
+
+    def test_backfills_product_internal_name_from_title(self):
+        data = _make_valid_product_dict()
+        del data["internalName"]
+        data["title"] = "Harbor Cruise"
+        result = _normalize_llm_output(data)
+        assert result["internalName"] == "Harbor Cruise"
+
+    def test_backfills_product_internal_name_from_pool(self):
+        """When both internalName and title are missing, picks from pool."""
+        data = _make_valid_product_dict()
+        del data["internalName"]
+        result = _normalize_llm_output(data)
+        from seeder.generator import _FALLBACK_PRODUCT_NAMES
+        assert result["internalName"] in _FALLBACK_PRODUCT_NAMES
+
+    def test_backfills_option_internal_name_from_pool(self):
+        """When both internalName and title are missing on option, picks from pool."""
+        data = _make_valid_product_dict()
+        del data["options"][0]["internalName"]
+        result = _normalize_llm_output(data)
+        from seeder.generator import _FALLBACK_OPTION_NAMES
+        assert result["options"][0]["internalName"] in _FALLBACK_OPTION_NAMES
+
+
+# ---------------------------------------------------------------------------
+# Unit tests: diversity — previously_generated passed through pipeline
+# ---------------------------------------------------------------------------
+
+class TestDiversityPipeline:
+    @pytest.mark.anyio
+    async def test_first_product_gets_no_previously_generated(self):
+        """First product in a batch should not receive previously_generated."""
+        product_dict = _make_valid_product_dict()
+        client = FakeOllamaClient(responses=[_ollama_response(product_dict)])
+        prompt_builder = FakePromptBuilder()
+        gen = ProductGenerator(client, prompt_builder, max_retries=3)
+
+        await gen.generate_products(1)
+
+        assert prompt_builder.last_previously_generated is None
+
+    @pytest.mark.anyio
+    async def test_second_product_gets_first_summary(self):
+        """Second product should receive a summary of the first."""
+        product_dict = _make_valid_product_dict()
+        client = FakeOllamaClient(
+            responses=[_ollama_response(product_dict)] * 2
+        )
+        prompt_builder = FakePromptBuilder()
+        gen = ProductGenerator(client, prompt_builder, max_retries=3)
+
+        await gen.generate_products(2)
+
+        prev = prompt_builder.last_previously_generated
+        assert prev is not None
+        assert len(prev) == 1
+        assert "title" in prev[0]
+        assert "country" in prev[0]
+        assert "availabilityType" in prev[0]
+        assert "categoryLabels" in prev[0]
+
+    @pytest.mark.anyio
+    async def test_nth_product_gets_all_previous_summaries(self):
+        """The Nth product should receive N-1 summaries."""
+        product_dict = _make_valid_product_dict()
+        client = FakeOllamaClient(
+            responses=[_ollama_response(product_dict)] * 5
+        )
+        prompt_builder = FakePromptBuilder()
+        gen = ProductGenerator(client, prompt_builder, max_retries=3)
+
+        await gen.generate_products(5)
+
+        # After generating 5, the last call should have received 4 summaries
+        prev = prompt_builder.last_previously_generated
+        assert prev is not None
+        assert len(prev) == 4
+
+    @pytest.mark.anyio
+    async def test_product_summary_fields(self):
+        """Verify the summary dict has the expected shape."""
+        product_dict = _make_valid_product_dict(
+            title="City Walking Tour",
+            country="GB",
+            availabilityType="OPENING_HOURS",
+            categoryLabels=["WALKING_TOUR", "CULTURAL"],
+        )
+        client = FakeOllamaClient(
+            responses=[_ollama_response(product_dict)] * 2
+        )
+        prompt_builder = FakePromptBuilder()
+        gen = ProductGenerator(client, prompt_builder, max_retries=3)
+
+        await gen.generate_products(2)
+
+        prev = prompt_builder.last_previously_generated
+        assert prev is not None
+        summary = prev[0]
+        assert summary["title"] == "City Walking Tour"
+        assert summary["country"] == "GB"
+        assert summary["availabilityType"] == "OPENING_HOURS"
+        assert summary["categoryLabels"] == ["WALKING_TOUR", "CULTURAL"]
+
+    @pytest.mark.anyio
+    async def test_summary_uses_internal_name_when_title_missing(self):
+        """When title is None, summary should fall back to internalName."""
+        product_dict = _make_valid_product_dict()
+        # Ensure no title field so it falls back to internalName
+        product_dict.pop("title", None)
+        client = FakeOllamaClient(
+            responses=[_ollama_response(product_dict)] * 2
+        )
+        prompt_builder = FakePromptBuilder()
+        gen = ProductGenerator(client, prompt_builder, max_retries=3)
+
+        await gen.generate_products(2)
+
+        prev = prompt_builder.last_previously_generated
+        assert prev[0]["title"] == "Fictional Tour"  # internalName from helper

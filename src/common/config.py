@@ -72,7 +72,8 @@ class Settings(BaseSettings):
 
     # Seeder
     ollama_url: str = "http://localhost:11434"
-    ollama_model: str = "qwen3:14b"
+    ollama_model: str = "nemotron-3-nano:30b"
+    ollama_temperature: float = 0.8
     product_count: int = 3
     max_retries: int = 3
     avg_slots_per_day: int = 3

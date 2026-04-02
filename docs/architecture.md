@@ -32,12 +32,53 @@ On startup (unless `--skip-seed`), the seeder pipeline generates synthetic OCTO 
 3. `ProductGenerator` orchestrates the loop:
    - Calls Ollama for each product (up to `max_retries` attempts)
    - Strips markdown code fences from LLM output
+   - Normalizes common LLM quirks (missing optional fields, wrong types)
    - Parses JSON and validates against the `Product` Pydantic model
    - Assigns fresh UUID v4 values to all ID/reference fields
-   - Collects validation error hints and feeds them back into the prompt on retries
    - Backs off exponentially on connection failures
 
+4. `QualityScorer` runs after the batch is complete, scoring all products across realism, coherence, completeness, and diversity. See [data-quality.md](data-quality.md).
+
 Products can be saved to disk (`--dump-seed`) and loaded later (`--skip-seed`) to avoid repeated LLM calls.
+
+### Dynamic prompt construction
+
+The prompt is not static — it adapts based on context from previous attempts and previously generated products. This is a key mechanism for improving output quality without increasing model size.
+
+```
+Product 1, attempt 1:
+  prompt = schema + generation rules
+
+Product 1, attempt 2 (after validation failure):
+  prompt = schema + generation rules + error hints from attempt 1
+
+Product 2, attempt 1:
+  prompt = schema + generation rules + summary of Product 1
+
+Product 3, attempt 1:
+  prompt = schema + generation rules + summaries of Products 1 & 2
+```
+
+#### Error hint feedback
+
+When an Ollama attempt fails validation (malformed JSON, Pydantic schema violation), the generator extracts a human-readable error description and appends it to the next attempt's prompt under a `## Previous Attempt Errors — MUST FIX` section. This gives the LLM explicit instructions on what went wrong, significantly reducing repeated mistakes.
+
+For example, if the LLM returns `cancellationCutoff: "hour"` (missing the amount), the next prompt includes:
+
+```
+## Previous Attempt Errors — MUST FIX
+Your previous attempts were rejected due to the following validation errors.
+You MUST avoid these mistakes:
+1. cancellationCutoff must match '{amount} {unit}(s)' (e.g. '24 hours'), got 'hour'
+```
+
+Error hints accumulate across retries — attempt 3 sees hints from both attempt 1 and 2.
+
+#### Diversity steering
+
+When generating multiple products in a batch, each product after the first receives a summary of all previously generated products. The summary includes title, country, availability type, and category labels. The prompt instructs the LLM to generate a different type of activity, in a different country if possible, and to vary pricing and availability patterns.
+
+This prevents the common LLM tendency to generate near-identical products in a batch (e.g., five "Historic Castle Tours" in London).
 
 ## Serve phase
 

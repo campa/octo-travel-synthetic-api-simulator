@@ -84,6 +84,7 @@ async def _run_seeder(settings: Settings, telemetry) -> list[Product]:
     ollama_client = OllamaClient(
         ollama_url=settings.ollama_url,
         model=settings.ollama_model,
+        temperature=settings.ollama_temperature,
     )
     prompt_builder = PromptBuilder(
         avg_slots_per_day=settings.avg_slots_per_day,

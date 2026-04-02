@@ -1,21 +1,34 @@
 """OCTO data models — re-exports all public models and enums."""
 
+from models.errors import ErrorResponse
 from models.product import (
     AvailabilityType,
     CancellationCutoffUnit,
+    Commentary,
     ContactField,
     DeliveryFormat,
     DeliveryMethod,
+    DurationUnit,
+    FAQ,
+    Feature,
+    FeatureType,
+    IncludedTax,
+    Location,
+    LocationType,
+    Media,
+    MediaRel,
     Option,
     OptionRestrictions,
+    PickupLocation,
+    Place,
+    PricingFrom,
+    PricingPer,
     Product,
     RedemptionMethod,
     Unit,
     UnitRestrictions,
     UnitType,
 )
-
-from models.errors import ErrorResponse
 
 __all__ = [
     # Product enums
@@ -24,8 +37,23 @@ __all__ = [
     "ContactField",
     "DeliveryFormat",
     "DeliveryMethod",
+    "DurationUnit",
+    "FeatureType",
+    "LocationType",
+    "MediaRel",
+    "PricingPer",
     "RedemptionMethod",
     "UnitType",
+    # Capability models
+    "Commentary",
+    "FAQ",
+    "Feature",
+    "IncludedTax",
+    "Location",
+    "Media",
+    "PickupLocation",
+    "Place",
+    "PricingFrom",
     # Product models
     "UnitRestrictions",
     "Unit",

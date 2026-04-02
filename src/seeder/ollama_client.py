@@ -31,9 +31,10 @@ class OllamaResponse:
 class OllamaClient:
     """Async client for Ollama's /api/generate endpoint."""
 
-    def __init__(self, ollama_url: str = "http://localhost:11434", model: str = "llama3.2") -> None:
+    def __init__(self, ollama_url: str = "http://localhost:11434", model: str = "llama3.2", temperature: float = 0.8) -> None:
         self._url = f"{ollama_url}/api/generate"
         self._model = model
+        self._temperature = temperature
 
     async def generate(self, prompt: str) -> OllamaResponse:
         """Send prompt to Ollama, return parsed response with metadata.
@@ -46,7 +47,13 @@ class OllamaClient:
             async with httpx.AsyncClient() as client:
                 resp = await client.post(
                     self._url,
-                    json={"model": self._model, "prompt": prompt, "stream": False},
+                    json={
+                        "model": self._model,
+                        "prompt": prompt,
+                        "stream": False,
+                        "format": "json",
+                        "options": {"temperature": self._temperature},
+                    },
                     timeout=300.0,
                 )
         except (httpx.ConnectError, httpx.TimeoutException, httpx.NetworkError) as exc:

@@ -1,6 +1,11 @@
 # Extracted from api-spec/octo-spec.yaml — GET /products response schema
 # This file describes the response body: an array of Product objects.
 # Used at runtime by the seeder to provide schema context to the LLM.
+#
+# Includes OCTO capability fields:
+#   - octo/pricing: defaultCurrency, availableCurrencies, pricingPer, includeTax, pricingFrom
+#   - octo/content: title, description, features, faqs, media, locations, etc.
+#   - octo/pickups: pickupAvailable, pickupRequired, pickupLocations
 
 endpoint: GET /products
 summary: Get Products
@@ -14,106 +19,229 @@ response:
       id:
         type: string
         format: uuid
-        description: >
-          The id used for checking for availability and creating bookings
-          for the product. This MUST be unique within the scope of the Supplier.
+        description: Unique product identifier within the supplier scope.
       internalName:
         type: string
         description: The name the supplier calls the product.
       reference:
         type: [string, "null"]
-        description: An optional code this supplier might use to identify the product.
+        description: >
+          Optional short alphanumeric code (≤20 chars) the supplier uses
+          to identify the product. Often null. Never a UUID.
       locale:
         type: string
         description: >
-          A language code indicating what language this product content is in.
-          This MUST be a valid BCP 47 / RFC 5646 / RFC 4647 language tag.
+          BCP 47 / RFC 5646 language tag for product content.
+          Most suppliers use "en" (85%) rather than "en-US".
       timeZone:
         type: string
-        description: The IANA TimeZone name this product is located in.
+        description: IANA TimeZone name (e.g. "Europe/Berlin", "America/New_York").
       allowFreesale:
         type: boolean
-        description: >
-          Whether a booking can be made for this product without having to
-          query availability first.
+        description: Whether bookings can be made without querying availability first.
       instantConfirmation:
         type: boolean
-        description: >
-          Whether bookings will be immediately confirmed when a sale is made,
-          otherwise the supplier will later either accept or reject the booking.
+        description: Whether bookings are immediately confirmed.
       instantDelivery:
         type: boolean
-        description: >
-          Whether the Reseller can expect immediate delivery of the customer's
-          tickets.
+        description: Whether tickets are delivered immediately.
       availabilityRequired:
         type: boolean
-        description: >
-          Whether an availabilityId is required when creating a booking.
+        description: Whether an availabilityId is required when creating a booking.
       availabilityType:
         type: string
         enum: [START_TIME, OPENING_HOURS]
         description: >
-          START_TIME — fixed departure times which you must pick one.
-          OPENING_HOURS — select a date and visit any time when the venue is open.
+          START_TIME — fixed departure times, pick one.
+          OPENING_HOURS — select a date, visit any time when open.
+          ~55% START_TIME, ~45% OPENING_HOURS in typical data.
       deliveryFormats:
         type: array
         items:
           type: string
-          enum: [PDF_URL, QRCODE]
+          enum: [PDF_URL, QRCODE, PNG_URL, PKPASS_URL, GOOGLE_WALLET_URL, HTML_URL, CODE128, AZTECCODE]
         description: >
-          Formats the API will deliver the tickets as.
-          QRCODE — a code to be presented as a QR CODE barcode.
-          PDF_URL — a URL to a PDF file with all ticket details.
+          Formats the API delivers tickets as. Common combos:
+          [QRCODE, PNG_URL, PKPASS_URL, GOOGLE_WALLET_URL, PDF_URL] or
+          [HTML_URL, PDF_URL] or just [QRCODE].
       deliveryMethods:
         type: array
         items:
           type: string
           enum: [VOUCHER, TICKET]
         description: >
-          TICKET — individually per unit in the order (single ticket per person).
+          TICKET — one ticket per person.
           VOUCHER — one ticket for the whole booking.
       redemptionMethod:
         type: string
         enum: [DIGITAL, PRINT, MANIFEST]
         description: >
-          DIGITAL — tickets/voucher must be scanned, can be on mobile.
-          PRINT — tickets/voucher must be printed and presented on arrival.
-          MANIFEST — guest name written down, just need to show up.
+          DIGITAL — scan on mobile. PRINT — must print.
+          MANIFEST — just show up, name on list.
+
+      # --- octo/pricing capability fields ---
+      defaultCurrency:
+        type: string
+        description: ISO 4217 currency code (e.g. "USD", "EUR", "GBP").
+      availableCurrencies:
+        type: array
+        items:
+          type: string
+        description: ISO 4217 codes the supplier supports. Usually just [defaultCurrency].
+      pricingPer:
+        type: string
+        enum: [UNIT, BOOKING]
+        description: Whether pricing is per unit or per booking. Almost always "UNIT".
+      includeTax:
+        type: boolean
+        description: Whether prices include tax.
+
+      # --- octo/content capability fields ---
+      title:
+        type: [string, "null"]
+        description: Customer-facing product title.
+      shortDescription:
+        type: [string, "null"]
+        description: Brief customer-facing description (1-2 sentences).
+      description:
+        type: [string, "null"]
+        description: Full customer-facing description, may contain HTML.
+      features:
+        type: array
+        items:
+          type: object
+          properties:
+            shortDescription:
+              type: string
+            type:
+              type: string
+              enum: [INCLUSION, EXCLUSION, HIGHLIGHT, PREBOOKING_INFORMATION, PREARRIVAL_INFORMATION, REDEMPTION_INSTRUCTION, ACCESSIBILITY_INFORMATION, ADDITIONAL_INFORMATION, BOOKING_TERM, CANCELLATION_TERM]
+        description: Typed feature entries for the product.
+      faqs:
+        type: array
+        items:
+          type: object
+          properties:
+            question:
+              type: string
+            answer:
+              type: string
+        description: Frequently asked questions about the product.
+      media:
+        type: array
+        items:
+          type: object
+          properties:
+            src:
+              type: string
+              description: URL to the media file.
+            type:
+              type: string
+              description: MIME type (e.g. "image/jpeg", "image/png").
+            rel:
+              type: string
+              enum: [LOGO, COVER, GALLERY]
+            title:
+              type: [string, "null"]
+            caption:
+              type: [string, "null"]
+            copyright:
+              type: [string, "null"]
+        description: Product images and media.
+      locations:
+        type: array
+        items:
+          type: object
+          properties:
+            title:
+              type: [string, "null"]
+            shortDescription:
+              type: [string, "null"]
+            types:
+              type: array
+              items:
+                type: string
+                enum: [START, END, ITINERARY_ITEM, POINT_OF_INTEREST, ADMISSION_INCLUDED, REDEMPTION]
+            place:
+              type: object
+              properties:
+                latitude:
+                  type: number
+                longitude:
+                  type: number
+                postalAddress:
+                  type: [string, "null"]
+                identifiers:
+                  type: object
+                  description: Key-value pairs like googlePlaceId.
+                sameAs:
+                  type: array
+                  items:
+                    type: string
+                  description: URLs identifying this place.
+        description: Locations associated with the product.
+      categoryLabels:
+        type: array
+        items:
+          type: string
+        description: Category tags for the product.
+      durationMinutesFrom:
+        type: [integer, "null"]
+        description: Minimum duration in minutes.
+      durationMinutesTo:
+        type: [integer, "null"]
+        description: Maximum duration in minutes.
+      commentary:
+        type: array
+        items:
+          type: object
+          properties:
+            format:
+              type: string
+            language:
+              type: string
+        description: Available commentary formats (e.g. audio guides).
+      country:
+        type: [string, "null"]
+        description: ISO 3166-1 alpha-2 country code.
+
       options:
         type: array
         description: >
-          An array of all options for this product.
-          All products must have at least one option.
+          All options for this product. Must have at least one option.
         items:
           type: object
           properties:
             id:
               type: string
-              description: >
-                The id that identifies this option, it is only unique within
-                the product.
+              format: uuid
+              description: Option identifier, unique within the product.
             default:
               type: boolean
               description: >
-                TRUE identifies the option as default, and should be rendered
-                and selected first.
+                TRUE identifies the option as default. In practice, ~70%
+                of products have all options set to default=false.
             internalName:
               type: string
               description: The name the supplier calls the option by.
             reference:
               type: [string, "null"]
-              description: An optional code this supplier might use to identify the option.
+              description: Optional short alphanumeric code. Often null. Never a UUID.
             availabilityLocalStartTimes:
               type: array
               items:
                 type: string
               description: >
-                Array of all possible start times that can be returned during
-                availability. E.g. ["09:00", "14:00", "17:00"].
+                Array of start times in HH:MM format, e.g. ["09:00", "14:00"].
+                For OPENING_HOURS products, this MUST be an empty array [].
+                For START_TIME products, can range from 1 to 20+ entries.
+                Some venues have 10-27 slots at 30-min intervals.
             cancellationCutoff:
               type: string
-              description: How long before the tour the booking can still be cancelled.
+              description: >
+                How long before the event the booking can be cancelled.
+                MUST match pattern "{amount} {unit}(s)" e.g. "24 hours",
+                "0 hours", "48 hours", "7 days", "365 days".
             cancellationCutoffAmount:
               type: integer
               description: The numeric amount for the cutoff.
@@ -127,66 +255,203 @@ response:
                 type: string
                 enum: [firstName, lastName, emailAddress, phoneNumber, country, notes, locales]
               description: >
-                Contact fields required to confirm a booking. Applies to the
-                lead traveller on the booking, not for every ticket.
+                Contact fields required to confirm a booking.
+                Most options have [] or just ["emailAddress"].
             restrictions:
               type: object
               properties:
                 minUnits:
                   type: [integer, "null"]
-                  description: Minimum number of tickets per booking (null = 0).
+                  description: Minimum tickets per booking (null = 0).
                 maxUnits:
                   type: [integer, "null"]
-                  description: Maximum number of tickets per booking (null = unlimited).
+                  description: >
+                    Maximum tickets per booking (null = unlimited).
+                    null is very common in practice.
               required: [minUnits, maxUnits]
-            units:
+
+            # --- octo/content capability fields on options ---
+            title:
+              type: [string, "null"]
+              description: Customer-facing option title.
+            shortDescription:
+              type: [string, "null"]
+              description: Brief customer-facing option description.
+            description:
+              type: [string, "null"]
+              description: Full customer-facing option description.
+            features:
               type: array
-              description: The list of ticket types (units) available for sale.
+              description: Same structure as product-level features.
+            faqs:
+              type: array
+              description: Same structure as product-level faqs.
+            media:
+              type: array
+              description: Same structure as product-level media.
+            duration:
+              type: [string, "null"]
+              description: Human-readable duration string.
+            durationAmount:
+              type: [string, "null"]
+              description: Numeric duration amount as a string.
+            durationUnit:
+              type: [string, "null"]
+              enum: [hour, minute, day]
+              description: Duration time unit.
+
+            # --- octo/pickups capability fields on options ---
+            pickupAvailable:
+              type: boolean
+              description: Whether pickup is offered for this option.
+            pickupRequired:
+              type: boolean
+              description: Whether pickup selection is mandatory.
+            pickupLocations:
+              type: array
               items:
                 type: object
                 properties:
                   id:
                     type: string
-                    description: Unique identifier within the scope of the option.
+                    format: uuid
+                  title:
+                    type: string
+                  shortDescription:
+                    type: [string, "null"]
+                  place:
+                    type: object
+                    properties:
+                      latitude:
+                        type: number
+                      longitude:
+                        type: number
+                      postalAddress:
+                        type: [string, "null"]
+                      identifiers:
+                        type: object
+                      sameAs:
+                        type: array
+                        items:
+                          type: string
+              description: Available pickup locations for this option.
+
+            units:
+              type: array
+              description: Ticket types (units) available for sale.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: Unique identifier within the option scope.
                   internalName:
                     type: string
-                    description: Name to help identify the unit. Should NOT be shown to the customer.
+                    description: >
+                      Bare name like "Adult", "Child", "Student".
+                      Do NOT add "Ticket" suffix.
                   reference:
                     type: [string, "null"]
-                    description: Internal reference identifier the Supplier wishes to use.
+                    description: Often null. Never a UUID.
                   type:
                     type: string
                     enum: [ADULT, YOUTH, CHILD, INFANT, FAMILY, SENIOR, STUDENT, MILITARY, OTHER]
-                    description: Base unit type for this unit definition.
+                    description: >
+                      ADULT and CHILD are most common. YOUTH, STUDENT,
+                      FAMILY, INFANT also common. SENIOR less frequent.
                   requiredContactFields:
                     type: array
                     items:
                       type: string
                       enum: [firstName, lastName, emailAddress, phoneNumber, country, notes, locales]
-                    description: Contact information per ticket that the supplier expects.
+                    description: >
+                      Contact info per ticket. In practice, almost always
+                      an empty array [].
                   restrictions:
                     type: object
                     properties:
                       minAge:
                         type: integer
-                        description: Minimum age this unit can be sold to.
+                        description: Minimum age for this unit.
                       maxAge:
                         type: integer
-                        description: Maximum age this unit can be sold to.
+                        description: >
+                          Maximum age. Use 0 for no limit (most common for adults),
+                          or realistic values like 99, 100, 65. Never use 120.
                       idRequired:
                         type: boolean
-                        description: Whether a form of identification is required at redemption.
+                        description: Whether ID is required. Usually false.
                       minQuantity:
                         type: [integer, "null"]
-                        description: Minimum amount of this unit to be chosen for purchase.
+                        description: Minimum amount (null = no minimum).
                       maxQuantity:
                         type: [integer, "null"]
-                        description: Maximum amount of this unit to be chosen for purchase.
+                        description: >
+                          Maximum amount (null = unlimited).
+                          null is very common in practice.
                       paxCount:
                         type: integer
-                        description: Amount of people each unit counts as (e.g. family = 4 pax).
+                        description: >
+                          People each unit counts as. Usually 1.
+                          Family units might be 4.
                       accompaniedBy:
                         type: array
                         items:
                           type: string
                         description: Unit IDs that must accompany this unit.
+
+                  # --- octo/pricing capability fields on units ---
+                  pricingFrom:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        original:
+                          type: integer
+                          description: Original price in cents (e.g. 3500 = $35.00).
+                        retail:
+                          type: integer
+                          description: Retail price in cents. Must be <= original.
+                        net:
+                          type: [integer, "null"]
+                          description: Net price in cents. Must be <= retail. Can be null.
+                        currency:
+                          type: string
+                          description: ISO 4217 currency code.
+                        currencyPrecision:
+                          type: integer
+                          description: Decimal places (typically 2).
+                        includedTaxes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              original:
+                                type: integer
+                              retail:
+                                type: integer
+                              net:
+                                type: [integer, "null"]
+                    description: >
+                      Starting-from pricing for this unit. One entry per
+                      currency in availableCurrencies.
+
+                  # --- octo/content capability fields on units ---
+                  title:
+                    type: [string, "null"]
+                    description: Customer-facing unit title (e.g. "Adult").
+                  titlePlural:
+                    type: [string, "null"]
+                    description: Plural form (e.g. "Adults").
+                  subtitle:
+                    type: [string, "null"]
+                    description: Age range hint (e.g. "18 - 65 Years").
+                  shortDescription:
+                    type: [string, "null"]
+                    description: Brief unit description.
+                  features:
+                    type: array
+                    description: Same structure as product-level features.

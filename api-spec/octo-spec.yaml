@@ -25,14 +25,14 @@
                 "type": "object"
                 "x-examples":
                   "example-1":
-                    "id": "697e3ce8-1860-4cbf-80ad-95857df1f640"
-                    "name": "Edin Explore"
-                    "endpoint": "https://api.ventrata.com/api-octo"
+                    "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+                    "name": "Acme Tours"
+                    "endpoint": "https://api.example.com/api-octo"
                     "contact":
                       "website": null
-                      "email": "support@ventrata.com"
+                      "email": "support@example.com"
                       "telephone": null
-                      "address": "Marble Arch, London, W1H 7EJ, United Kingdom"
+                      "address": "10 Example Street, London, EC1A 1BB, United Kingdom"
                 "examples":
                   -
                     "id": "48b4d2e9-cd8b-4ac2-a5ee-4217bf2622c2"
@@ -46,12 +46,12 @@
                 "properties":
                   "id":
                     "type": "string"
-                    "example": "697e3ce8-1860-4cbf-80ad-95857df1f640"
+                    "example": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "Unique identifier used in the platform to represent the supplier."
                   "name":
                     "type": "string"
                     "description": "Name the supplier uses to identify itsel. Usually what the end customer will know the supplier as."
-                    "example": "Edin Explore"
+                    "example": "Acme Tours"
                   "endpoint":
                     "type": "string"
                     "format": "uri"
@@ -157,9 +157,9 @@
                             "maxUnits": 10
                           "units":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -171,7 +171,7 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                   "description": "A bookable product listed by a supplier."
                   "properties":
                     "id":
@@ -296,9 +296,9 @@
                               "maxUnits": 10
                             "units":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -310,7 +310,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                         "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                         "properties":
                           "id":
@@ -418,9 +418,9 @@
                                   "requiredContactFields": []
                               "examples":
                                 -
-                                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName": "Adult(s)"
-                                  "reference": "LR1-01-new"
+                                  "reference": "EX1-01"
                                   "type": "YOUTH"
                                   "requiredContactFields":
                                     - "firstName"
@@ -432,12 +432,12 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "properties":
                                 "id":
                                   "type": "string"
                                   "description": "This MUST be a unique identifier within the scope of the option."
-                                  "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName":
                                   "type": "string"
                                   "example": "Adult(s)"
@@ -447,7 +447,7 @@
                                     - "null"
                                     - "string"
                                   "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                  "example": "LR1-01-new"
+                                  "example": "EX1-01"
                                 "type":
                                   "type": "string"
                                   "title": "UnitType"
@@ -507,7 +507,7 @@
                                       "maxQuantity": 7
                                       "paxCount": 1
                                       "accompaniedBy":
-                                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "title": "UnitRestrictions"
                                   "properties":
                                     "minAge":
@@ -542,7 +542,7 @@
                                       "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                       "items":
                                         "type": "string"
-                                        "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                        "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "required":
                                     - "minAge"
                                     - "maxAge"
@@ -651,9 +651,9 @@
                           "maxUnits": 10
                         "units":
                           -
-                            "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName": "Adult(s)"
-                            "reference": "LR1-01-new"
+                            "reference": "EX1-01"
                             "type": "YOUTH"
                             "requiredContactFields":
                               - "firstName"
@@ -665,7 +665,7 @@
                               "maxQuantity": 7
                               "paxCount": 1
                               "accompaniedBy":
-                                - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                 "description": "A bookable product listed by a supplier."
                 "properties":
                   "id":
@@ -790,9 +790,9 @@
                             "maxUnits": 10
                           "units":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -804,7 +804,7 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                       "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                       "properties":
                         "id":
@@ -912,9 +912,9 @@
                                 "requiredContactFields": []
                             "examples":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -926,12 +926,12 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "properties":
                               "id":
                                 "type": "string"
                                 "description": "This MUST be a unique identifier within the scope of the option."
-                                "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName":
                                 "type": "string"
                                 "example": "Adult(s)"
@@ -941,7 +941,7 @@
                                   - "null"
                                   - "string"
                                 "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                "example": "LR1-01-new"
+                                "example": "EX1-01"
                               "type":
                                 "type": "string"
                                 "title": "UnitType"
@@ -1001,7 +1001,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "title": "UnitRestrictions"
                                 "properties":
                                   "minAge":
@@ -1036,7 +1036,7 @@
                                     "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                     "items":
                                       "type": "string"
-                                      "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "required":
                                   - "minAge"
                                   - "maxAge"
@@ -1666,7 +1666,7 @@
                 "type": "object"
                 "x-examples":
                   "example-1":
-                    "id": "36d2d844-121d-453c-b514-de027caaf27f"
+                    "id": "f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8"
                     "uuid": "3698539b-65c4-41e3-95b1-fa108fd024b2"
                     "testMode": false
                     "resellerReference": "102-256952-3"
@@ -1800,9 +1800,9 @@
                               "maxUnits": 10
                             "units":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -1814,7 +1814,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "A bookable product listed by a supplier."
                     "properties":
                       "id":
@@ -1939,9 +1939,9 @@
                                 "maxUnits": 10
                               "units":
                                 -
-                                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName": "Adult(s)"
-                                  "reference": "LR1-01-new"
+                                  "reference": "EX1-01"
                                   "type": "YOUTH"
                                   "requiredContactFields":
                                     - "firstName"
@@ -1953,7 +1953,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                           "properties":
                             "id":
@@ -2061,9 +2061,9 @@
                                     "requiredContactFields": []
                                 "examples":
                                   -
-                                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "internalName": "Adult(s)"
-                                    "reference": "LR1-01-new"
+                                    "reference": "EX1-01"
                                     "type": "YOUTH"
                                     "requiredContactFields":
                                       - "firstName"
@@ -2075,12 +2075,12 @@
                                       "maxQuantity": 7
                                       "paxCount": 1
                                       "accompaniedBy":
-                                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "properties":
                                   "id":
                                     "type": "string"
                                     "description": "This MUST be a unique identifier within the scope of the option."
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName":
                                     "type": "string"
                                     "example": "Adult(s)"
@@ -2090,7 +2090,7 @@
                                       - "null"
                                       - "string"
                                     "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                    "example": "LR1-01-new"
+                                    "example": "EX1-01"
                                   "type":
                                     "type": "string"
                                     "title": "UnitType"
@@ -2150,7 +2150,7 @@
                                         "maxQuantity": 7
                                         "paxCount": 1
                                         "accompaniedBy":
-                                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "title": "UnitRestrictions"
                                     "properties":
                                       "minAge":
@@ -2185,7 +2185,7 @@
                                         "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                         "items":
                                           "type": "string"
-                                          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "required":
                                       - "minAge"
                                       - "maxAge"
@@ -2263,9 +2263,9 @@
                           "maxUnits": 10
                         "units":
                           -
-                            "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName": "Adult(s)"
-                            "reference": "LR1-01-new"
+                            "reference": "EX1-01"
                             "type": "YOUTH"
                             "requiredContactFields":
                               - "firstName"
@@ -2277,7 +2277,7 @@
                               "maxQuantity": 7
                               "paxCount": 1
                               "accompaniedBy":
-                                - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                     "properties":
                       "id":
@@ -2385,9 +2385,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -2399,12 +2399,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -2414,7 +2414,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -2474,7 +2474,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -2509,7 +2509,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -2730,7 +2730,7 @@
                                 "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                               -
                                 "deliveryFormat": "PDF_URL"
-                                "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                         "examples":
                           -
                             "redemptionMethod": "DIGITAL"
@@ -2829,9 +2829,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -2843,12 +2843,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -2858,7 +2858,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -2918,7 +2918,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -2953,7 +2953,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -3083,7 +3083,7 @@
                                       "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                                     -
                                       "deliveryFormat": "PDF_URL"
-                                      "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                      "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                               "examples":
                                 -
                                   "redemptionMethod": "DIGITAL"
@@ -3546,7 +3546,7 @@
                   "type": "object"
                   "x-examples":
                     "example-1":
-                      "id": "36d2d844-121d-453c-b514-de027caaf27f"
+                      "id": "f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8"
                       "uuid": "3698539b-65c4-41e3-95b1-fa108fd024b2"
                       "testMode": false
                       "resellerReference": "102-256952-3"
@@ -3680,9 +3680,9 @@
                                 "maxUnits": 10
                               "units":
                                 -
-                                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName": "Adult(s)"
-                                  "reference": "LR1-01-new"
+                                  "reference": "EX1-01"
                                   "type": "YOUTH"
                                   "requiredContactFields":
                                     - "firstName"
@@ -3694,7 +3694,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                       "description": "A bookable product listed by a supplier."
                       "properties":
                         "id":
@@ -3819,9 +3819,9 @@
                                   "maxUnits": 10
                                 "units":
                                   -
-                                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "internalName": "Adult(s)"
-                                    "reference": "LR1-01-new"
+                                    "reference": "EX1-01"
                                     "type": "YOUTH"
                                     "requiredContactFields":
                                       - "firstName"
@@ -3833,7 +3833,7 @@
                                       "maxQuantity": 7
                                       "paxCount": 1
                                       "accompaniedBy":
-                                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                             "properties":
                               "id":
@@ -3941,9 +3941,9 @@
                                       "requiredContactFields": []
                                   "examples":
                                     -
-                                      "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                       "internalName": "Adult(s)"
-                                      "reference": "LR1-01-new"
+                                      "reference": "EX1-01"
                                       "type": "YOUTH"
                                       "requiredContactFields":
                                         - "firstName"
@@ -3955,12 +3955,12 @@
                                         "maxQuantity": 7
                                         "paxCount": 1
                                         "accompaniedBy":
-                                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "properties":
                                     "id":
                                       "type": "string"
                                       "description": "This MUST be a unique identifier within the scope of the option."
-                                      "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "internalName":
                                       "type": "string"
                                       "example": "Adult(s)"
@@ -3970,7 +3970,7 @@
                                         - "null"
                                         - "string"
                                       "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                      "example": "LR1-01-new"
+                                      "example": "EX1-01"
                                     "type":
                                       "type": "string"
                                       "title": "UnitType"
@@ -4030,7 +4030,7 @@
                                           "maxQuantity": 7
                                           "paxCount": 1
                                           "accompaniedBy":
-                                            - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                            - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                       "title": "UnitRestrictions"
                                       "properties":
                                         "minAge":
@@ -4065,7 +4065,7 @@
                                           "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                           "items":
                                             "type": "string"
-                                            "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                            "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                       "required":
                                         - "minAge"
                                         - "maxAge"
@@ -4143,9 +4143,9 @@
                             "maxUnits": 10
                           "units":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -4157,7 +4157,7 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                       "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                       "properties":
                         "id":
@@ -4265,9 +4265,9 @@
                                 "requiredContactFields": []
                             "examples":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -4279,12 +4279,12 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "properties":
                               "id":
                                 "type": "string"
                                 "description": "This MUST be a unique identifier within the scope of the option."
-                                "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName":
                                 "type": "string"
                                 "example": "Adult(s)"
@@ -4294,7 +4294,7 @@
                                   - "null"
                                   - "string"
                                 "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                "example": "LR1-01-new"
+                                "example": "EX1-01"
                               "type":
                                 "type": "string"
                                 "title": "UnitType"
@@ -4354,7 +4354,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "title": "UnitRestrictions"
                                 "properties":
                                   "minAge":
@@ -4389,7 +4389,7 @@
                                     "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                     "items":
                                       "type": "string"
-                                      "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "required":
                                   - "minAge"
                                   - "maxAge"
@@ -4610,7 +4610,7 @@
                                   "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                                 -
                                   "deliveryFormat": "PDF_URL"
-                                  "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                  "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                           "examples":
                             -
                               "redemptionMethod": "DIGITAL"
@@ -4709,9 +4709,9 @@
                                 "requiredContactFields": []
                             "examples":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -4723,12 +4723,12 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "properties":
                               "id":
                                 "type": "string"
                                 "description": "This MUST be a unique identifier within the scope of the option."
-                                "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName":
                                 "type": "string"
                                 "example": "Adult(s)"
@@ -4738,7 +4738,7 @@
                                   - "null"
                                   - "string"
                                 "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                "example": "LR1-01-new"
+                                "example": "EX1-01"
                               "type":
                                 "type": "string"
                                 "title": "UnitType"
@@ -4798,7 +4798,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "title": "UnitRestrictions"
                                 "properties":
                                   "minAge":
@@ -4833,7 +4833,7 @@
                                     "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                     "items":
                                       "type": "string"
-                                      "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "required":
                                   - "minAge"
                                   - "maxAge"
@@ -4963,7 +4963,7 @@
                                         "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                                       -
                                         "deliveryFormat": "PDF_URL"
-                                        "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                        "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                                 "examples":
                                   -
                                     "redemptionMethod": "DIGITAL"
@@ -5393,7 +5393,7 @@
                 "type": "object"
                 "x-examples":
                   "example-1":
-                    "id": "36d2d844-121d-453c-b514-de027caaf27f"
+                    "id": "f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8"
                     "uuid": "3698539b-65c4-41e3-95b1-fa108fd024b2"
                     "testMode": false
                     "resellerReference": "102-256952-3"
@@ -5527,9 +5527,9 @@
                               "maxUnits": 10
                             "units":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -5541,7 +5541,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "A bookable product listed by a supplier."
                     "properties":
                       "id":
@@ -5666,9 +5666,9 @@
                                 "maxUnits": 10
                               "units":
                                 -
-                                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName": "Adult(s)"
-                                  "reference": "LR1-01-new"
+                                  "reference": "EX1-01"
                                   "type": "YOUTH"
                                   "requiredContactFields":
                                     - "firstName"
@@ -5680,7 +5680,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                           "properties":
                             "id":
@@ -5788,9 +5788,9 @@
                                     "requiredContactFields": []
                                 "examples":
                                   -
-                                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "internalName": "Adult(s)"
-                                    "reference": "LR1-01-new"
+                                    "reference": "EX1-01"
                                     "type": "YOUTH"
                                     "requiredContactFields":
                                       - "firstName"
@@ -5802,12 +5802,12 @@
                                       "maxQuantity": 7
                                       "paxCount": 1
                                       "accompaniedBy":
-                                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "properties":
                                   "id":
                                     "type": "string"
                                     "description": "This MUST be a unique identifier within the scope of the option."
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName":
                                     "type": "string"
                                     "example": "Adult(s)"
@@ -5817,7 +5817,7 @@
                                       - "null"
                                       - "string"
                                     "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                    "example": "LR1-01-new"
+                                    "example": "EX1-01"
                                   "type":
                                     "type": "string"
                                     "title": "UnitType"
@@ -5877,7 +5877,7 @@
                                         "maxQuantity": 7
                                         "paxCount": 1
                                         "accompaniedBy":
-                                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "title": "UnitRestrictions"
                                     "properties":
                                       "minAge":
@@ -5912,7 +5912,7 @@
                                         "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                         "items":
                                           "type": "string"
-                                          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "required":
                                       - "minAge"
                                       - "maxAge"
@@ -5990,9 +5990,9 @@
                           "maxUnits": 10
                         "units":
                           -
-                            "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName": "Adult(s)"
-                            "reference": "LR1-01-new"
+                            "reference": "EX1-01"
                             "type": "YOUTH"
                             "requiredContactFields":
                               - "firstName"
@@ -6004,7 +6004,7 @@
                               "maxQuantity": 7
                               "paxCount": 1
                               "accompaniedBy":
-                                - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                     "properties":
                       "id":
@@ -6112,9 +6112,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -6126,12 +6126,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -6141,7 +6141,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -6201,7 +6201,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -6236,7 +6236,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -6457,7 +6457,7 @@
                                 "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                               -
                                 "deliveryFormat": "PDF_URL"
-                                "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                         "examples":
                           -
                             "redemptionMethod": "DIGITAL"
@@ -6556,9 +6556,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -6570,12 +6570,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -6585,7 +6585,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -6645,7 +6645,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -6680,7 +6680,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -6810,7 +6810,7 @@
                                       "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                                     -
                                       "deliveryFormat": "PDF_URL"
-                                      "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                      "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                               "examples":
                                 -
                                   "redemptionMethod": "DIGITAL"
@@ -7324,7 +7324,7 @@
                 "type": "object"
                 "x-examples":
                   "example-1":
-                    "id": "36d2d844-121d-453c-b514-de027caaf27f"
+                    "id": "f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8"
                     "uuid": "3698539b-65c4-41e3-95b1-fa108fd024b2"
                     "testMode": false
                     "resellerReference": "102-256952-3"
@@ -7458,9 +7458,9 @@
                               "maxUnits": 10
                             "units":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -7472,7 +7472,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "A bookable product listed by a supplier."
                     "properties":
                       "id":
@@ -7597,9 +7597,9 @@
                                 "maxUnits": 10
                               "units":
                                 -
-                                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName": "Adult(s)"
-                                  "reference": "LR1-01-new"
+                                  "reference": "EX1-01"
                                   "type": "YOUTH"
                                   "requiredContactFields":
                                     - "firstName"
@@ -7611,7 +7611,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                           "properties":
                             "id":
@@ -7719,9 +7719,9 @@
                                     "requiredContactFields": []
                                 "examples":
                                   -
-                                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "internalName": "Adult(s)"
-                                    "reference": "LR1-01-new"
+                                    "reference": "EX1-01"
                                     "type": "YOUTH"
                                     "requiredContactFields":
                                       - "firstName"
@@ -7733,12 +7733,12 @@
                                       "maxQuantity": 7
                                       "paxCount": 1
                                       "accompaniedBy":
-                                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "properties":
                                   "id":
                                     "type": "string"
                                     "description": "This MUST be a unique identifier within the scope of the option."
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName":
                                     "type": "string"
                                     "example": "Adult(s)"
@@ -7748,7 +7748,7 @@
                                       - "null"
                                       - "string"
                                     "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                    "example": "LR1-01-new"
+                                    "example": "EX1-01"
                                   "type":
                                     "type": "string"
                                     "title": "UnitType"
@@ -7808,7 +7808,7 @@
                                         "maxQuantity": 7
                                         "paxCount": 1
                                         "accompaniedBy":
-                                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "title": "UnitRestrictions"
                                     "properties":
                                       "minAge":
@@ -7843,7 +7843,7 @@
                                         "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                         "items":
                                           "type": "string"
-                                          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "required":
                                       - "minAge"
                                       - "maxAge"
@@ -7921,9 +7921,9 @@
                           "maxUnits": 10
                         "units":
                           -
-                            "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName": "Adult(s)"
-                            "reference": "LR1-01-new"
+                            "reference": "EX1-01"
                             "type": "YOUTH"
                             "requiredContactFields":
                               - "firstName"
@@ -7935,7 +7935,7 @@
                               "maxQuantity": 7
                               "paxCount": 1
                               "accompaniedBy":
-                                - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                     "properties":
                       "id":
@@ -8043,9 +8043,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -8057,12 +8057,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -8072,7 +8072,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -8132,7 +8132,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -8167,7 +8167,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -8388,7 +8388,7 @@
                                 "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                               -
                                 "deliveryFormat": "PDF_URL"
-                                "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                         "examples":
                           -
                             "redemptionMethod": "DIGITAL"
@@ -8487,9 +8487,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -8501,12 +8501,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -8516,7 +8516,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -8576,7 +8576,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -8611,7 +8611,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -8741,7 +8741,7 @@
                                       "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                                     -
                                       "deliveryFormat": "PDF_URL"
-                                      "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                      "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                               "examples":
                                 -
                                   "redemptionMethod": "DIGITAL"
@@ -9074,7 +9074,7 @@
                 "type": "object"
                 "x-examples":
                   "example-1":
-                    "id": "36d2d844-121d-453c-b514-de027caaf27f"
+                    "id": "f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8"
                     "uuid": "3698539b-65c4-41e3-95b1-fa108fd024b2"
                     "testMode": false
                     "resellerReference": "102-256952-3"
@@ -9208,9 +9208,9 @@
                               "maxUnits": 10
                             "units":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -9222,7 +9222,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "A bookable product listed by a supplier."
                     "properties":
                       "id":
@@ -9347,9 +9347,9 @@
                                 "maxUnits": 10
                               "units":
                                 -
-                                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName": "Adult(s)"
-                                  "reference": "LR1-01-new"
+                                  "reference": "EX1-01"
                                   "type": "YOUTH"
                                   "requiredContactFields":
                                     - "firstName"
@@ -9361,7 +9361,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                           "properties":
                             "id":
@@ -9469,9 +9469,9 @@
                                     "requiredContactFields": []
                                 "examples":
                                   -
-                                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "internalName": "Adult(s)"
-                                    "reference": "LR1-01-new"
+                                    "reference": "EX1-01"
                                     "type": "YOUTH"
                                     "requiredContactFields":
                                       - "firstName"
@@ -9483,12 +9483,12 @@
                                       "maxQuantity": 7
                                       "paxCount": 1
                                       "accompaniedBy":
-                                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "properties":
                                   "id":
                                     "type": "string"
                                     "description": "This MUST be a unique identifier within the scope of the option."
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName":
                                     "type": "string"
                                     "example": "Adult(s)"
@@ -9498,7 +9498,7 @@
                                       - "null"
                                       - "string"
                                     "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                    "example": "LR1-01-new"
+                                    "example": "EX1-01"
                                   "type":
                                     "type": "string"
                                     "title": "UnitType"
@@ -9558,7 +9558,7 @@
                                         "maxQuantity": 7
                                         "paxCount": 1
                                         "accompaniedBy":
-                                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "title": "UnitRestrictions"
                                     "properties":
                                       "minAge":
@@ -9593,7 +9593,7 @@
                                         "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                         "items":
                                           "type": "string"
-                                          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "required":
                                       - "minAge"
                                       - "maxAge"
@@ -9671,9 +9671,9 @@
                           "maxUnits": 10
                         "units":
                           -
-                            "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName": "Adult(s)"
-                            "reference": "LR1-01-new"
+                            "reference": "EX1-01"
                             "type": "YOUTH"
                             "requiredContactFields":
                               - "firstName"
@@ -9685,7 +9685,7 @@
                               "maxQuantity": 7
                               "paxCount": 1
                               "accompaniedBy":
-                                - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                     "properties":
                       "id":
@@ -9793,9 +9793,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -9807,12 +9807,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -9822,7 +9822,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -9882,7 +9882,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -9917,7 +9917,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -10138,7 +10138,7 @@
                                 "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                               -
                                 "deliveryFormat": "PDF_URL"
-                                "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                         "examples":
                           -
                             "redemptionMethod": "DIGITAL"
@@ -10237,9 +10237,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -10251,12 +10251,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -10266,7 +10266,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -10326,7 +10326,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -10361,7 +10361,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -10491,7 +10491,7 @@
                                       "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                                     -
                                       "deliveryFormat": "PDF_URL"
-                                      "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                      "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                               "examples":
                                 -
                                   "redemptionMethod": "DIGITAL"
@@ -10824,7 +10824,7 @@
                 "type": "object"
                 "x-examples":
                   "example-1":
-                    "id": "36d2d844-121d-453c-b514-de027caaf27f"
+                    "id": "f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8"
                     "uuid": "3698539b-65c4-41e3-95b1-fa108fd024b2"
                     "testMode": false
                     "resellerReference": "102-256952-3"
@@ -10958,9 +10958,9 @@
                               "maxUnits": 10
                             "units":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -10972,7 +10972,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "A bookable product listed by a supplier."
                     "properties":
                       "id":
@@ -11097,9 +11097,9 @@
                                 "maxUnits": 10
                               "units":
                                 -
-                                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName": "Adult(s)"
-                                  "reference": "LR1-01-new"
+                                  "reference": "EX1-01"
                                   "type": "YOUTH"
                                   "requiredContactFields":
                                     - "firstName"
@@ -11111,7 +11111,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                           "properties":
                             "id":
@@ -11219,9 +11219,9 @@
                                     "requiredContactFields": []
                                 "examples":
                                   -
-                                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "internalName": "Adult(s)"
-                                    "reference": "LR1-01-new"
+                                    "reference": "EX1-01"
                                     "type": "YOUTH"
                                     "requiredContactFields":
                                       - "firstName"
@@ -11233,12 +11233,12 @@
                                       "maxQuantity": 7
                                       "paxCount": 1
                                       "accompaniedBy":
-                                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "properties":
                                   "id":
                                     "type": "string"
                                     "description": "This MUST be a unique identifier within the scope of the option."
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName":
                                     "type": "string"
                                     "example": "Adult(s)"
@@ -11248,7 +11248,7 @@
                                       - "null"
                                       - "string"
                                     "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                    "example": "LR1-01-new"
+                                    "example": "EX1-01"
                                   "type":
                                     "type": "string"
                                     "title": "UnitType"
@@ -11308,7 +11308,7 @@
                                         "maxQuantity": 7
                                         "paxCount": 1
                                         "accompaniedBy":
-                                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "title": "UnitRestrictions"
                                     "properties":
                                       "minAge":
@@ -11343,7 +11343,7 @@
                                         "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                         "items":
                                           "type": "string"
-                                          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "required":
                                       - "minAge"
                                       - "maxAge"
@@ -11421,9 +11421,9 @@
                           "maxUnits": 10
                         "units":
                           -
-                            "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName": "Adult(s)"
-                            "reference": "LR1-01-new"
+                            "reference": "EX1-01"
                             "type": "YOUTH"
                             "requiredContactFields":
                               - "firstName"
@@ -11435,7 +11435,7 @@
                               "maxQuantity": 7
                               "paxCount": 1
                               "accompaniedBy":
-                                - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                     "properties":
                       "id":
@@ -11543,9 +11543,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -11557,12 +11557,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -11572,7 +11572,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -11632,7 +11632,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -11667,7 +11667,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -11888,7 +11888,7 @@
                                 "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                               -
                                 "deliveryFormat": "PDF_URL"
-                                "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                         "examples":
                           -
                             "redemptionMethod": "DIGITAL"
@@ -11987,9 +11987,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -12001,12 +12001,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -12016,7 +12016,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -12076,7 +12076,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -12111,7 +12111,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -12241,7 +12241,7 @@
                                       "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                                     -
                                       "deliveryFormat": "PDF_URL"
-                                      "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                      "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                               "examples":
                                 -
                                   "redemptionMethod": "DIGITAL"
@@ -12801,7 +12801,7 @@
                 "type": "object"
                 "x-examples":
                   "example-1":
-                    "id": "36d2d844-121d-453c-b514-de027caaf27f"
+                    "id": "f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8"
                     "uuid": "3698539b-65c4-41e3-95b1-fa108fd024b2"
                     "testMode": false
                     "resellerReference": "102-256952-3"
@@ -12935,9 +12935,9 @@
                               "maxUnits": 10
                             "units":
                               -
-                                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "internalName": "Adult(s)"
-                                "reference": "LR1-01-new"
+                                "reference": "EX1-01"
                                 "type": "YOUTH"
                                 "requiredContactFields":
                                   - "firstName"
@@ -12949,7 +12949,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "A bookable product listed by a supplier."
                     "properties":
                       "id":
@@ -13074,9 +13074,9 @@
                                 "maxUnits": 10
                               "units":
                                 -
-                                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName": "Adult(s)"
-                                  "reference": "LR1-01-new"
+                                  "reference": "EX1-01"
                                   "type": "YOUTH"
                                   "requiredContactFields":
                                     - "firstName"
@@ -13088,7 +13088,7 @@
                                     "maxQuantity": 7
                                     "paxCount": 1
                                     "accompaniedBy":
-                                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                           "properties":
                             "id":
@@ -13196,9 +13196,9 @@
                                     "requiredContactFields": []
                                 "examples":
                                   -
-                                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "internalName": "Adult(s)"
-                                    "reference": "LR1-01-new"
+                                    "reference": "EX1-01"
                                     "type": "YOUTH"
                                     "requiredContactFields":
                                       - "firstName"
@@ -13210,12 +13210,12 @@
                                       "maxQuantity": 7
                                       "paxCount": 1
                                       "accompaniedBy":
-                                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                 "properties":
                                   "id":
                                     "type": "string"
                                     "description": "This MUST be a unique identifier within the scope of the option."
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                   "internalName":
                                     "type": "string"
                                     "example": "Adult(s)"
@@ -13225,7 +13225,7 @@
                                       - "null"
                                       - "string"
                                     "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                                    "example": "LR1-01-new"
+                                    "example": "EX1-01"
                                   "type":
                                     "type": "string"
                                     "title": "UnitType"
@@ -13285,7 +13285,7 @@
                                         "maxQuantity": 7
                                         "paxCount": 1
                                         "accompaniedBy":
-                                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "title": "UnitRestrictions"
                                     "properties":
                                       "minAge":
@@ -13320,7 +13320,7 @@
                                         "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                         "items":
                                           "type": "string"
-                                          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                                     "required":
                                       - "minAge"
                                       - "maxAge"
@@ -13398,9 +13398,9 @@
                           "maxUnits": 10
                         "units":
                           -
-                            "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName": "Adult(s)"
-                            "reference": "LR1-01-new"
+                            "reference": "EX1-01"
                             "type": "YOUTH"
                             "requiredContactFields":
                               - "firstName"
@@ -13412,7 +13412,7 @@
                               "maxQuantity": 7
                               "paxCount": 1
                               "accompaniedBy":
-                                - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                     "properties":
                       "id":
@@ -13520,9 +13520,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -13534,12 +13534,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -13549,7 +13549,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -13609,7 +13609,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -13644,7 +13644,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -13865,7 +13865,7 @@
                                 "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                               -
                                 "deliveryFormat": "PDF_URL"
-                                "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                         "examples":
                           -
                             "redemptionMethod": "DIGITAL"
@@ -13964,9 +13964,9 @@
                               "requiredContactFields": []
                           "examples":
                             -
-                              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "internalName": "Adult(s)"
-                              "reference": "LR1-01-new"
+                              "reference": "EX1-01"
                               "type": "YOUTH"
                               "requiredContactFields":
                                 - "firstName"
@@ -13978,12 +13978,12 @@
                                 "maxQuantity": 7
                                 "paxCount": 1
                                 "accompaniedBy":
-                                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "properties":
                             "id":
                               "type": "string"
                               "description": "This MUST be a unique identifier within the scope of the option."
-                              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                             "internalName":
                               "type": "string"
                               "example": "Adult(s)"
@@ -13993,7 +13993,7 @@
                                 - "null"
                                 - "string"
                               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                              "example": "LR1-01-new"
+                              "example": "EX1-01"
                             "type":
                               "type": "string"
                               "title": "UnitType"
@@ -14053,7 +14053,7 @@
                                   "maxQuantity": 7
                                   "paxCount": 1
                                   "accompaniedBy":
-                                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "title": "UnitRestrictions"
                               "properties":
                                 "minAge":
@@ -14088,7 +14088,7 @@
                                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                                   "items":
                                     "type": "string"
-                                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                               "required":
                                 - "minAge"
                                 - "maxAge"
@@ -14218,7 +14218,7 @@
                                       "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                                     -
                                       "deliveryFormat": "PDF_URL"
-                                      "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                                      "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                               "examples":
                                 -
                                   "redemptionMethod": "DIGITAL"
@@ -14612,9 +14612,9 @@
                 "maxUnits": 10
               "units":
                 -
-                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                   "internalName": "Adult(s)"
-                  "reference": "LR1-01-new"
+                  "reference": "EX1-01"
                   "type": "YOUTH"
                   "requiredContactFields":
                     - "firstName"
@@ -14626,7 +14626,7 @@
                     "maxQuantity": 7
                     "paxCount": 1
                     "accompaniedBy":
-                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
       "description": "A bookable product listed by a supplier."
       "properties":
         "id":
@@ -14751,9 +14751,9 @@
                   "maxUnits": 10
                 "units":
                   -
-                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "internalName": "Adult(s)"
-                    "reference": "LR1-01-new"
+                    "reference": "EX1-01"
                     "type": "YOUTH"
                     "requiredContactFields":
                       - "firstName"
@@ -14765,7 +14765,7 @@
                       "maxQuantity": 7
                       "paxCount": 1
                       "accompaniedBy":
-                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
             "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
             "properties":
               "id":
@@ -14873,9 +14873,9 @@
                       "requiredContactFields": []
                   "examples":
                     -
-                      "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                      "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                       "internalName": "Adult(s)"
-                      "reference": "LR1-01-new"
+                      "reference": "EX1-01"
                       "type": "YOUTH"
                       "requiredContactFields":
                         - "firstName"
@@ -14887,12 +14887,12 @@
                         "maxQuantity": 7
                         "paxCount": 1
                         "accompaniedBy":
-                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                   "properties":
                     "id":
                       "type": "string"
                       "description": "This MUST be a unique identifier within the scope of the option."
-                      "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                      "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "internalName":
                       "type": "string"
                       "example": "Adult(s)"
@@ -14902,7 +14902,7 @@
                         - "null"
                         - "string"
                       "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                      "example": "LR1-01-new"
+                      "example": "EX1-01"
                     "type":
                       "type": "string"
                       "title": "UnitType"
@@ -14962,7 +14962,7 @@
                           "maxQuantity": 7
                           "paxCount": 1
                           "accompaniedBy":
-                            - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                       "title": "UnitRestrictions"
                       "properties":
                         "minAge":
@@ -14997,7 +14997,7 @@
                           "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                           "items":
                             "type": "string"
-                            "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                       "required":
                         - "minAge"
                         - "maxAge"
@@ -15050,9 +15050,9 @@
           "requiredContactFields": []
       "examples":
         -
-          "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+          "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
           "internalName": "Adult(s)"
-          "reference": "LR1-01-new"
+          "reference": "EX1-01"
           "type": "YOUTH"
           "requiredContactFields":
             - "firstName"
@@ -15064,12 +15064,12 @@
             "maxQuantity": 7
             "paxCount": 1
             "accompaniedBy":
-              - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+              - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
       "properties":
         "id":
           "type": "string"
           "description": "This MUST be a unique identifier within the scope of the option."
-          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
         "internalName":
           "type": "string"
           "example": "Adult(s)"
@@ -15079,7 +15079,7 @@
             - "null"
             - "string"
           "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-          "example": "LR1-01-new"
+          "example": "EX1-01"
         "type":
           "type": "string"
           "title": "UnitType"
@@ -15139,7 +15139,7 @@
               "maxQuantity": 7
               "paxCount": 1
               "accompaniedBy":
-                - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
           "title": "UnitRestrictions"
           "properties":
             "minAge":
@@ -15174,7 +15174,7 @@
               "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
               "items":
                 "type": "string"
-                "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
           "required":
             - "minAge"
             - "maxAge"
@@ -15211,7 +15211,7 @@
           "maxQuantity": 7
           "paxCount": 1
           "accompaniedBy":
-            - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+            - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
       "title": "UnitRestrictions"
       "properties":
         "minAge":
@@ -15246,7 +15246,7 @@
           "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
           "items":
             "type": "string"
-            "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+            "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
       "required":
         - "minAge"
         - "maxAge"
@@ -15349,9 +15349,9 @@
             "maxUnits": 10
           "units":
             -
-              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
               "internalName": "Adult(s)"
-              "reference": "LR1-01-new"
+              "reference": "EX1-01"
               "type": "YOUTH"
               "requiredContactFields":
                 - "firstName"
@@ -15363,7 +15363,7 @@
                 "maxQuantity": 7
                 "paxCount": 1
                 "accompaniedBy":
-                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
       "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
       "properties":
         "id":
@@ -15471,9 +15471,9 @@
                 "requiredContactFields": []
             "examples":
               -
-                "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                 "internalName": "Adult(s)"
-                "reference": "LR1-01-new"
+                "reference": "EX1-01"
                 "type": "YOUTH"
                 "requiredContactFields":
                   - "firstName"
@@ -15485,12 +15485,12 @@
                   "maxQuantity": 7
                   "paxCount": 1
                   "accompaniedBy":
-                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
             "properties":
               "id":
                 "type": "string"
                 "description": "This MUST be a unique identifier within the scope of the option."
-                "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
               "internalName":
                 "type": "string"
                 "example": "Adult(s)"
@@ -15500,7 +15500,7 @@
                   - "null"
                   - "string"
                 "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                "example": "LR1-01-new"
+                "example": "EX1-01"
               "type":
                 "type": "string"
                 "title": "UnitType"
@@ -15560,7 +15560,7 @@
                     "maxQuantity": 7
                     "paxCount": 1
                     "accompaniedBy":
-                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                 "title": "UnitRestrictions"
                 "properties":
                   "minAge":
@@ -15595,7 +15595,7 @@
                     "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                     "items":
                       "type": "string"
-                      "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                      "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                 "required":
                   - "minAge"
                   - "maxAge"
@@ -15687,14 +15687,14 @@
       "type": "object"
       "x-examples":
         "example-1":
-          "id": "697e3ce8-1860-4cbf-80ad-95857df1f640"
-          "name": "Edin Explore"
-          "endpoint": "https://api.ventrata.com/api-octo"
+          "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+          "name": "Acme Tours"
+          "endpoint": "https://api.example.com/api-octo"
           "contact":
             "website": null
-            "email": "support@ventrata.com"
+            "email": "support@example.com"
             "telephone": null
-            "address": "Marble Arch, London, W1H 7EJ, United Kingdom"
+            "address": "10 Example Street, London, EC1A 1BB, United Kingdom"
       "examples":
         -
           "id": "48b4d2e9-cd8b-4ac2-a5ee-4217bf2622c2"
@@ -15708,12 +15708,12 @@
       "properties":
         "id":
           "type": "string"
-          "example": "697e3ce8-1860-4cbf-80ad-95857df1f640"
+          "example": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
           "description": "Unique identifier used in the platform to represent the supplier."
         "name":
           "type": "string"
           "description": "Name the supplier uses to identify itsel. Usually what the end customer will know the supplier as."
-          "example": "Edin Explore"
+          "example": "Acme Tours"
         "endpoint":
           "type": "string"
           "format": "uri"
@@ -16088,9 +16088,9 @@
               "requiredContactFields": []
           "examples":
             -
-              "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+              "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
               "internalName": "Adult(s)"
-              "reference": "LR1-01-new"
+              "reference": "EX1-01"
               "type": "YOUTH"
               "requiredContactFields":
                 - "firstName"
@@ -16102,12 +16102,12 @@
                 "maxQuantity": 7
                 "paxCount": 1
                 "accompaniedBy":
-                  - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                  - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
           "properties":
             "id":
               "type": "string"
               "description": "This MUST be a unique identifier within the scope of the option."
-              "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+              "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
             "internalName":
               "type": "string"
               "example": "Adult(s)"
@@ -16117,7 +16117,7 @@
                 - "null"
                 - "string"
               "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-              "example": "LR1-01-new"
+              "example": "EX1-01"
             "type":
               "type": "string"
               "title": "UnitType"
@@ -16177,7 +16177,7 @@
                   "maxQuantity": 7
                   "paxCount": 1
                   "accompaniedBy":
-                    - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                    - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
               "title": "UnitRestrictions"
               "properties":
                 "minAge":
@@ -16212,7 +16212,7 @@
                   "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                   "items":
                     "type": "string"
-                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
               "required":
                 - "minAge"
                 - "maxAge"
@@ -16342,7 +16342,7 @@
                       "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                     -
                       "deliveryFormat": "PDF_URL"
-                      "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                      "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
               "examples":
                 -
                   "redemptionMethod": "DIGITAL"
@@ -16462,7 +16462,7 @@
               "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
             -
               "deliveryFormat": "PDF_URL"
-              "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+              "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
       "examples":
         -
           "redemptionMethod": "DIGITAL"
@@ -16599,7 +16599,7 @@
       "type": "object"
       "x-examples":
         "example-1":
-          "id": "36d2d844-121d-453c-b514-de027caaf27f"
+          "id": "f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8"
           "uuid": "3698539b-65c4-41e3-95b1-fa108fd024b2"
           "testMode": false
           "resellerReference": "102-256952-3"
@@ -16733,9 +16733,9 @@
                     "maxUnits": 10
                   "units":
                     -
-                      "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                      "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                       "internalName": "Adult(s)"
-                      "reference": "LR1-01-new"
+                      "reference": "EX1-01"
                       "type": "YOUTH"
                       "requiredContactFields":
                         - "firstName"
@@ -16747,7 +16747,7 @@
                         "maxQuantity": 7
                         "paxCount": 1
                         "accompaniedBy":
-                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
           "description": "A bookable product listed by a supplier."
           "properties":
             "id":
@@ -16872,9 +16872,9 @@
                       "maxUnits": 10
                     "units":
                       -
-                        "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                        "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                         "internalName": "Adult(s)"
-                        "reference": "LR1-01-new"
+                        "reference": "EX1-01"
                         "type": "YOUTH"
                         "requiredContactFields":
                           - "firstName"
@@ -16886,7 +16886,7 @@
                           "maxQuantity": 7
                           "paxCount": 1
                           "accompaniedBy":
-                            - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                            - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                 "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
                 "properties":
                   "id":
@@ -16994,9 +16994,9 @@
                           "requiredContactFields": []
                       "examples":
                         -
-                          "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                          "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "internalName": "Adult(s)"
-                          "reference": "LR1-01-new"
+                          "reference": "EX1-01"
                           "type": "YOUTH"
                           "requiredContactFields":
                             - "firstName"
@@ -17008,12 +17008,12 @@
                             "maxQuantity": 7
                             "paxCount": 1
                             "accompaniedBy":
-                              - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                              - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                       "properties":
                         "id":
                           "type": "string"
                           "description": "This MUST be a unique identifier within the scope of the option."
-                          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                         "internalName":
                           "type": "string"
                           "example": "Adult(s)"
@@ -17023,7 +17023,7 @@
                             - "null"
                             - "string"
                           "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                          "example": "LR1-01-new"
+                          "example": "EX1-01"
                         "type":
                           "type": "string"
                           "title": "UnitType"
@@ -17083,7 +17083,7 @@
                               "maxQuantity": 7
                               "paxCount": 1
                               "accompaniedBy":
-                                - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "title": "UnitRestrictions"
                           "properties":
                             "minAge":
@@ -17118,7 +17118,7 @@
                               "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                               "items":
                                 "type": "string"
-                                "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                                "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                           "required":
                             - "minAge"
                             - "maxAge"
@@ -17196,9 +17196,9 @@
                 "maxUnits": 10
               "units":
                 -
-                  "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                  "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                   "internalName": "Adult(s)"
-                  "reference": "LR1-01-new"
+                  "reference": "EX1-01"
                   "type": "YOUTH"
                   "requiredContactFields":
                     - "firstName"
@@ -17210,7 +17210,7 @@
                     "maxQuantity": 7
                     "paxCount": 1
                     "accompaniedBy":
-                      - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                      - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
           "description": "Product options are subdivisions of the original product that will affect price and / or duration. Within the OCTo spec, every product must contain an option."
           "properties":
             "id":
@@ -17318,9 +17318,9 @@
                     "requiredContactFields": []
                 "examples":
                   -
-                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "internalName": "Adult(s)"
-                    "reference": "LR1-01-new"
+                    "reference": "EX1-01"
                     "type": "YOUTH"
                     "requiredContactFields":
                       - "firstName"
@@ -17332,12 +17332,12 @@
                       "maxQuantity": 7
                       "paxCount": 1
                       "accompaniedBy":
-                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                 "properties":
                   "id":
                     "type": "string"
                     "description": "This MUST be a unique identifier within the scope of the option."
-                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                   "internalName":
                     "type": "string"
                     "example": "Adult(s)"
@@ -17347,7 +17347,7 @@
                       - "null"
                       - "string"
                     "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                    "example": "LR1-01-new"
+                    "example": "EX1-01"
                   "type":
                     "type": "string"
                     "title": "UnitType"
@@ -17407,7 +17407,7 @@
                         "maxQuantity": 7
                         "paxCount": 1
                         "accompaniedBy":
-                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "title": "UnitRestrictions"
                     "properties":
                       "minAge":
@@ -17442,7 +17442,7 @@
                         "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                         "items":
                           "type": "string"
-                          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "required":
                       - "minAge"
                       - "maxAge"
@@ -17663,7 +17663,7 @@
                       "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                     -
                       "deliveryFormat": "PDF_URL"
-                      "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                      "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
               "examples":
                 -
                   "redemptionMethod": "DIGITAL"
@@ -17762,9 +17762,9 @@
                     "requiredContactFields": []
                 "examples":
                   -
-                    "id": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                    "id": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "internalName": "Adult(s)"
-                    "reference": "LR1-01-new"
+                    "reference": "EX1-01"
                     "type": "YOUTH"
                     "requiredContactFields":
                       - "firstName"
@@ -17776,12 +17776,12 @@
                       "maxQuantity": 7
                       "paxCount": 1
                       "accompaniedBy":
-                        - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                        - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                 "properties":
                   "id":
                     "type": "string"
                     "description": "This MUST be a unique identifier within the scope of the option."
-                    "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                    "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                   "internalName":
                     "type": "string"
                     "example": "Adult(s)"
@@ -17791,7 +17791,7 @@
                       - "null"
                       - "string"
                     "description": "This is an internal reference identifier that the Supplier wishes to use. It MAY be non-unique."
-                    "example": "LR1-01-new"
+                    "example": "EX1-01"
                   "type":
                     "type": "string"
                     "title": "UnitType"
@@ -17851,7 +17851,7 @@
                         "maxQuantity": 7
                         "paxCount": 1
                         "accompaniedBy":
-                          - "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                          - "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "title": "UnitRestrictions"
                     "properties":
                       "minAge":
@@ -17886,7 +17886,7 @@
                         "description": "This is if the unit needs to be accompanied by another unit (eg. Infant with Adult)"
                         "items":
                           "type": "string"
-                          "example": "adult_697e3ce8-1860-4cbf-80ad-95857df1f640"
+                          "example": "adult_a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
                     "required":
                       - "minAge"
                       - "maxAge"
@@ -18016,7 +18016,7 @@
                             "deliveryValue": "!1|El3f0wUmcnrEmviMcR9qwqC9hvfrcWc6cZcRcrcR|yrirfZfqHPj40mvhpw2XzX|q7FF77QqFD7fDhr9"
                           -
                             "deliveryFormat": "PDF_URL"
-                            "deliveryValue": "https://api.ventrata.com/octo/pdf?booking=36d2d844-121d-453c-b514-de027caaf27f&ticket=72419a19-c58c-46a0-b316-13509de43909"
+                            "deliveryValue": "https://api.example.com/octo/pdf?booking=f0e1d2c3-b4a5-4968-8172-a3b4c5d6e7f8&ticket=1a2b3c4d-5e6f-4a0b-b316-7a8b9c0d1e2f"
                     "examples":
                       -
                         "redemptionMethod": "DIGITAL"

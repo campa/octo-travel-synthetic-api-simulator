@@ -1,6 +1,6 @@
 # OCTO Travel Synthetic API Simulator (OTAS)
 
-A stateful mock server that implements the [OCTO](https://www.octo.travel/) travel API standard using LLM-generated synthetic data. Built for dev, testing, and demo environments where you need realistic OCTO-compliant responses without connecting to a real supplier.
+A stateful mock server that implements the [OCTO](https://www.octo.travel/) travel API standard using LLM-generated synthetic data. Built for dev, testing, and demo environments where you need realistic OCTO-compliant responses without connecting to a live supplier.
 
 ## What it does
 
@@ -21,14 +21,33 @@ A stateful mock server that implements the [OCTO](https://www.octo.travel/) trav
 ```bash
 git clone <repo-url>
 cd octo-travel-synthetic-api-simulator
-ollama pull qwen3:14b
+ollama pull nemotron-3-nano:30b
 uv sync
 uv run otas
 ```
 
 The server starts on `http://localhost:8080` by default. On first run it calls Ollama to generate 10 products, then serves them.
 
-Any Ollama model works. Change it with `OTAS_OLLAMA_MODEL` or via `.env`.
+Swagger UI is available at `http://localhost:8080/docs`, ReDoc at `http://localhost:8080/redoc`.
+
+### Choosing a model
+
+The recommended model is `nemotron-3-nano:30b` — it produces high-quality OCTO-compliant JSON with good structural completeness and coherence. Any Ollama-compatible model works though. Configure it via `.env` or environment variable:
+
+```bash
+# .env
+OTAS_OLLAMA_MODEL=nemotron-3-nano:30b
+```
+
+Other models that work well:
+
+| Model | Size | Notes |
+|-------|------|-------|
+| `nemotron-3-nano:30b` | ~17 GB | Recommended. Best quality/speed balance |
+| `qwen3:14b` | ~9 GB | Lighter alternative, good for machines with less RAM |
+| `qwen3:32b` | ~19 GB | Larger, may improve diversity |
+
+Larger models (e.g., `nemotron-3-super`) may require more VRAM/RAM than available on consumer hardware.
 
 To skip LLM generation and use a cached seed file:
 
@@ -83,7 +102,7 @@ All settings use the `OTAS_` environment variable prefix and can also be set via
 | `OTAS_HOST` | `0.0.0.0` | Server bind host |
 | `OTAS_PORT` | `8080` | Server bind port |
 | `OTAS_OLLAMA_URL` | `http://localhost:11434` | Ollama server URL |
-| `OTAS_OLLAMA_MODEL` | `qwen3:14b` | Ollama model name |
+| `OTAS_OLLAMA_MODEL` | `nemotron-3-nano:30b` | Ollama model name (any Ollama-compatible model works) |
 | `OTAS_PRODUCT_COUNT` | `10` | Products to generate |
 | `OTAS_MAX_RETRIES` | `3` | Max retries per product |
 | `OTAS_AVG_SLOTS_PER_DAY` | `3` | Avg time slots for START_TIME products |
@@ -132,9 +151,58 @@ The app works fine without the observability stack. Telemetry is fire-and-forget
 
 See [docs/observability.md](docs/observability.md) for details.
 
+## Data quality
+
+Generated products are automatically scored across four dimensions after each batch:
+
+- **Realism** — coordinates, place IDs, currency/country/timezone consistency, age ranges
+- **Coherence** — duration alignment, FAQ-vs-pricing consistency, contact field logic
+- **Completeness** — presence of descriptions, features, FAQs, media, locations
+- **Diversity** (batch-level) — country spread, title uniqueness, availability type balance
+
+Run the quality report manually:
+
+```bash
+# Print report to terminal
+python scripts/quality_report.py
+
+# Save results for comparison across models/runs
+python scripts/quality_report.py --save
+```
+
+Saved reports go to `metrics/quality-reports/` with model name and timestamp.
+
+See [docs/data-quality.md](docs/data-quality.md) for the full scoring methodology.
+
+## Generation performance
+
+Data generation is LLM-bound and depends on your hardware and model. Each product requires one Ollama call (more if retries are needed due to validation errors or malformed JSON).
+
+Reference benchmark generating 3 products with `nemotron-3-nano:30b` on an Apple M3 Max (64 GB RAM):
+
+| Product | Attempts | Time |
+|---------|----------|------|
+| 1 | 1 | ~1m 39s |
+| 2 | 3 (validation error, JSON parse error, success) | ~6m 33s |
+| 3 | 1 | ~1m 16s |
+| **Total (3 products)** | **5** | **~9m 28s** |
+
+Expect roughly 1-2 minutes per product on a first successful attempt. Retries (validation or JSON errors) add another 1-3 minutes each. For the default 10 products, plan for 15-30 minutes on similar hardware.
+
+To avoid regenerating every time, use `--dump-seed` on the first run and `--skip-seed` afterwards.
+
 ## Architecture
 
 See [docs/architecture.md](docs/architecture.md) for the full system design.
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [docs/architecture.md](docs/architecture.md) | System design, seed/serve phases, data model |
+| [docs/observability.md](docs/observability.md) | OTel metrics catalog, OpenObserve setup, logging config |
+| [docs/data-quality.md](docs/data-quality.md) | Quality scoring methodology, check definitions, composite formula |
+| [api-spec/octo-spec.yaml](api-spec/octo-spec.yaml) | OpenAPI specification for the OCTO endpoints |
 
 ## Development
 
@@ -159,6 +227,7 @@ src/
 │   ├── generator.py    # Orchestrates generation with retry + validation
 │   ├── ollama_client.py # Async Ollama HTTP client
 │   ├── prompt_builder.py # Prompt construction from OCTO spec
+│   └── quality.py      # Deterministic quality scoring (realism, coherence, completeness, diversity)
 ├── server/             # FastAPI app, routes, middleware, error handling
 │   ├── app.py          # App factory
 │   ├── routes/         # Product endpoints

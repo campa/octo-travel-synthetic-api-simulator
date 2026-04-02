@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
+from models.errors import ErrorResponse
+from models.product import Product
 from server.error_handler import create_error_response
 from state.manager import StateManager
 
@@ -20,16 +22,27 @@ def create_products_router(
 ) -> APIRouter:
     router = APIRouter()
 
-    @router.get("/products")
+    @router.get(
+        "/products",
+        response_model=list[Product],
+        summary="List Products",
+        description="Returns all available products.",
+    )
     async def list_products() -> JSONResponse:
         products = state.get_all_products()
         return JSONResponse(
             content=[p.model_dump(by_alias=True) for p in products],
         )
 
-    @router.get("/products/{product_id}")
-    async def get_product(product_id: str, request: Request) -> JSONResponse:
-        product = state.get_product(product_id)
+    @router.get(
+        "/products/{id}",
+        response_model=Product,
+        responses={404: {"model": ErrorResponse, "description": "Product not found"}},
+        summary="Get Product",
+        description="Returns a single product by its ID.",
+    )
+    async def get_product(id: str, request: Request) -> JSONResponse:
+        product = state.get_product(id)
         if product is None:
             return create_error_response(
                 status_code=404,
