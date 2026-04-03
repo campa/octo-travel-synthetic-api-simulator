@@ -2,6 +2,20 @@
 
 OTAS includes a deterministic quality scoring system that evaluates generated OCTO products across four dimensions: realism, coherence, completeness, and diversity. The scorer runs automatically after each batch generation and emits metrics via OpenTelemetry. A CLI report script is also available for ad-hoc analysis.
 
+- [Quick start](#quick-start)
+- [Scoring dimensions](#scoring-dimensions)
+  - [Realism](#realism-per-product)
+  - [Coherence](#coherence-per-product)
+  - [Completeness](#completeness-per-product)
+  - [Diversity](#diversity-batch-level)
+- [Composite score](#composite-score)
+- [Integration with the generator](#integration-with-the-generator)
+- [OpenTelemetry metrics](#opentelemetry-metrics)
+- [Issue tracking](#issue-tracking)
+- [Comparing runs](#comparing-runs)
+- [Example: 50-product batch with nemotron-3-nano:30b](#example-50-product-batch-with-nemotron-3-nano30b)
+- [Limitations](#limitations)
+
 ## Quick start
 
 ```bash
@@ -147,6 +161,52 @@ Use `--save` to persist reports as JSON files in `metrics/quality-reports/`. Eac
 - Full issue list with counts
 
 This allows comparing quality across different models, temperatures, or prompt changes. File naming convention: `{timestamp}_{model}_{product_count}p.json`.
+
+## Example: 50-product batch with nemotron-3-nano:30b
+
+The following results were collected from a 50-product generation run using `nemotron-3-nano:30b` at temperature 0.5 on an Apple M3 Max (64 GB RAM). This serves as a reference baseline for the current generator and prompt configuration.
+
+### Summary scores
+
+| Dimension | Score |
+|-----------|-------|
+| Composite | 0.74 |
+| Realism | 0.72 |
+| Coherence | 0.94 |
+| Completeness | 1.00 |
+| Diversity | 0.19 |
+
+### Issue distribution
+
+148 total issues across 50 products:
+
+| Dimension | Count | % of total |
+|-----------|-------|------------|
+| Realism | 135 | 91% |
+| Coherence | 10 | 7% |
+| Diversity | 3 | 2% |
+
+### Top issue types
+
+| Check | Count | Description |
+|-------|-------|-------------|
+| `adult_age_range` | 41 | ADULT units with minAge=0/maxAge=0 while sibling CHILD has real ages |
+| `known_dummy_place_id` | 34 | Sydney Opera House Place ID reused across products |
+| `coordinate_entropy` | 31 | Low-entropy coordinates (placeholder-like patterns) |
+| `currency_country_mismatch` | 10 | Wrong currency for the product's country (e.g., EUR for AE) |
+| `duration_mismatch` | 10 | Option duration outside product's durationMinutesFrom/To range |
+| `timezone_country_mismatch` | 7 | Wrong timezone prefix for the country |
+| `city_centroid` | 6 | Coordinates matching known city centroids |
+| `duplicate_place_id` | 6 | Same Place ID reused across different products |
+
+### Key observations
+
+- Completeness is perfect (1.00) — the model consistently generates all optional content fields (descriptions, FAQs, media, locations).
+- Coherence is strong (0.94) — duration mismatches are the main issue, occurring in ~20% of products that have option-level durations.
+- Realism (0.72) is dominated by three recurring patterns: ADULT age ranges (82% of products), dummy Place IDs (68%), and low-entropy coordinates (62%). These are inherent LLM limitations, not prompt issues.
+- Diversity collapses at scale (0.19) — only 6 unique countries and 15 unique titles across 50 products. The LLM starts recycling titles around product 10-15 despite the diversity steering prompt. This is the highest-impact area for improvement.
+
+The full report is saved at `metrics/quality-reports/20260403-180029_nemotron-3-nano-30b_50p.json`.
 
 ## Limitations
 
