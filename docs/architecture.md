@@ -80,6 +80,41 @@ When generating multiple products in a batch, each product after the first recei
 
 This prevents the common LLM tendency to generate near-identical products in a batch (e.g., five "Historic Castle Tours" in London).
 
+#### Prompt size growth
+
+Because each product's prompt includes summaries of all previously generated products, the prompt size grows linearly with the batch. Measured with `nemotron-3-nano:30b` generating 10 products:
+
+| Product # | Prompt tokens (approx) | Growth reason |
+|-----------|----------------------|---------------|
+| 1 | ~4,500 | Schema + generation rules only |
+| 2 | ~4,900 | + 1 product summary |
+| 3 | ~5,200 | + 2 product summaries |
+| 5 | ~5,500 | + 4 product summaries |
+| 10 | ~12,000 | + 9 product summaries |
+
+```
+Prompt tokens per product (10-product batch)
+
+ 12K ┤                                                          ╭─
+     │                                                     ╭────╯
+ 10K ┤                                                ╭────╯
+     │                                           ╭────╯
+  8K ┤                                      ╭────╯
+     │                                 ╭────╯
+  6K ┤                            ╭────╯
+     │                  ╭────────╯
+  5K ┤        ╭────────╯
+     │   ╭────╯
+  4K ┤───╯
+     └─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────
+           1     2     3     4     5     6     7     8     9    10
+                              Product #
+```
+
+Total prompt tokens for a 10-product batch: ~106,000 (cumulative across all calls). The base prompt (schema + rules) is ~4,500 tokens. Each product summary adds ~200-400 tokens to subsequent prompts.
+
+For larger batches (50 products), the final prompts can reach ~15,000+ tokens. This is well within the context window of `nemotron-3-nano:30b` (128K) but worth monitoring — the `otas_llm_prompt_tokens` OTel counter tracks this in real time.
+
 ## Serve phase
 
 Once products are loaded into the `StateManager`, the FastAPI server starts.

@@ -1,0 +1,796 @@
+{
+  "timestamp": "2026-04-07T17:12:51.892658",
+  "model": "nemotron-3-nano:30b",
+  "product_count": 30,
+  "seed_file": "data/seed_data.json",
+  "scores": {
+    "composite": 0.776,
+    "realism": 0.695,
+    "coherence": 0.992,
+    "completeness": 0.994,
+    "diversity": 0.354
+  },
+  "per_product": [
+    {
+      "id": "88f6ae8a-2a77-45f5-8420-3878f0ef580d",
+      "title": "Sunset Cruise",
+      "realism": 0.571,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "b625fe02-a46f-4e85-bf04-e732e8d25731",
+      "title": "Cave Exploration Tour",
+      "realism": 0.625,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "84eba987-8807-4ea5-87ef-23e2a85bb1c7",
+      "title": "Sunset Sailing Excursion",
+      "realism": 0.5,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "9ddd7ddb-9107-48fa-baa0-5b6dc0da1fd9",
+      "title": "City Museum Pass",
+      "realism": 0.5,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "707cb3d9-e381-4936-86b5-1185f7642e10",
+      "title": "Historical Walking Tour",
+      "realism": 0.625,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "6bf48979-85bd-48f2-b9e9-e56325a9afb4",
+      "title": "Historical Walking Tour Paris",
+      "realism": 0.667,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "492c32af-585c-42bf-bc17-d60a9ff7463b",
+      "title": "Sunset Sail & Wine Tasting",
+      "realism": 0.727,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "6810e191-a3ed-4c32-b55e-20d553607832",
+      "title": "Night Sky Observatory Experience",
+      "realism": 0.625,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "2fe756bc-831b-44d0-90db-9c50ec28a49a",
+      "title": "Sunset Kayak Expedition",
+      "realism": 0.5,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "3c3793a7-1022-4528-8e8d-524edb74e8ba",
+      "title": "Sunset Sail & Wine Tasting",
+      "realism": 0.857,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "2e1311f8-d28d-4c54-abbd-c8bf3b9c080a",
+      "title": "Cultural Heritage Day Pass",
+      "realism": 0.5,
+      "coherence": 1.0,
+      "completeness": 0.818
+    },
+    {
+      "id": "8b6badeb-62e3-490b-bb7d-a4c72ec93a7d",
+      "title": "Evening Canal Tour",
+      "realism": 0.833,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "ee93e8e1-4c7f-4a5a-a1ac-8600802e3fc6",
+      "title": "Sunset Sail & Cheese Tasting",
+      "realism": 0.818,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "9530ed1d-b93a-451d-b6ff-57dc656dc3a4",
+      "title": "Berlin Wall History Experience",
+      "realism": 0.833,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "1b2d12a6-5902-438b-b805-92fd9eda03f6",
+      "title": "Evening Canal Tour",
+      "realism": 0.75,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "15210b00-f882-4dd2-a215-1533b6622e1d",
+      "title": "Historical Walking Tour Berlin",
+      "realism": 0.688,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "4a9fc44a-bf92-48d9-aa11-a7928cec15e0",
+      "title": "Cave Exploration Standard",
+      "realism": 0.857,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "af5a1f8f-e5da-4139-97a2-ab324e010f17",
+      "title": "Historical Walking Tour Dublin",
+      "realism": 1.0,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "9e18cb14-f30b-482a-8dde-bc2b18c616ce",
+      "title": "Berlin Wall History Experience",
+      "realism": 0.625,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "f585aa30-5b04-485d-b6f8-52acaad160d8",
+      "title": "Cultural Heritage Day Pass",
+      "realism": 0.583,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "35a4ffcd-bc84-4cd2-aa77-bfe9fc21fbee",
+      "title": "Historical Walking Tour Dublin",
+      "realism": 0.833,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "0e5346c5-e7c7-49ad-8255-96ea0c1e6d93",
+      "title": "Sunset Kayak Expedition",
+      "realism": 0.571,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "7320785e-0c75-4155-be5e-797a26279373",
+      "title": "Historical Dublin Walking Tour",
+      "realism": 0.75,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "d42817d0-dcea-44bf-9d6c-d3637492fa99",
+      "title": "Alhambra Palace Guided Tour",
+      "realism": 0.8,
+      "coherence": 0.75,
+      "completeness": 1.0
+    },
+    {
+      "id": "c64ef8f0-a834-4b96-b528-6ce7db411caa",
+      "title": "Sunset Sail & Cheese Tasting",
+      "realism": 0.429,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "ed79fffb-d868-4257-a5a1-3cc346b084cb",
+      "title": "Historical Walking Tour Dublin",
+      "realism": 0.833,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "94957032-f2d9-4638-8c9e-1f4db93654f1",
+      "title": "Historical Walking Tour Lisbon",
+      "realism": 0.769,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "623af4a2-87da-4bc1-8de8-77be567ba225",
+      "title": "Alpine Glacier Hike",
+      "realism": 0.625,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "0b7b686f-64d5-4e03-b2bf-ebe7411904f4",
+      "title": "Historical Walking Tour Dublin",
+      "realism": 0.818,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "95df6270-0333-4729-913e-b6748bc2c7ec",
+      "title": "Lisbon Historical Walking Tour",
+      "realism": 0.75,
+      "coherence": 1.0,
+      "completeness": 1.0
+    }
+  ],
+  "issues": [
+    {
+      "dimension": "diversity",
+      "check": "low_country_diversity",
+      "message": "Only 9/30 unique countries",
+      "product_id": ""
+    },
+    {
+      "dimension": "diversity",
+      "check": "duplicate_titles",
+      "message": "Duplicate product titles: {'Cultural Heritage Day Pass', 'Evening Canal Tour', 'Historical Walking Tour Dublin', 'Sunset Sail & Cheese Tasting', 'Berlin Wall History Experience', 'Sunset Kayak Expedition', 'Sunset Sail & Wine Tasting'}",
+      "product_id": ""
+    },
+    {
+      "dimension": "diversity",
+      "check": "availability_type_imbalance",
+      "message": "Availability type distribution: {'START_TIME': 21, 'OPENING_HOURS': 9}",
+      "product_id": ""
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Harbor Dock': lat=40.7128 (ent=2.25), lon=-74.006 (ent=0.65)",
+      "product_id": "88f6ae8a-2a77-45f5-8420-3878f0ef580d"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Harbor Dock' match a known city centroid: lat=40.7128, lon=-74.006",
+      "product_id": "88f6ae8a-2a77-45f5-8420-3878f0ef580d"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Harbor Dock'",
+      "product_id": "88f6ae8a-2a77-45f5-8420-3878f0ef580d"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Limestone Cave National Park' match a known city centroid: lat=48.8566, lon=2.3522",
+      "product_id": "b625fe02-a46f-4e85-bf04-e732e8d25731"
+    },
+    {
+      "dimension": "realism",
+      "check": "timezone_country_mismatch",
+      "message": "Timezone 'Europe/Berlin' unexpected for country 'FR' (expected prefix ['Europe/Paris'])",
+      "product_id": "b625fe02-a46f-4e85-bf04-e732e8d25731"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '8faa9ded-5b59-47a2-8694-0c16c6169a75' in option 'Standard Exploration' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "b625fe02-a46f-4e85-bf04-e732e8d25731"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Harbor Marina' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "84eba987-8807-4ea5-87ef-23e2a85bb1c7"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Harbor Marina'",
+      "product_id": "84eba987-8807-4ea5-87ef-23e2a85bb1c7"
+    },
+    {
+      "dimension": "realism",
+      "check": "currency_country_mismatch",
+      "message": "Currency 'EUR' unexpected for country 'GB' (expected {'GBP'})",
+      "product_id": "84eba987-8807-4ea5-87ef-23e2a85bb1c7"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '1872b76b-e43e-4285-94ec-9aecf3bee63a' in option 'Standard Experience' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "84eba987-8807-4ea5-87ef-23e2a85bb1c7"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'City Museum': lat=52.52 (ent=1.25), lon=13.405 (ent=1.25)",
+      "product_id": "9ddd7ddb-9107-48fa-baa0-5b6dc0da1fd9"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'City Museum' match a known city centroid: lat=52.52, lon=13.405",
+      "product_id": "9ddd7ddb-9107-48fa-baa0-5b6dc0da1fd9"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'City Museum'",
+      "product_id": "9ddd7ddb-9107-48fa-baa0-5b6dc0da1fd9"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'cfd8039d-7042-4fa2-881f-b0e9b207049f' in option 'Standard Pass' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "9ddd7ddb-9107-48fa-baa0-5b6dc0da1fd9"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Old Quarter Meeting Point' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "707cb3d9-e381-4936-86b5-1185f7642e10"
+    },
+    {
+      "dimension": "realism",
+      "check": "currency_country_mismatch",
+      "message": "Currency 'EUR' unexpected for country 'GB' (expected {'GBP'})",
+      "product_id": "707cb3d9-e381-4936-86b5-1185f7642e10"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'e8aba18e-d7cf-4d3d-88af-7c45d386f025' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "707cb3d9-e381-4936-86b5-1185f7642e10"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Meeting Point' match a known city centroid: lat=48.8566, lon=2.3522",
+      "product_id": "6bf48979-85bd-48f2-b9e9-e56325a9afb4"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJD8BlQ2BZwokRvEerVniVw0s' reused across products: ['Historical Walking Tour Paris', 'Historical Walking Tour Paris']",
+      "product_id": "6bf48979-85bd-48f2-b9e9-e56325a9afb4"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJD8BlQ2BZwokRvEerVniVw0s' reused across products: ['Historical Walking Tour Paris', 'Historical Walking Tour Paris']",
+      "product_id": "6bf48979-85bd-48f2-b9e9-e56325a9afb4"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '988c24bd-db07-4fbb-826d-e678e8cfb753' in option 'Historical Walking Tour Paris' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "6bf48979-85bd-48f2-b9e9-e56325a9afb4"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJd7ZVf5U2wokR4qZz5w3Z1E0' reused across products: ['Sunset Sail & Wine Tasting', 'Sunset Sail & Wine Tasting']",
+      "product_id": "492c32af-585c-42bf-bc17-d60a9ff7463b"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJd7ZVf5U2wokR4qZz5w3Z1E0' reused across products: ['Sunset Sail & Wine Tasting', 'Sunset Sail & Wine Tasting']",
+      "product_id": "492c32af-585c-42bf-bc17-d60a9ff7463b"
+    },
+    {
+      "dimension": "realism",
+      "check": "timezone_country_mismatch",
+      "message": "Timezone 'Europe/Berlin' unexpected for country 'ES' (expected prefix ['Europe/Madrid'])",
+      "product_id": "492c32af-585c-42bf-bc17-d60a9ff7463b"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Stellar Observatory' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "6810e191-a3ed-4c32-b55e-20d553607832"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Stellar Observatory'",
+      "product_id": "6810e191-a3ed-4c32-b55e-20d553607832"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '1da12c80-789b-4806-b152-5e4a53fbf9a3' in option 'Standard Night Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "6810e191-a3ed-4c32-b55e-20d553607832"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Harbor Adventure Base': lat=52.52 (ent=1.25), lon=13.405 (ent=1.25)",
+      "product_id": "2fe756bc-831b-44d0-90db-9c50ec28a49a"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Harbor Adventure Base' match a known city centroid: lat=52.52, lon=13.405",
+      "product_id": "2fe756bc-831b-44d0-90db-9c50ec28a49a"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Harbor Adventure Base'",
+      "product_id": "2fe756bc-831b-44d0-90db-9c50ec28a49a"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '07cc75a2-8bac-4a8f-a3b5-ee15bc7dd4ef' in option 'Standard Kayak' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "2fe756bc-831b-44d0-90db-9c50ec28a49a"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Port of Barcelona'",
+      "product_id": "3c3793a7-1022-4528-8e8d-524edb74e8ba"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'City Museum': lat=52.52 (ent=1.25), lon=13.405 (ent=1.25)",
+      "product_id": "2e1311f8-d28d-4c54-abbd-c8bf3b9c080a"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'City Museum' match a known city centroid: lat=52.52, lon=13.405",
+      "product_id": "2e1311f8-d28d-4c54-abbd-c8bf3b9c080a"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'City Museum'",
+      "product_id": "2e1311f8-d28d-4c54-abbd-c8bf3b9c080a"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Historic Fort': lat=52.5167 (ent=2.25), lon=13.3933 (ent=1.46)",
+      "product_id": "2e1311f8-d28d-4c54-abbd-c8bf3b9c080a"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Historic Fort'",
+      "product_id": "2e1311f8-d28d-4c54-abbd-c8bf3b9c080a"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'c975b2ed-2f6b-4710-b4d3-b26850062d34' in option 'Full Day Access' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "2e1311f8-d28d-4c54-abbd-c8bf3b9c080a"
+    },
+    {
+      "dimension": "completeness",
+      "check": "missing_media_cover",
+      "message": "Missing or empty: media_cover",
+      "product_id": "2e1311f8-d28d-4c54-abbd-c8bf3b9c080a"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Canal Route': lat=52.37 (ent=1.25), lon=4.89 (ent=1.25)",
+      "product_id": "8b6badeb-62e3-490b-bb7d-a4c72ec93a7d"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'ef5f7ce6-f269-44ca-be9d-76a4c48fb41d' in option 'Standard Evening Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "8b6badeb-62e3-490b-bb7d-a4c72ec93a7d"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Pont Alexandre III Boarding Point'",
+      "product_id": "ee93e8e1-4c7f-4a5a-a1ac-8600802e3fc6"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Tour Route' match a known city centroid: lat=48.8566, lon=2.3522",
+      "product_id": "ee93e8e1-4c7f-4a5a-a1ac-8600802e3fc6"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Checkpoint Charlie': lat=52.5055 (ent=1.00), lon=13.3973 (ent=1.92)",
+      "product_id": "9530ed1d-b93a-451d-b6ff-57dc656dc3a4"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '4abcdf0c-5732-444f-bd6e-2fb33b39b991' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "9530ed1d-b93a-451d-b6ff-57dc656dc3a4"
+    },
+    {
+      "dimension": "realism",
+      "check": "timezone_country_mismatch",
+      "message": "Timezone 'Europe/Berlin' unexpected for country 'NL' (expected prefix ['Europe/Amsterdam'])",
+      "product_id": "1b2d12a6-5902-438b-b805-92fd9eda03f6"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '9d665713-3a30-4137-b2c2-f8810637ee1a' in option 'Evening Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "1b2d12a6-5902-438b-b805-92fd9eda03f6"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJN1t_tDeuEkcR-Wa2rJNxUzg' reused across products: ['Historical Walking Tour Berlin', 'Historical Walking Tour Berlin', 'Historical Walking Tour Berlin']",
+      "product_id": "15210b00-f882-4dd2-a215-1533b6622e1d"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Reichstag Building': lat=52.525556 (ent=1.25), lon=13.367675 (ent=1.92)",
+      "product_id": "15210b00-f882-4dd2-a215-1533b6622e1d"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJN1t_tDeuEkcR-Wa2rJNxUzg' reused across products: ['Historical Walking Tour Berlin', 'Historical Walking Tour Berlin', 'Historical Walking Tour Berlin']",
+      "product_id": "15210b00-f882-4dd2-a215-1533b6622e1d"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJN1t_tDeuEkcR-Wa2rJNxUzg' reused across products: ['Historical Walking Tour Berlin', 'Historical Walking Tour Berlin', 'Historical Walking Tour Berlin']",
+      "product_id": "15210b00-f882-4dd2-a215-1533b6622e1d"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '433e54f4-5955-4ddf-aaca-00efa6372cf4' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "15210b00-f882-4dd2-a215-1533b6622e1d"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Jurassic Cave Entrance'",
+      "product_id": "4a9fc44a-bf92-48d9-aa11-a7928cec15e0"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Berlin Wall Memorial': lat=52.543 (ent=1.79), lon=13.41 (ent=1.25)",
+      "product_id": "9e18cb14-f30b-482a-8dde-bc2b18c616ce"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Berlin Wall Memorial'",
+      "product_id": "9e18cb14-f30b-482a-8dde-bc2b18c616ce"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '34d42f94-529d-4a3a-a68a-08081645cc22' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "9e18cb14-f30b-482a-8dde-bc2b18c616ce"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'City Heritage Center': lat=52.52 (ent=1.25), lon=13.405 (ent=1.25)",
+      "product_id": "f585aa30-5b04-485d-b6f8-52acaad160d8"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'City Heritage Center' match a known city centroid: lat=52.52, lon=13.405",
+      "product_id": "f585aa30-5b04-485d-b6f8-52acaad160d8"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'City Heritage Center'",
+      "product_id": "f585aa30-5b04-485d-b6f8-52acaad160d8"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Historic House Museum': lat=52.5167 (ent=2.25), lon=13.3933 (ent=1.46)",
+      "product_id": "f585aa30-5b04-485d-b6f8-52acaad160d8"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '69dc1e6e-1c67-4705-b51f-2be40103266d' in option 'Full Day Pass' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "f585aa30-5b04-485d-b6f8-52acaad160d8"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Dublin Castle'",
+      "product_id": "35a4ffcd-bc84-4cd2-aa77-bfe9fc21fbee"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'b3f3bda3-a34a-4a70-acf9-803955a94c1e' in option 'Historical Walking Tour Dublin' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "35a4ffcd-bc84-4cd2-aa77-bfe9fc21fbee"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Harbor Launch Point': lat=52.52 (ent=1.25), lon=13.405 (ent=1.25)",
+      "product_id": "0e5346c5-e7c7-49ad-8255-96ea0c1e6d93"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Harbor Launch Point' match a known city centroid: lat=52.52, lon=13.405",
+      "product_id": "0e5346c5-e7c7-49ad-8255-96ea0c1e6d93"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Harbor Launch Point'",
+      "product_id": "0e5346c5-e7c7-49ad-8255-96ea0c1e6d93"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Dublin City Centre'",
+      "product_id": "7320785e-0c75-4155-be5e-797a26279373"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'b6d2f815-2c7b-424c-85a9-21856180f10c' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "7320785e-0c75-4155-be5e-797a26279373"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '6337b6cc-350f-4562-9fba-6401a28f404d' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "d42817d0-dcea-44bf-9d6c-d3637492fa99"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'e6e03b1d-dc9e-4f3b-ae38-6ed8844d271a' in option 'Premium Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "d42817d0-dcea-44bf-9d6c-d3637492fa99"
+    },
+    {
+      "dimension": "coherence",
+      "check": "duration_mismatch",
+      "message": "Option 'Premium Tour' duration 120.0min outside product range [180, 240]",
+      "product_id": "d42817d0-dcea-44bf-9d6c-d3637492fa99"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Lakefront Marina': lat=46.2044 (ent=1.46), lon=6.1432 (ent=2.25)",
+      "product_id": "c64ef8f0-a834-4b96-b528-6ce7db411caa"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Lakefront Marina'",
+      "product_id": "c64ef8f0-a834-4b96-b528-6ce7db411caa"
+    },
+    {
+      "dimension": "realism",
+      "check": "currency_country_mismatch",
+      "message": "Currency 'EUR' unexpected for country 'CH' (expected {'CHF'})",
+      "product_id": "c64ef8f0-a834-4b96-b528-6ce7db411caa"
+    },
+    {
+      "dimension": "realism",
+      "check": "timezone_country_mismatch",
+      "message": "Timezone 'Europe/Paris' unexpected for country 'CH' (expected prefix ['Europe/Zurich'])",
+      "product_id": "c64ef8f0-a834-4b96-b528-6ce7db411caa"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Dublin Castle'",
+      "product_id": "ed79fffb-d868-4257-a5a1-3cc346b084cb"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '183737da-47e0-4aeb-b3bb-0a2ff6ca68d4' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "ed79fffb-d868-4257-a5a1-3cc346b084cb"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Meeting Point: Pra\u00e7a do Com\u00e9rcio': lat=38.7167 (ent=1.92), lon=-9.1333 (ent=1.46)",
+      "product_id": "94957032-f2d9-4638-8c9e-1f4db93654f1"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Meeting Point: Pra\u00e7a do Com\u00e9rcio'",
+      "product_id": "94957032-f2d9-4638-8c9e-1f4db93654f1"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '28c97f94-02a3-4c5d-a450-08bfd42a78f0' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "94957032-f2d9-4638-8c9e-1f4db93654f1"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Glacier Base Camp'",
+      "product_id": "623af4a2-87da-4bc1-8de8-77be567ba225"
+    },
+    {
+      "dimension": "realism",
+      "check": "currency_country_mismatch",
+      "message": "Currency 'EUR' unexpected for country 'CH' (expected {'CHF'})",
+      "product_id": "623af4a2-87da-4bc1-8de8-77be567ba225"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'b4720b4f-30b6-4e0e-8e28-4f3a192e919e' in option 'Standard Hike' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "623af4a2-87da-4bc1-8de8-77be567ba225"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Famine Memorial'",
+      "product_id": "0b7b686f-64d5-4e03-b2bf-ebe7411904f4"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Dublin Castle'",
+      "product_id": "0b7b686f-64d5-4e03-b2bf-ebe7411904f4"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Pra\u00e7a do Com\u00e9rcio': lat=38.7167 (ent=1.92), lon=-9.1333 (ent=1.46)",
+      "product_id": "95df6270-0333-4729-913e-b6748bc2c7ec"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'S\u00e3o Jorge Castle': lat=38.7079 (ent=1.46), lon=-9.1339 (ent=1.92)",
+      "product_id": "95df6270-0333-4729-913e-b6748bc2c7ec"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '81c0c5f0-fe99-4cf9-b332-1f1a95aafdde' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "95df6270-0333-4729-913e-b6748bc2c7ec"
+    }
+  ],
+  "issue_summary": {
+    "by_dimension": {
+      "diversity": 3,
+      "realism": 86,
+      "completeness": 1,
+      "coherence": 1
+    },
+    "by_check": {
+      "low_country_diversity": 1,
+      "duplicate_titles": 1,
+      "availability_type_imbalance": 1,
+      "coordinate_entropy": 16,
+      "city_centroid": 12,
+      "known_dummy_place_id": 21,
+      "timezone_country_mismatch": 4,
+      "adult_age_range": 22,
+      "currency_country_mismatch": 4,
+      "duplicate_place_id": 7,
+      "missing_media_cover": 1,
+      "duration_mismatch": 1
+    },
+    "total": 91
+  }
+}

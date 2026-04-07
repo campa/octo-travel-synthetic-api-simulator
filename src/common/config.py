@@ -85,7 +85,7 @@ class Settings(BaseSettings):
     service_name: str = "otas"
 
     # Seed persistence
-    seed_file: str = "seed_data.json"
+    seed_file: str = "data/seed_data.json"
 
 
 settings = Settings()

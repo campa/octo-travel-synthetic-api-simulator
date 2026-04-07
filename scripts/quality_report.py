@@ -31,10 +31,21 @@ def _detect_model() -> str:
     return "unknown"
 
 
+def _detect_seed_file() -> str:
+    """Read the seed file path from .env or return the default."""
+    env_path = Path(__file__).resolve().parent.parent / ".env"
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            line = line.strip()
+            if line.startswith("OTAS_SEED_FILE=") and not line.startswith("#"):
+                return line.split("=", 1)[1].strip()
+    return "data/seed_data.json"
+
+
 def main():
     save = "--save" in sys.argv
     args = [a for a in sys.argv[1:] if a != "--save"]
-    seed_file = args[0] if args else "seed_data.json"
+    seed_file = args[0] if args else _detect_seed_file()
     path = Path(seed_file)
     if not path.exists():
         print(f"File not found: {path}")

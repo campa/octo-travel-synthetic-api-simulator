@@ -123,7 +123,7 @@ All settings use the `OTAS_` environment variable prefix and can also be set via
 | `OTAS_OTLP_USER` | `admin@otas.local` | OpenObserve basic auth user |
 | `OTAS_OTLP_PASSWORD` | `admin` | OpenObserve basic auth password |
 | `OTAS_SERVICE_NAME` | `otas` | OTel service name |
-| `OTAS_SEED_FILE` | `seed_data.json` | Seed data file path |
+| `OTAS_SEED_FILE` | `data/seed_data.json` | Seed data file path |
 | `OTAS_LOG_LEVEL` | `INFO` | Root log level (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
 
 ### Per-module log levels

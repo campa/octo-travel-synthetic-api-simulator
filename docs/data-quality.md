@@ -14,6 +14,7 @@ OTAS includes a deterministic quality scoring system that evaluates generated OC
 - [Issue tracking](#issue-tracking)
 - [Comparing runs](#comparing-runs)
 - [Example: 50-product batch with nemotron-3-nano:30b](#example-50-product-batch-with-nemotron-3-nano30b)
+- [Example: 30-product batch with nemotron-3-nano:30b](#example-30-product-batch-with-nemotron-3-nano30b)
 - [Limitations](#limitations)
 
 ## Quick start
@@ -207,6 +208,66 @@ The following results were collected from a 50-product generation run using `nem
 - Diversity collapses at scale (0.19) — only 6 unique countries and 15 unique titles across 50 products. The LLM starts recycling titles around product 10-15 despite the diversity steering prompt. This is the highest-impact area for improvement.
 
 The full report is saved at `metrics/quality-reports/20260403-180029_nemotron-3-nano-30b_50p.json`.
+
+## Example: 30-product batch with nemotron-3-nano:30b
+
+Results from a 30-product generation run using `nemotron-3-nano:30b` at temperature 0.5 on an Apple M3 Max (64 GB RAM).
+
+### Summary scores
+
+| Dimension | Score |
+|-----------|-------|
+| Composite | 0.78 |
+| Realism | 0.70 |
+| Coherence | 0.99 |
+| Completeness | 0.99 |
+| Diversity | 0.35 |
+
+### Issue distribution
+
+91 total issues across 30 products:
+
+| Dimension | Count | % of total |
+|-----------|-------|------------|
+| Realism | 86 | 95% |
+| Diversity | 3 | 3% |
+| Completeness | 1 | 1% |
+| Coherence | 1 | 1% |
+
+### Top issue types
+
+| Check | Count | Description |
+|-------|-------|-------------|
+| `adult_age_range` | 22 | ADULT units with minAge=0/maxAge=0 while sibling CHILD has real ages |
+| `known_dummy_place_id` | 21 | Sydney Opera House Place ID reused across products |
+| `coordinate_entropy` | 16 | Low-entropy coordinates (placeholder-like patterns) |
+| `city_centroid` | 12 | Coordinates matching known city centroids |
+| `duplicate_place_id` | 7 | Same Place ID reused across different products |
+| `timezone_country_mismatch` | 4 | Wrong timezone prefix for the country |
+| `currency_country_mismatch` | 4 | Wrong currency for the product's country |
+
+### Key observations
+
+- Coherence improved to 0.99 — only 1 duration mismatch across 30 products, a significant improvement over the 50-product run (0.94).
+- Completeness near-perfect at 0.99 — only 1 product missing a COVER media item.
+- Diversity improved to 0.35 (vs 0.19 at 50 products) — 9 unique countries across 30 products. Smaller batches naturally score better on diversity since the LLM has fewer opportunities to repeat itself.
+- Realism patterns remain consistent: ADULT age ranges (73% of products), dummy Place IDs (70%), and city centroids (40%) are the dominant issues regardless of batch size.
+- Composite score of 0.78 is the highest observed, driven by the near-perfect coherence and completeness.
+
+### Comparison across batch sizes
+
+| Metric | 10 products | 30 products | 50 products |
+|--------|-------------|-------------|-------------|
+| Composite | 0.81 | 0.78 | 0.74 |
+| Realism | 0.76 | 0.70 | 0.72 |
+| Coherence | 0.94 | 0.99 | 0.94 |
+| Completeness | 1.00 | 0.99 | 1.00 |
+| Diversity | 0.47 | 0.35 | 0.19 |
+| Total issues | 28 | 91 | 148 |
+
+Diversity degrades linearly with batch size — the LLM exhausts its variety around 10-15 products. Realism and coherence remain stable regardless of batch size.
+
+The full report is saved at `metrics/quality-reports/20260407-171251_nemotron-3-nano-30b_30p.json`.
 
 ## Limitations
 
