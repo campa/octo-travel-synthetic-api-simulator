@@ -16,7 +16,7 @@ import uvicorn
 
 from common.config import Settings
 from models.product import Product
-from seeder.availability_generator import AvailabilityGenerator, load_products_from_seed
+from seeder.availability_generator import AvailabilityGenerator
 from seeder.availability_prompt_builder import AvailabilityPromptBuilder
 from seeder.generator import ProductGenerator
 from seeder.ollama_client import OllamaClient, SeedingFailedError

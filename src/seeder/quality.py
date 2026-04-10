@@ -218,7 +218,6 @@ def _check_realism(product: Product, all_place_ids: dict[str, list[str]]) -> tup
     checks_total = 0
     issues: list[QualityIssue] = []
     pid = product.id
-    title = product.title or product.internal_name
 
     # --- Coordinate plausibility ---
     if product.locations:

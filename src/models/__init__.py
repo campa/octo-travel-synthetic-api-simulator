@@ -7,6 +7,7 @@ from models.availability import (
 )
 from models.errors import ErrorResponse
 from models.product import (
+    FAQ,
     AvailabilityType,
     CancellationCutoffUnit,
     Commentary,
@@ -14,7 +15,6 @@ from models.product import (
     DeliveryFormat,
     DeliveryMethod,
     DurationUnit,
-    FAQ,
     Feature,
     FeatureType,
     IncludedTax,

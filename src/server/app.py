@@ -7,8 +7,8 @@ from fastapi.responses import JSONResponse
 
 from common.config import Settings
 from server.error_handler import create_error_response
-from server.routes.products import create_products_router
 from server.middleware import RequestMetricsMiddleware
+from server.routes.products import create_products_router
 from state.manager import StateManager
 from telemetry.setup import TelemetryInstruments
 
