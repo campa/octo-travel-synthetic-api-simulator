@@ -1,5 +1,10 @@
 """OCTO data models — re-exports all public models and enums."""
 
+from models.availability import (
+    AvailabilityCalendarDay,
+    AvailabilityStatus,
+    OpeningHours,
+)
 from models.errors import ErrorResponse
 from models.product import (
     AvailabilityType,
@@ -62,4 +67,8 @@ __all__ = [
     "Product",
     # Error models
     "ErrorResponse",
+    # Availability models
+    "AvailabilityCalendarDay",
+    "AvailabilityStatus",
+    "OpeningHours",
 ]

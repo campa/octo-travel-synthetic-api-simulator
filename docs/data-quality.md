@@ -279,3 +279,19 @@ The current scorer is fully deterministic — no LLM calls. This means it catche
 - Subtle semantic contradictions beyond FAQ-vs-pricing
 
 These would require either embedding-based similarity checks or an LLM-as-judge pass, which are planned as future enhancements.
+
+## Availability coherence checks
+
+In addition to the product quality scorer, the availability generation pipeline includes its own coherence validation that runs after each weekly chunk is generated. These checks ensure the generated availability data is consistent with the product it belongs to.
+
+| Check | What it catches | Auto-fix |
+|-------|----------------|----------|
+| Start time subset | LLM invented start times not in the option's defined list | Filters to allowed subset |
+| Time overlap | Two start times that overlap given the option's duration (e.g. 09:00 + 2h overlaps 10:00) | Removes overlapping times (greedy, keeps earliest) |
+| FREESALE on non-freesale product | FREESALE status when `allowFreesale=false` | Flips to AVAILABLE |
+| Start times on OPENING_HOURS | `availabilityLocalStartTimes` present on an OPENING_HOURS product | Strips the field |
+| Start times on closed days | Start times on CLOSED or SOLD_OUT days | Strips the field |
+
+These checks are deterministic and run inline during generation (not as a separate scoring pass). Issues that can be auto-fixed are corrected immediately. All issues are also fed back as error hints for the next retry attempt, so the LLM learns to avoid them.
+
+After coherence fixes, a slot cap enforces `max_slots_per_week` by trimming start times or closing excess days. See [architecture.md](architecture.md) for the full pipeline description.

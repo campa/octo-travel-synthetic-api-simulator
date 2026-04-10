@@ -2,7 +2,7 @@
   "timestamp": "2026-04-03T17:07:01.340720",
   "model": "nemotron-3-nano:30b",
   "product_count": 10,
-  "seed_file": "seed_data.json",
+  "seed_product_file": "seed_data.json",
   "scores": {
     "composite": 0.805,
     "realism": 0.762,

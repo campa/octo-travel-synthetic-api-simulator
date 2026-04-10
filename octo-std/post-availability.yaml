@@ -1,0 +1,148 @@
+# Extracted from api-spec/octo-spec.yaml — POST /availability
+# This file describes the request and response body for the availability check endpoint.
+# Returns one object per departure time (or day for OPENING_HOURS).
+# Required to obtain an availabilityId for booking.
+
+endpoint: POST /availability
+summary: Availability Check
+description: >
+  Returns an object for each individual departure time (or day for OPENING_HOURS).
+  Slightly slower than /availability/calendar but provides the availabilityId
+  needed to create a booking. You must pass one of:
+  - localDate
+  - localDateStart and localDateEnd
+  - availabilityIds
+
+request:
+  type: object
+  required: [productId, optionId]
+  properties:
+    productId:
+      type: string
+      format: uuid
+      description: The product id.
+    optionId:
+      type: string
+      description: The option id.
+    localDateStart:
+      type: string
+      format: date
+      description: Start date to query for (YYYY-MM-DD). Required if localDateEnd is set.
+    localDateEnd:
+      type: string
+      format: date
+      description: End date to query for (YYYY-MM-DD). Required if localDateStart is set.
+    availabilityIds:
+      type: array
+      items:
+        type: string
+      description: Filter results by specific availability IDs.
+    units:
+      type: array
+      description: Optional list of units to check availability for.
+      items:
+        type: object
+        required: [id, quantity]
+        properties:
+          id:
+            type: string
+            description: The unit id.
+          quantity:
+            type: integer
+            description: The quantity of the unit.
+
+response:
+  type: array
+  items:
+    type: object
+    required:
+      - id
+      - localDateTimeStart
+      - localDateTimeEnd
+      - allDay
+      - available
+      - status
+      - vacancies
+      - capacity
+      - maxUnits
+      - utcCutoffAt
+      - openingHours
+    properties:
+      id:
+        type: string
+        description: >
+          The availability id, needed when booking. MUST be unique within
+          the scope of an option. Typically an ISO 8601 datetime string
+          matching localDateTimeStart.
+      localDateTimeStart:
+        type: string
+        format: date-time
+        description: >
+          Start time in the product's local timezone.
+          ISO 8601 compliant (e.g. "2022-06-30T12:00:00+01:00").
+      localDateTimeEnd:
+        type: string
+        format: date-time
+        description: >
+          End time in the product's local timezone.
+          ISO 8601 compliant (e.g. "2022-06-30T14:00:00+01:00").
+      allDay:
+        type: boolean
+        description: >
+          Whether this is an all-day availability (OPENING_HOURS) rather
+          than a fixed departure time. If true, no other availability
+          object exists on the same day.
+      available:
+        type: boolean
+        description: Whether there is availability for this slot.
+      status:
+        type: string
+        enum: [AVAILABLE, FREESALE, SOLD_OUT, LIMITED, CLOSED]
+        description: >
+          AVAILABLE — available for sale.
+          FREESALE — no capacity tracking, always available.
+          SOLD_OUT — no more spots for this slot.
+          LIMITED — less than 50% capacity remaining.
+          CLOSED — not open for this slot.
+      vacancies:
+        type: [integer, "null"]
+        description: >
+          Remaining spots. SHOULD NOT be returned when status is FREESALE.
+          Shared pool for all Unit types in the Option.
+      capacity:
+        type: [integer, "null"]
+        description: The total capacity for this slot.
+      maxUnits:
+        type: [integer, "null"]
+        description: Maximum number of units that can be sold in one booking for this slot.
+      utcCutoffAt:
+        type: string
+        format: date-time
+        description: >
+          UTC deadline by which the booking must be confirmed.
+          After this time, the availability can no longer be booked.
+      openingHours:
+        type: array
+        items:
+          type: object
+          required: [from, to]
+          properties:
+            from:
+              type: string
+              description: When this product opens (HH:MM).
+            to:
+              type: string
+              description: When this product closes (HH:MM).
+        description: >
+          Opening hours for OPENING_HOURS products.
+          Empty array for START_TIME products.
+
+errors:
+  - error: INVALID_PRODUCT_ID
+    description: The productId was missing or invalid.
+  - error: INVALID_OPTION_ID
+    description: The optionId was missing or invalid.
+  - error: BAD_REQUEST
+    description: >
+      Either localDate, localDateStart/localDateEnd, or availabilityIds
+      is required.

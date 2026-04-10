@@ -26,7 +26,8 @@ A stateful mock server that implements the [OCTO](https://www.octo.travel/) trav
 ## What it does
 
 1. Uses a local LLM (Ollama) to generate realistic tour/activity products
-2. Serves them through OCTO-compliant REST endpoints
+2. Generates coherent availability calendars for each product and option
+3. Serves them through OCTO-compliant REST endpoints
 
 ## Prerequisites
 
@@ -69,8 +70,19 @@ To skip LLM generation and use a cached seed file:
 uv run otas --dump-seed
 
 # Subsequent runs: load from file (fast, no Ollama needed)
-uv run otas --skip-seed
+uv run otas --skip-seed --skip-availability
 ```
+
+The `--skip-seed` and `--skip-availability` flags are independent, so you can mix and match:
+
+| Command | Products | Availability |
+|---------|----------|--------------|
+| `uv run otas --dump-seed` | Generate | Generate |
+| `uv run otas --dump-seed --skip-availability` | Generate | Skip |
+| `uv run otas --skip-seed --dump-seed` | Load from file | Generate |
+| `uv run otas --skip-seed --skip-availability` | Load from file | Load from file |
+
+This lets you iterate on availability generation without re-running the product seeder — just use `--skip-seed --dump-seed`.
 
 ## API endpoints
 
@@ -96,14 +108,19 @@ curl http://localhost:8080/products/<product-id>
 ```
 uv run otas [OPTIONS]
 
---host              Bind host (default: 0.0.0.0)
---port              Bind port (default: 8080)
---product-count     Number of products to generate (default: 10)
---max-retries       Max Ollama retries per product (default: 3)
---avg-slots-per-day Avg time slots per day for START_TIME products (default: 3)
---seed-file         Path to seed data JSON file (default: seed_data.json)
---skip-seed         Load from seed file instead of calling Ollama
---dump-seed         Save generated data to seed file after generation
+--host                            Bind host (default: 0.0.0.0)
+--port                            Bind port (default: 8080)
+--product-count                   Number of products to generate (default: 10)
+--max-retries                     Max Ollama retries per product (default: 3)
+--avg-slots-per-day               Avg time slots per day for START_TIME products (default: 3)
+--seed-product-file               Path to product seed data JSON file (default: seed_product_data.json)
+--seed-availability-file          Path to availability seed data JSON file (default: seed_availability_data.json)
+--availability-window-days        Total days of availability to generate per option (default: 5)
+--availability-start-date         Start date for availability (YYYY-MM-DD, default: today)
+--availability-max-slots-per-week Max bookable time slots per 7-day week (default: 5)
+--skip-seed                       Load from seed files instead of calling Ollama
+--skip-availability               Skip availability generation
+--dump-seed                       Save generated data to seed files after generation
 ```
 
 ## Configuration
@@ -123,7 +140,11 @@ All settings use the `OTAS_` environment variable prefix and can also be set via
 | `OTAS_OTLP_USER` | `admin@otas.local` | OpenObserve basic auth user |
 | `OTAS_OTLP_PASSWORD` | `admin` | OpenObserve basic auth password |
 | `OTAS_SERVICE_NAME` | `otas` | OTel service name |
-| `OTAS_SEED_FILE` | `data/seed_data.json` | Seed data file path |
+| `OTAS_SEED_PRODUCT_FILE` | `data/seed_product_data.json` | Seed product data file path |
+| `OTAS_SEED_AVAILABILITY_FILE` | `data/seed_availability_data.json` | Seed availability data file path |
+| `OTAS_AVAILABILITY_WINDOW_DAYS` | `5` | Days of availability to generate per option |
+| `OTAS_AVAILABILITY_START_DATE` | (today) | Start date for availability generation (YYYY-MM-DD) |
+| `OTAS_AVAILABILITY_MAX_SLOTS_PER_WEEK` | `5` | Max bookable time slots per 7-day week |
 | `OTAS_LOG_LEVEL` | `INFO` | Root log level (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
 
 ### Per-module log levels
@@ -234,21 +255,25 @@ CI runs on GitHub Actions (push/PR to `main`).
 
 ```
 src/
-├── cli.py              # CLI entrypoint, arg parsing, server startup
-├── common/config.py    # Pydantic Settings (OTAS_ env prefix)
-├── models/             # Pydantic models (Product, Errors)
-├── seeder/             # LLM-based product generation pipeline
-│   ├── generator.py    # Orchestrates generation with retry + validation
-│   ├── ollama_client.py # Async Ollama HTTP client
-│   ├── prompt_builder.py # Prompt construction from OCTO spec
-│   └── quality.py      # Deterministic quality scoring (realism, coherence, completeness, diversity)
-├── server/             # FastAPI app, routes, middleware, error handling
-│   ├── app.py          # App factory
-│   ├── routes/         # Product endpoints
-│   ├── middleware.py   # Request metrics middleware
-│   └── error_handler.py # Structured error responses with correlation IDs
-├── state/manager.py    # In-memory product store
-└── telemetry/setup.py  # OpenTelemetry SDK init + metric instruments
+├── cli.py                  # CLI entrypoint, arg parsing, server startup
+├── common/config.py        # Pydantic Settings (OTAS_ env prefix)
+├── models/                 # Pydantic models (Product, Availability, Errors)
+│   ├── product.py          # Product, Option, Unit models
+│   └── availability.py     # AvailabilityCalendarDay, OpeningHours models
+├── seeder/                 # LLM-based generation pipelines
+│   ├── generator.py        # Product generation with retry + validation
+│   ├── availability_generator.py   # Availability generation (weekly chunks + coherence)
+│   ├── availability_prompt_builder.py # Availability prompt construction
+│   ├── ollama_client.py    # Async Ollama HTTP client
+│   ├── prompt_builder.py   # Product prompt construction from OCTO spec
+│   └── quality.py          # Deterministic quality scoring (realism, coherence, completeness, diversity)
+├── server/                 # FastAPI app, routes, middleware, error handling
+│   ├── app.py              # App factory
+│   ├── routes/             # Product endpoints
+│   ├── middleware.py        # Request metrics middleware
+│   └── error_handler.py    # Structured error responses with correlation IDs
+├── state/manager.py        # In-memory product + availability store
+└── telemetry/setup.py      # OpenTelemetry SDK init + metric instruments
 ```
 
 ## License

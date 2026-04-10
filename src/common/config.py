@@ -84,8 +84,14 @@ class Settings(BaseSettings):
     otlp_password: str = "admin"
     service_name: str = "otas"
 
+    # Availability generation
+    availability_window_days: int = 5
+    availability_start_date: str = ""
+    availability_max_slots_per_week: int = 5
+
     # Seed persistence
-    seed_file: str = "data/seed_data.json"
+    seed_product_file: str = "data/seed_product_data.json"
+    seed_availability_file: str = "data/seed_availability_data.json"
 
 
 settings = Settings()

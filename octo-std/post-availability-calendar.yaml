@@ -1,0 +1,180 @@
+# Extracted from api-spec/octo-spec.yaml — POST /availability/calendar
+# This file describes the request and response body for the availability calendar endpoint.
+# Designed for querying large date ranges to populate a calendar view.
+#
+# Includes extended fields observed in real supplier responses:
+#   - statusMessage, availableWeight, maxWeight, weightUnit
+#   - totalCapacity, totalMaxWeight, limitCapacity
+#   - paxCount, paxWeight, limitPaxCount, totalPaxCount, totalPaxWeight
+#   - noShows, totalNoShows, maxPaxCount, utcOnsaleAt
+#   - availabilityLocalStartTimes (calendar-level)
+#   - openingHours with frequency fields
+
+endpoint: POST /availability/calendar
+summary: Availability Calendar
+description: >
+  Optimised endpoint returning one object per day for large date ranges.
+  Used to populate an availability calendar. When the user selects an open
+  date, call POST /availability to get the availabilityId for booking.
+
+request:
+  type: object
+  required: [productId, optionId, localDateStart, localDateEnd]
+  properties:
+    productId:
+      type: string
+      format: uuid
+      description: The product id.
+    optionId:
+      type: string
+      description: The option id.
+    localDateStart:
+      type: string
+      format: date
+      description: Start date to query for (YYYY-MM-DD).
+    localDateEnd:
+      type: string
+      format: date
+      description: End date to query for (YYYY-MM-DD).
+    units:
+      type: array
+      description: Optional list of units to check availability for.
+      items:
+        type: object
+        required: [id, quantity]
+        properties:
+          id:
+            type: string
+            description: The unit id.
+          quantity:
+            type: integer
+            description: The quantity of the unit.
+
+response:
+  type: array
+  items:
+    type: object
+    required: [localDate, available, status, vacancies, capacity, openingHours]
+    properties:
+      localDate:
+        type: string
+        format: date
+        description: A single date (ISO 8601 YYYY-MM-DD).
+      available:
+        type: boolean
+        description: Whether there is availability for this date.
+      status:
+        type: string
+        enum: [AVAILABLE, FREESALE, SOLD_OUT, LIMITED, CLOSED]
+        description: >
+          AVAILABLE — available for sale.
+          FREESALE — no capacity tracking, always available.
+          SOLD_OUT — no more spots.
+          LIMITED — less than 50% capacity remaining.
+          CLOSED — not open on this day.
+      statusMessage:
+        type: [string, "null"]
+        description: >
+          Human-readable status message from the supplier.
+          Common values: "Available", "Outside the validity period".
+          Not in the core spec but returned by many real suppliers.
+      vacancies:
+        type: [integer, "null"]
+        description: >
+          Remaining spots. SHOULD NOT be returned when status is FREESALE.
+          Shared pool for all Unit types in the Option.
+      capacity:
+        type: [integer, "null"]
+        description: The total capacity on this day.
+      maxUnits:
+        type: [integer, "null"]
+        description: Maximum number of units that can be sold in one booking on this day.
+      openingHours:
+        type: array
+        items:
+          type: object
+          required: [from, to]
+          properties:
+            from:
+              type: string
+              description: When this product opens (HH:MM).
+            to:
+              type: string
+              description: When this product closes (HH:MM).
+            frequency:
+              type: [string, "null"]
+              description: Departure frequency description (extended field).
+            frequencyAmount:
+              type: [integer, "null"]
+              description: Numeric frequency amount (extended field).
+            frequencyUnit:
+              type: [string, "null"]
+              description: Frequency time unit, e.g. "hour" (extended field).
+        description: Opening hours for this day. Empty array for START_TIME products.
+      utcCutoffAt:
+        type: [string, "null"]
+        format: date-time
+        description: UTC deadline by which the booking must be confirmed.
+      utcOnsaleAt:
+        type: [string, "null"]
+        format: date-time
+        description: UTC time when this date goes on sale (extended field).
+
+      # --- Extended fields observed in real supplier responses ---
+      availabilityLocalStartTimes:
+        type: array
+        items:
+          type: string
+        description: >
+          Start times available on this date (HH:MM format).
+          Extended field not in core spec but returned by many suppliers.
+      availableWeight:
+        type: [number, "null"]
+        description: Available weight capacity (extended field for weight-based products).
+      maxWeight:
+        type: [number, "null"]
+        description: Maximum weight per booking (extended field).
+      weightUnit:
+        type: [string, "null"]
+        description: Weight unit, e.g. "kg" (extended field).
+      totalCapacity:
+        type: [integer, "null"]
+        description: Total capacity before any bookings (extended field).
+      totalMaxWeight:
+        type: [number, "null"]
+        description: Total maximum weight capacity (extended field).
+      limitCapacity:
+        type: [integer, "null"]
+        description: Capacity limit threshold (extended field).
+      paxCount:
+        type: [integer, "null"]
+        description: Current passenger count (extended field).
+      paxWeight:
+        type: [number, "null"]
+        description: Current passenger weight total (extended field).
+      limitPaxCount:
+        type: [integer, "null"]
+        description: Passenger count already booked/limited (extended field).
+      totalPaxCount:
+        type: [integer, "null"]
+        description: Total passenger count including all bookings (extended field).
+      totalPaxWeight:
+        type: [number, "null"]
+        description: Total passenger weight (extended field).
+      noShows:
+        type: [integer, "null"]
+        description: Number of no-shows (extended field).
+      totalNoShows:
+        type: [integer, "null"]
+        description: Total no-shows (extended field).
+      maxPaxCount:
+        type: [integer, "null"]
+        description: Maximum passenger count per booking (extended field).
+
+errors:
+  - error: INVALID_PRODUCT_ID
+    description: The productId was missing or invalid.
+  - error: INVALID_OPTION_ID
+    description: The optionId was missing or invalid.
+  - error: BAD_REQUEST
+    description: Cannot request more than 1 year of availability.

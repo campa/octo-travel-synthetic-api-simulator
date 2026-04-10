@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Generate a quality report for seed_data.json.
+"""Generate a quality report for seed_product_data.json.
 
 Usage:
-    python scripts/quality_report.py [path/to/seed_data.json] [--save]
+    python scripts/quality_report.py [path/to/seed_product_data.json] [--save]
 
 Options:
     --save    Save results to metrics/quality-reports/ with model name and timestamp.
@@ -31,22 +31,22 @@ def _detect_model() -> str:
     return "unknown"
 
 
-def _detect_seed_file() -> str:
-    """Read the seed file path from .env or return the default."""
+def _detect_seed_product_file() -> str:
+    """Read the seed product file path from .env or return the default."""
     env_path = Path(__file__).resolve().parent.parent / ".env"
     if env_path.exists():
         for line in env_path.read_text().splitlines():
             line = line.strip()
-            if line.startswith("OTAS_SEED_FILE=") and not line.startswith("#"):
+            if line.startswith("OTAS_SEED_PRODUCT_FILE=") and not line.startswith("#"):
                 return line.split("=", 1)[1].strip()
-    return "data/seed_data.json"
+    return "data/seed_product_data.json"
 
 
 def main():
     save = "--save" in sys.argv
     args = [a for a in sys.argv[1:] if a != "--save"]
-    seed_file = args[0] if args else _detect_seed_file()
-    path = Path(seed_file)
+    seed_product_file = args[0] if args else _detect_seed_product_file()
+    path = Path(seed_product_file)
     if not path.exists():
         print(f"File not found: {path}")
         sys.exit(1)
@@ -129,7 +129,7 @@ def main():
             "timestamp": datetime.now().isoformat(),
             "model": model,
             "product_count": len(products),
-            "seed_file": str(seed_file),
+            "seed_product_file": str(seed_product_file),
             "scores": {
                 "composite": round(batch.composite, 3),
                 "realism": round(batch.avg_realism, 3),

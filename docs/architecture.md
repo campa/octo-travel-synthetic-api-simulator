@@ -2,28 +2,64 @@
 
 ## Overview
 
-OTAS is a stateful mock server with two phases: seed and serve.
+OTAS is a stateful mock server with two phases: seed and serve. The seed phase itself has two sequential stages — product generation and availability generation — where availability depends on the product data.
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                      CLI (cli.py)                       │
-│  parse args → init telemetry → seed or load → serve     │
-└──────────┬──────────────────────────────────┬───────────┘
-           │                                  │
-     ┌─────▼──────┐                    ┌──────▼──────┐
-     │   Seeder    │                   │  FastAPI     │
-     │  Pipeline   │                   │  Server      │
-     └─────┬──────┘                    └──────┬──────┘
-           │                                  │
-     ┌─────▼──────┐                    ┌──────▼──────┐
-     │   Ollama    │                   │   State      │
-     │   (LLM)    │                   │   Manager    │
-     └────────────┘                    └─────────────┘
+                         CLI (cli.py)
+                  parse args → init telemetry
+                             │
+              ┌──────────────▼──────────────┐
+              │     SEED PHASE (sequential)  │
+              │                              │
+              │  ┌────────────────────────┐  │
+              │  │ 1. Product Generation  │  │
+              │  │    PromptBuilder       │  │
+              │  │    ProductGenerator    │──┼──→ Ollama (LLM)
+              │  │    QualityScorer       │  │
+              │  └───────────┬────────────┘  │
+              │              │ products       │
+              │              ▼               │
+              │  ┌────────────────────────┐  │
+              │  │ 2. Availability Gen.   │  │
+              │  │    reads product data  │  │
+              │  │    AvailabilityPrompt  │──┼──→ Ollama (LLM)
+              │  │    AvailabilityGen.    │  │
+              │  │    coherence checks    │  │
+              │  └───────────┬────────────┘  │
+              │              │ availability   │
+              └──────────────┼──────────────┘
+                             │
+                             ▼
+              ┌──────────────────────────────┐
+              │        State Manager         │
+              │  _products + _availability   │
+              └──────────────┬──────────────┘
+                             │
+                             ▼
+              ┌──────────────────────────────┐
+              │       FastAPI Server         │
+              │  GET /products, POST /avail  │
+              └──────────────────────────────┘
+```
+
+The two stages can run together in one CLI invocation or separately:
+
+```bash
+# Everything in one run
+uv run otas --dump-seed
+
+# Or split into two runs
+uv run otas --dump-seed --skip-availability   # 1. products only
+uv run otas --skip-seed --dump-seed           # 2. load products, generate availability
 ```
 
 ## Seed phase
 
-On startup (unless `--skip-seed`), the seeder pipeline generates synthetic OCTO products:
+The seed phase has two sequential stages. Products are always generated (or loaded) first, then availability is generated using the product data as input.
+
+### Stage 1: Product generation
+
+On startup (unless `--skip-seed`), the product seeder generates synthetic OCTO products:
 
 1. `PromptBuilder` constructs a prompt with the OCTO JSON schema (loaded from `octo-std/` spec files) and generation rules.
 
@@ -40,6 +76,66 @@ On startup (unless `--skip-seed`), the seeder pipeline generates synthetic OCTO 
 4. `QualityScorer` runs after the batch is complete, scoring all products across realism, coherence, completeness, and diversity. See [data-quality.md](data-quality.md).
 
 Products can be saved to disk (`--dump-seed`) and loaded later (`--skip-seed`) to avoid repeated LLM calls.
+
+### Stage 2: Availability generation
+
+After products are generated (or loaded), the availability seeder generates calendar data for each product+option pair. This stage can be skipped with `--skip-availability`.
+
+#### Weekly chunking
+
+The total availability window (`availability_window_days`) is split into 7-day chunks. Each chunk is one LLM call → validate → coherence fix → slot cap cycle:
+
+```
+availability_window_days = 21, start_date = 2026-04-10
+
+Week 1: 2026-04-10 → 7 days → LLM call → validate → coherence fix → cap slots → append
+Week 2: 2026-04-17 → 7 days → LLM call → validate → coherence fix → cap slots → append
+Week 3: 2026-04-24 → 7 days → LLM call → validate → coherence fix → cap slots → append
+
+Result: 21 validated + coherent + capped calendar days
+```
+
+This keeps the LLM output small (7 JSON objects max per call), reduces validation errors, and allows per-week slot budget enforcement.
+
+#### Product-aware prompt
+
+The availability prompt includes full product context so the LLM generates coherent data:
+
+- Product title, country, timezone, categories, description
+- Option start times, duration, and unit types
+- `availabilityType` (START_TIME vs OPENING_HOURS) — determines whether days have start times or opening hours
+- `allowFreesale` — controls whether FREESALE status is permitted
+
+For START_TIME products, the prompt explicitly tells the LLM that `availabilityLocalStartTimes` must be a subset of the option's defined start times, and that times must not overlap given the option's duration.
+
+#### Coherence validation
+
+After Pydantic schema validation, a coherence check runs against the product data:
+
+| Check | What it catches | Auto-fix |
+|-------|----------------|----------|
+| Start time subset | LLM invented times not in the option's list | Filters to allowed subset |
+| Time overlap | Two start times that overlap given the duration (e.g. 09:00 + 2h overlaps 10:00) | Removes overlapping times (greedy, keeps earliest) |
+| FREESALE on non-freesale product | FREESALE status when `allowFreesale=false` | Flips to AVAILABLE |
+| Start times on OPENING_HOURS | `availabilityLocalStartTimes` present on an OPENING_HOURS product | Strips the field |
+| Start times on closed days | Start times on CLOSED or SOLD_OUT days | Strips the field |
+
+Coherence issues are also fed back as error hints for the next retry attempt, following the same dynamic prompt pattern as product generation.
+
+#### Slot capping
+
+After coherence fixes, `_cap_slots()` enforces the `max_slots_per_week` budget. A "slot" is:
+
+- For START_TIME products: one entry in `availabilityLocalStartTimes` (a day with 3 start times = 3 slots)
+- For OPENING_HOURS products: one open day = 1 slot
+
+The algorithm walks days in order with a budget counter. When a day would exceed the remaining budget, it first tries to trim the start times list. If even 1 slot doesn't fit, the entire day is flipped to CLOSED.
+
+#### Retry and error hints
+
+Same pattern as product generation: if validation or JSON parsing fails, error hints accumulate and are injected into the next attempt's prompt. The LLM sees what went wrong and avoids repeating the same mistakes.
+
+Both product and availability seed data can be saved with `--dump-seed` and loaded with `--skip-seed` to avoid repeated LLM calls.
 
 ### Dynamic prompt construction
 
@@ -121,13 +217,18 @@ Once products are loaded into the `StateManager`, the FastAPI server starts.
 
 ### State Manager
 
-`StateManager` is the single source of truth for product data. On `load_products()`:
+`StateManager` is the single source of truth for product and availability data.
 
+On `load_products()`:
 - Validates ID uniqueness (option IDs within product, unit IDs within option)
 - Stores products in an in-memory dictionary keyed by product ID
 
+On `load_availability()`:
+- Stores availability calendar days in a nested dictionary: `product_id → option_id → [calendar days]`
+
 Data structures:
 - `_products`: `dict[product_id, Product]`
+- `_availability`: `dict[product_id, dict[option_id, list[dict]]]`
 
 ### FastAPI server
 
@@ -157,8 +258,14 @@ Response headers include `X-Error-Id` and `X-Error-Code` for correlation. Error 
 Follows the OCTO standard. Key entities:
 
 - `Product` → has many `Option` → has many `Unit`
+- `AvailabilityCalendarDay` → one per date per product+option, with `OpeningHours` entries
 
 All models use Pydantic with `camelCase` aliases for JSON serialization (matching the OCTO spec) and `snake_case` internally.
+
+The `AvailabilityCalendarDay` model validates:
+- Status ↔ available ↔ vacancies consistency (e.g. CLOSED must have `available=false`)
+- Date format (ISO 8601 YYYY-MM-DD)
+- Time format for opening hours (HH:MM)
 
 ## Telemetry
 
