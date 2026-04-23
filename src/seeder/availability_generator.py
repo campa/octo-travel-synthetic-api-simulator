@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 _CODE_FENCE_RE = re.compile(r"^```(?:json)?\s*\n?(.*?)\n?\s*```$", re.DOTALL)
 
-_WEEK_DAYS = 7
+_WEEK_DAYS = 3
 
 # Statuses that count as "available slots"
 _OPEN_STATUSES = {
@@ -171,6 +171,10 @@ def _check_coherence(
 ) -> list[str]:
     """Check availability coherence with product data.
 
+    Only flags hard structural constraint violations that the LLM must
+    fix.  Realism concerns (varied vacancies, appropriate extended fields)
+    are handled via prompt guidance — we trust the LLM to be spontaneous.
+
     Returns a list of human-readable issue descriptions (empty = all good).
     """
     issues: list[str] = []
@@ -195,6 +199,15 @@ def _check_coherence(
             issues.append(
                 f"Day {local_date}: FREESALE status used but product "
                 "allowFreesale=false. Use AVAILABLE instead."
+            )
+
+        # Vacancies must be <= capacity
+        vac = day.get("vacancies")
+        cap = day.get("capacity")
+        if vac is not None and cap is not None and vac > cap:
+            issues.append(
+                f"Day {local_date}: vacancies ({vac}) exceeds "
+                f"capacity ({cap}). vacancies must be <= capacity."
             )
 
         # START_TIME checks
@@ -244,7 +257,11 @@ def _fix_coherence(
     product_data: dict,
     option_data: dict | None,
 ) -> list[dict]:
-    """Deterministically fix coherence issues that are safe to auto-correct."""
+    """Deterministically fix hard constraint violations.
+
+    Only fixes structural issues (vacancies > capacity, invalid start
+    times, overlaps).  Realism is left to the LLM via prompt guidance.
+    """
     avail_type = product_data.get("availabilityType", "OPENING_HOURS")
     allow_freesale = product_data.get("allowFreesale", False)
 
@@ -262,6 +279,12 @@ def _fix_coherence(
         # Fix FREESALE → AVAILABLE
         if status == "FREESALE" and not allow_freesale:
             day["status"] = AvailabilityStatus.AVAILABLE.value
+
+        # Fix vacancies > capacity
+        vac = day.get("vacancies")
+        cap = day.get("capacity")
+        if vac is not None and cap is not None and vac > cap:
+            day["vacancies"] = cap
 
         if status not in _OPEN_STATUSES:
             # Closed/sold-out days should not have start times
@@ -373,6 +396,8 @@ class AvailabilityGenerator:
             "Availability generation complete: %d products, %d options, %.1fs",
             len(products), total_options, gen_duration,
         )
+        if self._tel:
+            self._tel.availability_generation_duration_seconds.record(gen_duration)
         return result
 
     async def _generate_weekly_chunks(
@@ -382,6 +407,7 @@ class AvailabilityGenerator:
         start_dt: date,
     ) -> list[dict]:
         """Split the total window into 7-day weeks and generate each."""
+        option_start = time.monotonic()
         remaining = self._window_days
         cursor = start_dt
         all_days: list[dict] = []
@@ -418,6 +444,16 @@ class AvailabilityGenerator:
 
             cursor += timedelta(days=chunk_size)
             remaining -= chunk_size
+
+        if self._tel:
+            option_duration = time.monotonic() - option_start
+            attrs = {
+                "product_id": product_data.get("id", "unknown"),
+                "option_id": option_id,
+            }
+            self._tel.availability_option_duration_seconds.record(
+                option_duration, attrs,
+            )
 
         return all_days
 
@@ -519,10 +555,25 @@ class AvailabilityGenerator:
                         # (only matters if this chunk gets retried)
                         error_hints.extend(coherence_issues[:3])
 
+                    # Trim excess days to save memory, but accept whatever count
+                    max_days = int(num_days * 1.25)
+                    if len(validated_days) > max_days:
+                        logger.info(
+                            "    Option %s: trimming %d days to %d",
+                            option_id[:8], len(validated_days), max_days,
+                        )
+                        validated_days = validated_days[:max_days]
+
                     logger.info(
                         "    Option %s: %d/%d days validated",
                         option_id[:8], len(validated_days), len(data),
                     )
+                    if self._tel:
+                        self._tel.availability_option_attempts.record(
+                            attempt,
+                            {"product_id": product_data.get("id", "unknown"),
+                             "option_id": option_id},
+                        )
                     return validated_days
 
                 error_hints.extend(all_hints[:5])

@@ -273,9 +273,15 @@ class ProductGenerator:
             previously_generated = [
                 self._product_summary(p) for p in products
             ]
+            existing_descriptions = {
+                (p.description or "").strip().lower()
+                for p in products
+                if (p.description or "").strip()
+            }
             product = await self._generate_single_product(
                 product_num=i + 1,
                 previously_generated=previously_generated if previously_generated else None,
+                existing_descriptions=existing_descriptions if existing_descriptions else None,
             )
             products.append(product)
 
@@ -306,6 +312,7 @@ class ProductGenerator:
         self,
         product_num: int,
         previously_generated: list[dict] | None = None,
+        existing_descriptions: set[str] | None = None,
     ) -> Product:
         """Generate one product with retry logic.
 
@@ -347,6 +354,7 @@ class ProductGenerator:
                         tps = ollama_resp.eval_count / ollama_resp.eval_duration * 1e9
                         self._tel.llm_tokens_per_second.record(tps)
                     self._tel.llm_prompt_tokens.add(ollama_resp.prompt_eval_count)
+                    self._tel.llm_prompt_token_count.set(ollama_resp.prompt_eval_count)
                     self._tel.llm_completion_tokens.add(ollama_resp.eval_count)
 
                 raw_text = _strip_code_fences(ollama_resp.response)
@@ -374,6 +382,44 @@ class ProductGenerator:
                     raise OllamaInvalidResponseError(
                         f"LLM output does not conform to Product schema: {exc}"
                     ) from exc
+
+                # Reject duplicate title or description within the batch
+                new_title = (product.title or "").strip().lower()
+                new_desc = (product.description or "").strip().lower()
+
+                duplicate_field = None
+                if previously_generated and new_title:
+                    existing_titles = {
+                        (pg.get("title") or "").strip().lower()
+                        for pg in previously_generated
+                    }
+                    existing_titles.discard("")
+                    if new_title in existing_titles:
+                        duplicate_field = "title"
+
+                if not duplicate_field and existing_descriptions and new_desc:
+                    if new_desc in existing_descriptions:
+                        duplicate_field = "description"
+
+                if duplicate_field:
+                    value = product.title if duplicate_field == "title" else product.description
+                    hint = (
+                        f"The {duplicate_field} '{value[:80]}' was already used by another "
+                        "product in this batch. Generate a product with a COMPLETELY "
+                        f"DIFFERENT {duplicate_field}."
+                    )
+                    error_hints.append(hint)
+                    logger.warning(
+                        "Product %d: duplicate %s — retrying",
+                        product_num, duplicate_field,
+                    )
+                    if self._tel:
+                        self._tel.seeder_ollama_errors_total.add(
+                            1, {"error_type": f"DUPLICATE_{duplicate_field.upper()}"}
+                        )
+                    if attempt < self._max_retries and self._tel:
+                        self._tel.seeder_ollama_retries_total.add(1)
+                    continue
 
                 # Assign fresh UUIDs
                 product = _assign_fresh_uuids(product)

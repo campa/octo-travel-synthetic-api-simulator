@@ -5,9 +5,10 @@ A stateful mock server that implements the [OCTO](https://www.octo.travel/) trav
 ## Table of contents
 
 - [OCTO Travel Synthetic API Simulator (OTAS)](#octo-travel-synthetic-api-simulator-otas)
+  - [Table of contents](#table-of-contents)
   - [What it does](#what-it-does)
   - [Prerequisites](#prerequisites)
-  - [Quick start](#quick-start)
+  - [Quick start - Dev](#quick-start---dev)
     - [Choosing a model](#choosing-a-model)
   - [API endpoints](#api-endpoints)
     - [Example requests](#example-requests)
@@ -38,14 +39,13 @@ A stateful mock server that implements the [OCTO](https://www.octo.travel/) trav
 | [Ollama](https://ollama.ai/) | latest | Local LLM runtime (needed for seeding) |
 | Docker | latest | Optional, for observability stack |
 
-## Quick start
+## Quick start - Dev
 
 ```bash
 git clone <repo-url>
 cd octo-travel-synthetic-api-simulator
 ollama pull nemotron-3-nano:30b
 uv sync
-uv run otas
 ```
 
 The server starts on `http://localhost:8080` by default. On first run it calls Ollama to generate 10 products, then serves them.
@@ -117,7 +117,7 @@ uv run otas [OPTIONS]
 --seed-availability-file          Path to availability seed data JSON file (default: seed_availability_data.json)
 --availability-window-days        Total days of availability to generate per option (default: 5)
 --availability-start-date         Start date for availability (YYYY-MM-DD, default: today)
---availability-max-slots-per-week Max bookable time slots per 7-day week (default: 5)
+--availability-max-slots-per-week Max bookable time slots per 3-day chunk (default: 5)
 --skip-seed                       Load from seed files instead of calling Ollama
 --skip-availability               Skip availability generation
 --dump-seed                       Save generated data to seed files after generation
@@ -144,7 +144,7 @@ All settings use the `OTAS_` environment variable prefix and can also be set via
 | `OTAS_SEED_AVAILABILITY_FILE` | `data/seed_availability_data.json` | Seed availability data file path |
 | `OTAS_AVAILABILITY_WINDOW_DAYS` | `5` | Days of availability to generate per option |
 | `OTAS_AVAILABILITY_START_DATE` | (today) | Start date for availability generation (YYYY-MM-DD) |
-| `OTAS_AVAILABILITY_MAX_SLOTS_PER_WEEK` | `5` | Max bookable time slots per 7-day week |
+| `OTAS_AVAILABILITY_MAX_SLOTS_PER_WEEK` | `5` | Max bookable time slots per 3-day chunk |
 | `OTAS_LOG_LEVEL` | `INFO` | Root log level (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
 
 ### Per-module log levels
@@ -187,17 +187,23 @@ See [docs/observability.md](docs/observability.md) for details.
 
 ## Data quality
 
-Generated products are automatically scored across four dimensions after each batch:
+Generated data is automatically scored across two domains after each batch:
 
+**Product quality** (products, options, units):
 - **Realism** — coordinates, place IDs, currency/country/timezone consistency, age ranges
 - **Coherence** — duration alignment, FAQ-vs-pricing consistency, contact field logic
 - **Completeness** — presence of descriptions, features, FAQs, media, locations
 - **Diversity** (batch-level) — country spread, title uniqueness, availability type balance
 
+**Availability quality** (calendar data per option):
+- **Realism** — varied vacancies and statuses, sensible capacity values
+- **Coherence** — start times match product definition, no overlaps, correct OPENING_HOURS usage
+- **Completeness** — days present, capacity/vacancies populated
+
 Run the quality report manually:
 
 ```bash
-# Print report to terminal
+# Print three-section report (products → availability → combined summary)
 python scripts/quality_report.py
 
 # Save results for comparison across models/runs
@@ -210,21 +216,21 @@ See [docs/data-quality.md](docs/data-quality.md) for the full scoring methodolog
 
 ## Generation performance
 
-Data generation is LLM-bound and depends on your hardware and model. Each product requires one Ollama call (more if retries are needed due to validation errors or malformed JSON).
+Data generation is LLM-bound and depends on your hardware and model. Each product requires one Ollama call (more if retries are needed due to validation errors, malformed JSON, or duplicate titles). Availability generation adds ~5 calls per option (one per 3-day chunk for a 14-day window).
 
-Reference benchmark generating 50 products with `nemotron-3-nano:30b` on an Apple M3 Max (64 GB RAM):
+Reference benchmark with `nemotron-3-nano:30b` on an Apple M3 Max (64 GB RAM):
 
-| Metric | Value |
-|--------|-------|
-| Products requested | 50 |
-| Avg time per product | ~30-35s |
-| Retries (out of 50) | 1 (invalid IANA timezone `Europe/Riyadh`, fixed on attempt 2) |
-| First-attempt success rate | 98% |
-| Estimated total time (50 products) | ~25-30 min |
+| Metric | 10 products + 14-day availability |
+|--------|-----------------------------------|
+| Product generation | ~15-20 min |
+| Availability generation (16 options) | ~7-8 min |
+| Total | ~25 min |
+| Product retries | ~2-3 (validation errors, duplicate titles) |
+| Availability retries | Rare (coherence auto-fixed) |
 
-The error hint feedback mechanism resolves most validation issues on the next attempt. Common retry causes: invalid timezones, malformed JSON.
+The error hint feedback mechanism resolves most validation issues on the next attempt. Common retry causes: invalid enum values, malformed JSON, duplicate titles/descriptions.
 
-To avoid regenerating every time, use `--dump-seed` on the first run and `--skip-seed` afterwards.
+To avoid regenerating every time, use `--dump-seed` on the first run and `--skip-seed --skip-availability` afterwards.
 
 ## Architecture
 
@@ -266,7 +272,8 @@ src/
 │   ├── availability_prompt_builder.py # Availability prompt construction
 │   ├── ollama_client.py    # Async Ollama HTTP client
 │   ├── prompt_builder.py   # Product prompt construction from OCTO spec
-│   └── quality.py          # Deterministic quality scoring (realism, coherence, completeness, diversity)
+│   ├── quality.py          # Deterministic quality scoring (realism, coherence, completeness, diversity)
+│   └── availability_quality.py  # Availability quality scoring (realism, coherence, completeness)
 ├── server/                 # FastAPI app, routes, middleware, error handling
 │   ├── app.py              # App factory
 │   ├── routes/             # Product endpoints

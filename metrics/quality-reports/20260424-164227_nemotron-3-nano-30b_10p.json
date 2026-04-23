@@ -1,0 +1,499 @@
+{
+  "timestamp": "2026-04-24T16:42:27.311983",
+  "model": "nemotron-3-nano:30b",
+  "product_count": 10,
+  "seed_product_file": "data/seed_product_data.json",
+  "scores": {
+    "composite": 0.771,
+    "realism": 0.666,
+    "coherence": 0.986,
+    "completeness": 0.991,
+    "diversity": 0.385
+  },
+  "per_product": [
+    {
+      "id": "1989b83b-cb2e-4bfd-8225-f0f63d1c5c5a",
+      "title": "Sunset Canal Cruise",
+      "realism": 0.75,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "99243489-e152-4f01-b21f-89fbab9076bb",
+      "title": "Sunset Canal Cruise",
+      "realism": 0.875,
+      "coherence": 1.0,
+      "completeness": 0.909
+    },
+    {
+      "id": "5f1c9e0b-491d-49f7-ad69-cec6c195ce08",
+      "title": "Historic Castle Tour",
+      "realism": 0.625,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "b350236b-8405-4893-8a77-0af63224cb44",
+      "title": "Historic Castle Tour",
+      "realism": 0.5,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "e4aa8483-9e8b-4960-b202-61e16519fa6a",
+      "title": "Sunrise Hot Air Balloon Ride",
+      "realism": 0.375,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "fbf15542-95e8-477f-9a97-00db1734cc61",
+      "title": "Historic Lighthouse Guided Tour",
+      "realism": 0.625,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "63070078-b8d9-4afd-857e-113d505e7f75",
+      "title": "Historic Castle & Village Tour",
+      "realism": 0.7,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "0f5764f0-e02e-45b6-a16a-5b588e666517",
+      "title": "Classic Wine Tasting Tour",
+      "realism": 0.833,
+      "coherence": 0.857,
+      "completeness": 1.0
+    },
+    {
+      "id": "4ea9c843-9acb-4a38-9923-c45714242c9b",
+      "title": "Evening City Lights Tour",
+      "realism": 0.625,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    {
+      "id": "c76260f9-3f7c-472c-bbd5-0f8e123877f5",
+      "title": "Historic Abbeys & Gardens Tour",
+      "realism": 0.75,
+      "coherence": 1.0,
+      "completeness": 1.0
+    }
+  ],
+  "issues": [
+    {
+      "dimension": "diversity",
+      "check": "low_country_diversity",
+      "message": "Only 4/10 unique countries",
+      "product_id": ""
+    },
+    {
+      "dimension": "diversity",
+      "check": "duplicate_titles",
+      "message": "Duplicate product titles: {'Historic Castle Tour', 'Sunset Canal Cruise'}",
+      "product_id": ""
+    },
+    {
+      "dimension": "diversity",
+      "check": "availability_type_imbalance",
+      "message": "Availability type distribution: {'START_TIME': 9, 'OPENING_HOURS': 1}",
+      "product_id": ""
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Meeting Point'",
+      "product_id": "1989b83b-cb2e-4bfd-8225-f0f63d1c5c5a"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Cruise Route': lat=52.365 (ent=1.79), lon=4.89 (ent=1.25)",
+      "product_id": "1989b83b-cb2e-4bfd-8225-f0f63d1c5c5a"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '58c5b2de-585c-4640-ba11-012eb329c248' in option 'Standard Experience' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "1989b83b-cb2e-4bfd-8225-f0f63d1c5c5a"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '7fa81e75-a1f8-452d-a2f4-069689c2f854' in option 'Standard Experience' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "99243489-e152-4f01-b21f-89fbab9076bb"
+    },
+    {
+      "dimension": "completeness",
+      "check": "missing_commentary",
+      "message": "Missing or empty: commentary",
+      "product_id": "99243489-e152-4f01-b21f-89fbab9076bb"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Main Castle Entrance' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "5f1c9e0b-491d-49f7-ad69-cec6c195ce08"
+    },
+    {
+      "dimension": "realism",
+      "check": "currency_country_mismatch",
+      "message": "Currency 'EUR' unexpected for country 'GB' (expected {'GBP'})",
+      "product_id": "5f1c9e0b-491d-49f7-ad69-cec6c195ce08"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'af138579-09fa-4652-90aa-2333a612e767' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "5f1c9e0b-491d-49f7-ad69-cec6c195ce08"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Castle Heritage Site' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "b350236b-8405-4893-8a77-0af63224cb44"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Castle Heritage Site'",
+      "product_id": "b350236b-8405-4893-8a77-0af63224cb44"
+    },
+    {
+      "dimension": "realism",
+      "check": "currency_country_mismatch",
+      "message": "Currency 'EUR' unexpected for country 'GB' (expected {'GBP'})",
+      "product_id": "b350236b-8405-4893-8a77-0af63224cb44"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'e91f6a40-c142-427f-8856-9c89826bd7fe' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "b350236b-8405-4893-8a77-0af63224cb44"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'f50dc8f3-497e-4a64-ada4-3463d5d20f4b' in option 'Premium Experience' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "b350236b-8405-4893-8a77-0af63224cb44"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'SkyHigh Balloon Launch Field': lat=40.7128 (ent=2.25), lon=-74.006 (ent=0.65)",
+      "product_id": "e4aa8483-9e8b-4960-b202-61e16519fa6a"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'SkyHigh Balloon Launch Field' match a known city centroid: lat=40.7128, lon=-74.006",
+      "product_id": "e4aa8483-9e8b-4960-b202-61e16519fa6a"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'SkyHigh Balloon Launch Field'",
+      "product_id": "e4aa8483-9e8b-4960-b202-61e16519fa6a"
+    },
+    {
+      "dimension": "realism",
+      "check": "timezone_country_mismatch",
+      "message": "Timezone 'Europe/London' unexpected for country 'US' (expected prefix ['America/'])",
+      "product_id": "e4aa8483-9e8b-4960-b202-61e16519fa6a"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '6b3298d5-6578-4f3b-9f2a-e6a939d6ec19' in option 'Standard Flight' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "e4aa8483-9e8b-4960-b202-61e16519fa6a"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Coastal Lighthouse' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "fbf15542-95e8-477f-9a97-00db1734cc61"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Coastal Lighthouse'",
+      "product_id": "fbf15542-95e8-477f-9a97-00db1734cc61"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'a5324581-3d98-4d72-85c2-e1d0f64c5c05' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "fbf15542-95e8-477f-9a97-00db1734cc61"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Castle & Village' match a known city centroid: lat=51.5074, lon=-0.1278",
+      "product_id": "63070078-b8d9-4afd-857e-113d505e7f75"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '325b46e3-2d35-42ce-85db-81547a3915fb' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "63070078-b8d9-4afd-857e-113d505e7f75"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '47370770-082d-419c-bb63-86853c5d26a8' in option 'Family Package' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "63070078-b8d9-4afd-857e-113d505e7f75"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Trier Central Station'",
+      "product_id": "0f5764f0-e02e-45b6-a16a-5b588e666517"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJd8BlQVduEmsRUsoyG83frY4' reused across products: ['Classic Wine Tasting Tour', 'Classic Wine Tasting Tour', 'Classic Wine Tasting Tour']",
+      "product_id": "0f5764f0-e02e-45b6-a16a-5b588e666517"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJd8BlQVduEmsRUsoyG83frY4' reused across products: ['Classic Wine Tasting Tour', 'Classic Wine Tasting Tour', 'Classic Wine Tasting Tour']",
+      "product_id": "0f5764f0-e02e-45b6-a16a-5b588e666517"
+    },
+    {
+      "dimension": "realism",
+      "check": "duplicate_place_id",
+      "message": "Google Place ID 'ChIJd8BlQVduEmsRUsoyG83frY4' reused across products: ['Classic Wine Tasting Tour', 'Classic Wine Tasting Tour', 'Classic Wine Tasting Tour']",
+      "product_id": "0f5764f0-e02e-45b6-a16a-5b588e666517"
+    },
+    {
+      "dimension": "coherence",
+      "check": "duration_mismatch",
+      "message": "Option 'Lunch Upgrade' duration 90.0min outside product range [300, 360]",
+      "product_id": "0f5764f0-e02e-45b6-a16a-5b588e666517"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Berlin City Center': lat=52.52 (ent=1.25), lon=13.405 (ent=1.25)",
+      "product_id": "4ea9c843-9acb-4a38-9923-c45714242c9b"
+    },
+    {
+      "dimension": "realism",
+      "check": "city_centroid",
+      "message": "Coordinates for 'Berlin City Center' match a known city centroid: lat=52.52, lon=13.405",
+      "product_id": "4ea9c843-9acb-4a38-9923-c45714242c9b"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit 'dcf8d1c4-aad3-48e7-b4c7-026f1f581058' in option 'Evening Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "4ea9c843-9acb-4a38-9923-c45714242c9b"
+    },
+    {
+      "dimension": "realism",
+      "check": "known_dummy_place_id",
+      "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Rievaulx Abbey'",
+      "product_id": "c76260f9-3f7c-472c-bbd5-0f8e123877f5"
+    },
+    {
+      "dimension": "realism",
+      "check": "coordinate_entropy",
+      "message": "Low coordinate entropy for 'Castle Howard': lat=54.015 (ent=1.25), lon=-0.9833 (ent=1.92)",
+      "product_id": "c76260f9-3f7c-472c-bbd5-0f8e123877f5"
+    },
+    {
+      "dimension": "realism",
+      "check": "adult_age_range",
+      "message": "ADULT unit '9d28d243-fbc3-4c61-a4eb-0d5a9c0cd70a' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+      "product_id": "c76260f9-3f7c-472c-bbd5-0f8e123877f5"
+    }
+  ],
+  "issue_summary": {
+    "by_dimension": {
+      "diversity": 3,
+      "realism": 33,
+      "completeness": 1,
+      "coherence": 1
+    },
+    "by_check": {
+      "low_country_diversity": 1,
+      "duplicate_titles": 1,
+      "availability_type_imbalance": 1,
+      "known_dummy_place_id": 6,
+      "coordinate_entropy": 4,
+      "adult_age_range": 11,
+      "missing_commentary": 1,
+      "city_centroid": 6,
+      "currency_country_mismatch": 2,
+      "timezone_country_mismatch": 1,
+      "duplicate_place_id": 3,
+      "duration_mismatch": 1
+    },
+    "total": 38
+  },
+  "availability": {
+    "scores": {
+      "composite": 1.0,
+      "realism": 1.0,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    "per_option": [
+      {
+        "product_id": "1989b83b-cb2e-4bfd-8225-f0f63d1c5c5a",
+        "option_id": "02cdbabd-9062-4c3a-afa8-ccc7eaddbc82",
+        "product_title": "Sunset Canal Cruise",
+        "option_title": "Standard Experience",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "1989b83b-cb2e-4bfd-8225-f0f63d1c5c5a",
+        "option_id": "16f40cff-17f8-4243-b841-db94edcc7567",
+        "product_title": "Sunset Canal Cruise",
+        "option_title": "Premium Experience",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "99243489-e152-4f01-b21f-89fbab9076bb",
+        "option_id": "4cc24f3e-4553-4efe-8827-f6c4ed03959b",
+        "product_title": "Sunset Canal Cruise",
+        "option_title": "Standard Experience",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "5f1c9e0b-491d-49f7-ad69-cec6c195ce08",
+        "option_id": "370370a4-3f6b-4260-a424-fef9eadeda7b",
+        "product_title": "Historic Castle Tour",
+        "option_title": "Standard Tour",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "b350236b-8405-4893-8a77-0af63224cb44",
+        "option_id": "f8cca0e6-7a2c-4716-bacb-504c6151ec03",
+        "product_title": "Historic Castle Tour",
+        "option_title": "Standard Tour",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "b350236b-8405-4893-8a77-0af63224cb44",
+        "option_id": "372af871-06ed-4137-a14b-023ac02c7d3a",
+        "product_title": "Historic Castle Tour",
+        "option_title": "Premium Experience",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "e4aa8483-9e8b-4960-b202-61e16519fa6a",
+        "option_id": "703f0b65-df0e-4873-9b53-473148b0e11a",
+        "product_title": "Sunrise Hot Air Balloon Ride",
+        "option_title": "Standard Flight",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "fbf15542-95e8-477f-9a97-00db1734cc61",
+        "option_id": "f4a3e5e6-b35a-42a7-b45e-0a9448d7a729",
+        "product_title": "Historic Lighthouse Guided Tour",
+        "option_title": "Standard Tour",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "63070078-b8d9-4afd-857e-113d505e7f75",
+        "option_id": "4b2b025e-04e2-4dbd-b7b4-892d45efa944",
+        "product_title": "Historic Castle & Village Tour",
+        "option_title": "Standard Tour",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "63070078-b8d9-4afd-857e-113d505e7f75",
+        "option_id": "11bd7582-cea2-47d2-ae62-498f6904f537",
+        "product_title": "Historic Castle & Village Tour",
+        "option_title": "Family Package",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "0f5764f0-e02e-45b6-a16a-5b588e666517",
+        "option_id": "317efe0c-5752-447b-b275-18440db4006e",
+        "product_title": "Classic Wine Tasting Tour",
+        "option_title": "Classic Tasting",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "0f5764f0-e02e-45b6-a16a-5b588e666517",
+        "option_id": "ffbc192a-5b13-4150-9671-c14bc0813274",
+        "product_title": "Classic Wine Tasting Tour",
+        "option_title": "Premium Tasting",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "0f5764f0-e02e-45b6-a16a-5b588e666517",
+        "option_id": "737e721f-05e7-44ed-ab38-f287e134d633",
+        "product_title": "Classic Wine Tasting Tour",
+        "option_title": "Lunch Upgrade",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "4ea9c843-9acb-4a38-9923-c45714242c9b",
+        "option_id": "25b7cb79-c602-401f-88dc-558c27fe0555",
+        "product_title": "Evening City Lights Tour",
+        "option_title": "Evening Tour",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      },
+      {
+        "product_id": "c76260f9-3f7c-472c-bbd5-0f8e123877f5",
+        "option_id": "78ccaa39-39a0-4095-8c6b-686d65f7f12d",
+        "product_title": "Historic Abbeys & Gardens Tour",
+        "option_title": "Standard Tour",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 2
+      }
+    ],
+    "issues": []
+  }
+}

@@ -58,6 +58,7 @@ All metrics use the `otas_` prefix.
 | `otas_llm_generation_duration` | Histogram | Token generation time (ms) |
 | `otas_llm_tokens_per_second` | Histogram | Generation speed (tokens/sec) |
 | `otas_llm_prompt_tokens` | Counter | Total prompt tokens sent |
+| `otas_llm_prompt_token_count` | Gauge | Prompt tokens for the last Ollama request |
 | `otas_llm_completion_tokens` | Counter | Total completion tokens generated |
 
 ### Server metrics
@@ -79,6 +80,14 @@ All metrics use the `otas_` prefix.
 | `otas_product_requests_total` | Counter | Requests per product |
 | `otas_product_generation_duration_seconds` | Histogram | Single product generation time |
 | `otas_product_attempts` | Histogram | Ollama attempts needed per product |
+
+### Availability metrics
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `otas_availability_generation_duration_seconds` | Histogram | Total availability generation phase duration |
+| `otas_availability_option_duration_seconds` | Histogram | Duration to generate availability for a single product-option |
+| `otas_availability_option_attempts` | Histogram | Ollama attempts needed per availability option chunk |
 
 ### Quality metrics
 

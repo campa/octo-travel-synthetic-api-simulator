@@ -598,18 +598,35 @@ def _check_diversity(products: list[Product]) -> tuple[float, list[QualityIssue]
             message=f"Only {unique_countries}/{n} unique countries",
         ))
 
-    # --- Unique titles ---
+    # --- Unique titles (case-insensitive) ---
     titles = [p.title or p.internal_name for p in products]
-    unique_titles = len(set(titles))
+    titles_lower = [t.strip().lower() for t in titles]
+    unique_titles = len(set(titles_lower))
     title_score = unique_titles / n if n > 0 else 1.0
     sub_scores.append(title_score)
     if unique_titles < n:
-        dupes = [t for t in titles if titles.count(t) > 1]
+        dupes = [t for t, tl in zip(titles, titles_lower) if titles_lower.count(tl) > 1]
         issues.append(QualityIssue(
             dimension="diversity",
             check="duplicate_titles",
             message=f"Duplicate product titles: {set(dupes)}",
         ))
+
+    # --- Unique descriptions ---
+    descriptions = [
+        (p.description or "").strip().lower() for p in products
+        if p.description and p.description.strip()
+    ]
+    if len(descriptions) > 1:
+        unique_descs = len(set(descriptions))
+        desc_score = unique_descs / len(descriptions)
+        sub_scores.append(desc_score)
+        if unique_descs < len(descriptions):
+            issues.append(QualityIssue(
+                dimension="diversity",
+                check="duplicate_descriptions",
+                message=f"Only {unique_descs}/{len(descriptions)} unique descriptions in batch",
+            ))
 
     # --- Availability type spread ---
     avail_types = [p.availability_type.value for p in products]

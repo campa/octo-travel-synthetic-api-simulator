@@ -70,6 +70,7 @@ On startup (unless `--skip-seed`), the product seeder generates synthetic OCTO p
    - Strips markdown code fences from LLM output
    - Normalizes common LLM quirks (missing optional fields, wrong types)
    - Parses JSON and validates against the `Product` Pydantic model
+   - Rejects duplicate titles or descriptions within the batch (retries with a hint)
    - Assigns fresh UUID v4 values to all ID/reference fields
    - Backs off exponentially on connection failures
 
@@ -83,19 +84,21 @@ After products are generated (or loaded), the availability seeder generates cale
 
 #### Weekly chunking
 
-The total availability window (`availability_window_days`) is split into 7-day chunks. Each chunk is one LLM call → validate → coherence fix → slot cap cycle:
+The total availability window (`availability_window_days`) is split into 3-day chunks. Each chunk is one LLM call → validate → coherence fix → slot cap cycle:
 
 ```
-availability_window_days = 21, start_date = 2026-04-10
+availability_window_days = 14, start_date = 2026-04-24
 
-Week 1: 2026-04-10 → 7 days → LLM call → validate → coherence fix → cap slots → append
-Week 2: 2026-04-17 → 7 days → LLM call → validate → coherence fix → cap slots → append
-Week 3: 2026-04-24 → 7 days → LLM call → validate → coherence fix → cap slots → append
+Chunk 1: 2026-04-24 → 3 days → LLM call → validate → coherence fix → cap slots → append
+Chunk 2: 2026-04-27 → 3 days → LLM call → validate → coherence fix → cap slots → append
+Chunk 3: 2026-04-30 → 3 days → LLM call → validate → coherence fix → cap slots → append
+Chunk 4: 2026-05-03 → 3 days → LLM call → validate → coherence fix → cap slots → append
+Chunk 5: 2026-05-06 → 2 days → LLM call → validate → coherence fix → cap slots → append
 
-Result: 21 validated + coherent + capped calendar days
+Result: 14 validated + coherent + capped calendar days
 ```
 
-This keeps the LLM output small (7 JSON objects max per call), reduces validation errors, and allows per-week slot budget enforcement.
+Small chunks (3 days) work better with local LLMs that tend to return fewer days than requested. This keeps each LLM output small, reduces validation errors, and allows per-chunk slot budget enforcement. If the LLM returns more days than the chunk size allows (>125%), excess days are trimmed.
 
 #### Product-aware prompt
 
@@ -106,7 +109,7 @@ The availability prompt includes full product context so the LLM generates coher
 - `availabilityType` (START_TIME vs OPENING_HOURS) — determines whether days have start times or opening hours
 - `allowFreesale` — controls whether FREESALE status is permitted
 
-For START_TIME products, the prompt explicitly tells the LLM that `availabilityLocalStartTimes` must be a subset of the option's defined start times, and that times must not overlap given the option's duration.
+For START_TIME products, the prompt explicitly tells the LLM that `availabilityLocalStartTimes` must be a subset of the option's defined start times, that times must not overlap given the option's duration, and that the subset should vary across days to simulate real demand patterns (some days offer all slots, others just morning or afternoon).
 
 #### Coherence validation
 
@@ -117,6 +120,7 @@ After Pydantic schema validation, a coherence check runs against the product dat
 | Start time subset | LLM invented times not in the option's list | Filters to allowed subset |
 | Time overlap | Two start times that overlap given the duration (e.g. 09:00 + 2h overlaps 10:00) | Removes overlapping times (greedy, keeps earliest) |
 | FREESALE on non-freesale product | FREESALE status when `allowFreesale=false` | Flips to AVAILABLE |
+| Vacancies > capacity | Vacancies exceeding capacity on a day | Caps vacancies to capacity |
 | Start times on OPENING_HOURS | `availabilityLocalStartTimes` present on an OPENING_HOURS product | Strips the field |
 | Start times on closed days | Start times on CLOSED or SOLD_OUT days | Strips the field |
 
@@ -174,7 +178,13 @@ Error hints accumulate across retries — attempt 3 sees hints from both attempt
 
 When generating multiple products in a batch, each product after the first receives a summary of all previously generated products. The summary includes title, country, availability type, and category labels. The prompt instructs the LLM to generate a different type of activity, in a different country if possible, and to vary pricing and availability patterns.
 
+The generator also enforces uniqueness at the code level: if the LLM returns a product with a title or description that already exists in the batch, the attempt is rejected and retried with an explicit hint to generate something different.
+
 This prevents the common LLM tendency to generate near-identical products in a batch (e.g., five "Historic Castle Tours" in London).
+
+#### Age-appropriateness
+
+The product prompt includes rules ensuring unit-level content is appropriate for the age group. CHILD, YOUTH, and INFANT units must not include alcohol-related experiences, gambling, nightlife, or other age-restricted activities. If the product is inherently adult-only (e.g., a wine tour), child units must offer age-appropriate alternatives.
 
 #### Prompt size growth
 

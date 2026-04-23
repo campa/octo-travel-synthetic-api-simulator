@@ -552,14 +552,20 @@ class TestDiversityPipeline:
     @pytest.mark.anyio
     async def test_product_summary_fields(self):
         """Verify the summary dict has the expected shape."""
-        product_dict = _make_valid_product_dict(
+        product_dict_1 = _make_valid_product_dict(
             title="City Walking Tour",
             country="GB",
             availabilityType="OPENING_HOURS",
             categoryLabels=["WALKING_TOUR", "CULTURAL"],
         )
+        product_dict_2 = _make_valid_product_dict(
+            title="Harbor Sunset Cruise",
+            country="NL",
+            availabilityType="START_TIME",
+            categoryLabels=["CRUISE", "SCENIC_TOUR"],
+        )
         client = FakeOllamaClient(
-            responses=[_ollama_response(product_dict)] * 2
+            responses=[_ollama_response(product_dict_1), _ollama_response(product_dict_2)]
         )
         prompt_builder = FakePromptBuilder()
         gen = ProductGenerator(client, prompt_builder, max_retries=3)

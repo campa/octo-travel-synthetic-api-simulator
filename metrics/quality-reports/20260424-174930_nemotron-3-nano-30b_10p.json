@@ -1,0 +1,705 @@
+{
+  "timestamp": "2026-04-24T17:49:30.032251",
+  "model": "nemotron-3-nano:30b",
+  "product_count": 10,
+  "seed_product_file": "data/seed_product_data.json",
+  "products": {
+    "scores": {
+      "composite": 0.812,
+      "realism": 0.724,
+      "coherence": 0.935,
+      "completeness": 0.982,
+      "diversity": 0.59
+    },
+    "per_product": [
+      {
+        "id": "db2c94f3-e35a-4db0-a529-90610a67060f",
+        "title": "Sunset Cruise Deluxe",
+        "realism": 0.846,
+        "coherence": 1.0,
+        "completeness": 1.0
+      },
+      {
+        "id": "8ebb0df9-b63e-4ffa-9494-8aef9587a042",
+        "title": "Sunset Sail & Wine Tasting",
+        "realism": 0.571,
+        "coherence": 0.75,
+        "completeness": 1.0
+      },
+      {
+        "id": "ad4eed57-ae21-4056-ba2d-192ead776153",
+        "title": "Historic City Walking Tour",
+        "realism": 0.5,
+        "coherence": 1.0,
+        "completeness": 1.0
+      },
+      {
+        "id": "66ade64f-d34a-476c-af18-4d50328f2a23",
+        "title": "Sunset Kayak & Picnic Adventure",
+        "realism": 1.0,
+        "coherence": 1.0,
+        "completeness": 1.0
+      },
+      {
+        "id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75",
+        "title": "Castle & Vineyard Heritage Experience",
+        "realism": 0.833,
+        "coherence": 1.0,
+        "completeness": 0.818
+      },
+      {
+        "id": "8037fb07-b459-4e83-863e-7884bceaf87d",
+        "title": "Castle & Alpine Village Heritage Experience",
+        "realism": 0.833,
+        "coherence": 1.0,
+        "completeness": 1.0
+      },
+      {
+        "id": "b6f65a21-e68c-4666-ac71-75435733a536",
+        "title": "Alpine Village Wine & Culture Tour",
+        "realism": 0.786,
+        "coherence": 1.0,
+        "completeness": 1.0
+      },
+      {
+        "id": "d1452a27-aaa6-412e-8066-5f80b796b1c9",
+        "title": "Evening Jazz Club Experience",
+        "realism": 0.625,
+        "coherence": 1.0,
+        "completeness": 1.0
+      },
+      {
+        "id": "aa35211f-a105-485e-8d96-6d29407f4a83",
+        "title": "Historic Berlin Walking Tour",
+        "realism": 0.636,
+        "coherence": 0.8,
+        "completeness": 1.0
+      },
+      {
+        "id": "296e19d4-355a-4670-9960-b77bb0964b3b",
+        "title": "Alpine Village Hiking & Cheese Fondue Tour",
+        "realism": 0.611,
+        "coherence": 0.8,
+        "completeness": 1.0
+      }
+    ],
+    "issues": [
+      {
+        "dimension": "diversity",
+        "check": "low_country_diversity",
+        "message": "Only 2/10 unique countries",
+        "product_id": ""
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit '61f4d3fa-f853-4814-9801-c17f3151eb36' in option 'Standard Experience' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "db2c94f3-e35a-4db0-a529-90610a67060f"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit 'afd0bde4-d739-4cc2-b7e7-96ad000447c8' in option 'Premium Package' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "db2c94f3-e35a-4db0-a529-90610a67060f"
+      },
+      {
+        "dimension": "realism",
+        "check": "coordinate_entropy",
+        "message": "Low coordinate entropy for 'Friedrichstra\u00dfe Pier': lat=52.52 (ent=1.25), lon=13.405 (ent=1.25)",
+        "product_id": "8ebb0df9-b63e-4ffa-9494-8aef9587a042"
+      },
+      {
+        "dimension": "realism",
+        "check": "city_centroid",
+        "message": "Coordinates for 'Friedrichstra\u00dfe Pier' match a known city centroid: lat=52.52, lon=13.405",
+        "product_id": "8ebb0df9-b63e-4ffa-9494-8aef9587a042"
+      },
+      {
+        "dimension": "realism",
+        "check": "known_dummy_place_id",
+        "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Friedrichstra\u00dfe Pier'",
+        "product_id": "8ebb0df9-b63e-4ffa-9494-8aef9587a042"
+      },
+      {
+        "dimension": "coherence",
+        "check": "duration_mismatch",
+        "message": "Option 'Premium Experience' duration 240.0min outside product range [180, 180]",
+        "product_id": "8ebb0df9-b63e-4ffa-9494-8aef9587a042"
+      },
+      {
+        "dimension": "realism",
+        "check": "coordinate_entropy",
+        "message": "Low coordinate entropy for 'Berlin Historic Center': lat=52.52 (ent=1.25), lon=13.405 (ent=1.25)",
+        "product_id": "ad4eed57-ae21-4056-ba2d-192ead776153"
+      },
+      {
+        "dimension": "realism",
+        "check": "city_centroid",
+        "message": "Coordinates for 'Berlin Historic Center' match a known city centroid: lat=52.52, lon=13.405",
+        "product_id": "ad4eed57-ae21-4056-ba2d-192ead776153"
+      },
+      {
+        "dimension": "realism",
+        "check": "known_dummy_place_id",
+        "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Berlin Historic Center'",
+        "product_id": "ad4eed57-ae21-4056-ba2d-192ead776153"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit '2129183e-8a5e-4150-8a76-ab84add61794' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "ad4eed57-ae21-4056-ba2d-192ead776153"
+      },
+      {
+        "dimension": "realism",
+        "check": "known_dummy_place_id",
+        "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Schloss Adlerstein'",
+        "product_id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit '59d80e6f-c7d9-4dc6-8153-aa06f41e2aa8' in option 'Standard Experience' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75"
+      },
+      {
+        "dimension": "completeness",
+        "check": "missing_media_cover",
+        "message": "Missing or empty: media_cover",
+        "product_id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75"
+      },
+      {
+        "dimension": "realism",
+        "check": "known_dummy_place_id",
+        "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Castle Hohenzollern'",
+        "product_id": "8037fb07-b459-4e83-863e-7884bceaf87d"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit '2870fec7-0553-411c-8bab-e76ead0c95ed' in option 'Premium Heritage Package' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "8037fb07-b459-4e83-863e-7884bceaf87d"
+      },
+      {
+        "dimension": "realism",
+        "check": "known_dummy_place_id",
+        "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Alpine Village Center'",
+        "product_id": "b6f65a21-e68c-4666-ac71-75435733a536"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit '6018e513-a6ae-4311-a128-6c87c89b124a' in option 'Standard Experience' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "b6f65a21-e68c-4666-ac71-75435733a536"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit '7df3ac2d-d57a-4079-8889-039198efbf97' in option 'Premium Group' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "b6f65a21-e68c-4666-ac71-75435733a536"
+      },
+      {
+        "dimension": "realism",
+        "check": "coordinate_entropy",
+        "message": "Low coordinate entropy for 'Jazz Club Berlin': lat=52.52 (ent=1.25), lon=13.405 (ent=1.25)",
+        "product_id": "d1452a27-aaa6-412e-8066-5f80b796b1c9"
+      },
+      {
+        "dimension": "realism",
+        "check": "city_centroid",
+        "message": "Coordinates for 'Jazz Club Berlin' match a known city centroid: lat=52.52, lon=13.405",
+        "product_id": "d1452a27-aaa6-412e-8066-5f80b796b1c9"
+      },
+      {
+        "dimension": "realism",
+        "check": "known_dummy_place_id",
+        "message": "Known dummy Google Place ID 'ChIJN1t_tDeuEmsRUsoyG83frY4' used for 'Jazz Club Berlin'",
+        "product_id": "d1452a27-aaa6-412e-8066-5f80b796b1c9"
+      },
+      {
+        "dimension": "realism",
+        "check": "coordinate_entropy",
+        "message": "Low coordinate entropy for 'Brandenburg Gate': lat=52.516278 (ent=2.58), lon=13.377722 (ent=1.46)",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83"
+      },
+      {
+        "dimension": "realism",
+        "check": "duplicate_place_id",
+        "message": "Google Place ID 'ChIJN1t_tDeuEkcRWMJ7mXqO230' reused across products: ['Historic Berlin Walking Tour', 'Historic Berlin Walking Tour', 'Historic Berlin Walking Tour', 'Historic Berlin Walking Tour']",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83"
+      },
+      {
+        "dimension": "realism",
+        "check": "coordinate_entropy",
+        "message": "Low coordinate entropy for 'Reichstag Building': lat=52.525556 (ent=1.25), lon=13.367675 (ent=1.92)",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83"
+      },
+      {
+        "dimension": "realism",
+        "check": "duplicate_place_id",
+        "message": "Google Place ID 'ChIJN1t_tDeuEkcRWMJ7mXqO230' reused across products: ['Historic Berlin Walking Tour', 'Historic Berlin Walking Tour', 'Historic Berlin Walking Tour', 'Historic Berlin Walking Tour']",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83"
+      },
+      {
+        "dimension": "realism",
+        "check": "duplicate_place_id",
+        "message": "Google Place ID 'ChIJN1t_tDeuEkcRWMJ7mXqO230' reused across products: ['Historic Berlin Walking Tour', 'Historic Berlin Walking Tour', 'Historic Berlin Walking Tour', 'Historic Berlin Walking Tour']",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83"
+      },
+      {
+        "dimension": "realism",
+        "check": "duplicate_place_id",
+        "message": "Google Place ID 'ChIJN1t_tDeuEkcRWMJ7mXqO230' reused across products: ['Historic Berlin Walking Tour', 'Historic Berlin Walking Tour', 'Historic Berlin Walking Tour', 'Historic Berlin Walking Tour']",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit '993af55b-efb6-4993-a100-609f333e52cd' in option 'Standard Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit '79f12593-cd4d-49d6-90d8-e8286964a87c' in option 'Premium Tour' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83"
+      },
+      {
+        "dimension": "coherence",
+        "check": "duration_mismatch",
+        "message": "Option 'Premium Tour' duration 210.0min outside product range [180, 180]",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83"
+      },
+      {
+        "dimension": "realism",
+        "check": "duplicate_place_id",
+        "message": "Google Place ID 'ChIJN1t_tDeuEkcRzHoLwHfqvBE' reused across products: ['Alpine Village Hiking & Cheese Fondue Tour', 'Alpine Village Hiking & Cheese Fondue Tour', 'Alpine Village Hiking & Cheese Fondue Tour']",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b"
+      },
+      {
+        "dimension": "realism",
+        "check": "coordinate_entropy",
+        "message": "Low coordinate entropy for 'Alpine Hiking Trail': lat=47.49 (ent=1.25), lon=10.98 (ent=1.25)",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b"
+      },
+      {
+        "dimension": "realism",
+        "check": "duplicate_place_id",
+        "message": "Google Place ID 'ChIJN1t_tDeuEkcRzHoLwHfqvBE' reused across products: ['Alpine Village Hiking & Cheese Fondue Tour', 'Alpine Village Hiking & Cheese Fondue Tour', 'Alpine Village Hiking & Cheese Fondue Tour']",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b"
+      },
+      {
+        "dimension": "realism",
+        "check": "coordinate_entropy",
+        "message": "Low coordinate entropy for 'Traditional Alpine Chalet': lat=47.485 (ent=1.79), lon=10.97 (ent=1.25)",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b"
+      },
+      {
+        "dimension": "realism",
+        "check": "duplicate_place_id",
+        "message": "Google Place ID 'ChIJN1t_tDeuEkcRzHoLwHfqvBE' reused across products: ['Alpine Village Hiking & Cheese Fondue Tour', 'Alpine Village Hiking & Cheese Fondue Tour', 'Alpine Village Hiking & Cheese Fondue Tour']",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit 'e925b7b9-37ae-492a-808f-e9f729d5a0e3' in option 'Standard Hiking & Fondue' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b"
+      },
+      {
+        "dimension": "realism",
+        "check": "adult_age_range",
+        "message": "ADULT unit 'a25d4990-41ea-47f0-97c9-7980e0759967' in option 'Family Package' has minAge=0/maxAge=0 while sibling CHILD has real age ranges",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b"
+      },
+      {
+        "dimension": "coherence",
+        "check": "duration_mismatch",
+        "message": "Option 'Standard Hiking & Fondue' duration 150.0min outside product range [300, 360]",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b"
+      }
+    ],
+    "issue_summary": {
+      "by_dimension": {
+        "diversity": 1,
+        "realism": 34,
+        "coherence": 3,
+        "completeness": 1
+      },
+      "by_check": {
+        "low_country_diversity": 1,
+        "adult_age_range": 11,
+        "coordinate_entropy": 7,
+        "city_centroid": 3,
+        "known_dummy_place_id": 6,
+        "duration_mismatch": 3,
+        "missing_media_cover": 1,
+        "duplicate_place_id": 7
+      },
+      "total": 39
+    }
+  },
+  "availability": {
+    "option_count": 16,
+    "total_days": 80,
+    "scores": {
+      "composite": 0.894,
+      "realism": 0.734,
+      "coherence": 1.0,
+      "completeness": 1.0
+    },
+    "per_option": [
+      {
+        "product_id": "db2c94f3-e35a-4db0-a529-90610a67060f",
+        "option_id": "17719dcc-e5c8-4ee6-9a8f-e5e5e4157e15",
+        "product_title": "Sunset Cruise Deluxe",
+        "option_title": "Standard Experience",
+        "realism": 0.85,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "db2c94f3-e35a-4db0-a529-90610a67060f",
+        "option_id": "625e9f3a-a2c2-43a3-bb61-0dfc1ca5df51",
+        "product_title": "Sunset Cruise Deluxe",
+        "option_title": "Premium Package",
+        "realism": 0.8,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "8ebb0df9-b63e-4ffa-9494-8aef9587a042",
+        "option_id": "9c2dcd53-daab-41e0-b364-e910f1a4bea9",
+        "product_title": "Sunset Sail & Wine Tasting",
+        "option_title": "Premium Experience",
+        "realism": 0.85,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "ad4eed57-ae21-4056-ba2d-192ead776153",
+        "option_id": "34a2b87c-7cc4-40be-a52d-6c3ba29f9b66",
+        "product_title": "Historic City Walking Tour",
+        "option_title": "Standard Tour",
+        "realism": 0.65,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "66ade64f-d34a-476c-af18-4d50328f2a23",
+        "option_id": "1ed36e44-1077-4973-999e-ba5fc4a0e726",
+        "product_title": "Sunset Kayak & Picnic Adventure",
+        "option_title": "Sunset Kayak & Picnic Adventure",
+        "realism": 0.65,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75",
+        "option_id": "3a17fd34-5b86-4b3f-89f5-9c17d170bc24",
+        "product_title": "Castle & Vineyard Heritage Experience",
+        "option_title": "Standard Heritage Tour",
+        "realism": 0.65,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75",
+        "option_id": "c1d91f55-4a7d-4cc3-9f46-ca4c1a184630",
+        "product_title": "Castle & Vineyard Heritage Experience",
+        "option_title": "Premium Heritage Package",
+        "realism": 0.65,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "8037fb07-b459-4e83-863e-7884bceaf87d",
+        "option_id": "3c3950e2-4e42-4c6d-9bfd-cb86063f60e5",
+        "product_title": "Castle & Alpine Village Heritage Experience",
+        "option_title": "Premium Heritage Package",
+        "realism": 0.85,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "b6f65a21-e68c-4666-ac71-75435733a536",
+        "option_id": "23e2dc32-369b-4099-b2b4-d0aec5abcffe",
+        "product_title": "Alpine Village Wine & Culture Tour",
+        "option_title": "Standard Experience",
+        "realism": 0.85,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "b6f65a21-e68c-4666-ac71-75435733a536",
+        "option_id": "1c2d7bf2-3aac-4647-ab4d-9df4501e5315",
+        "product_title": "Alpine Village Wine & Culture Tour",
+        "option_title": "Premium Group",
+        "realism": 0.65,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "d1452a27-aaa6-412e-8066-5f80b796b1c9",
+        "option_id": "761cedb3-b141-4f15-8f5d-168dc6b524d0",
+        "product_title": "Evening Jazz Club Experience",
+        "option_title": "Standard Experience",
+        "realism": 0.85,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "d1452a27-aaa6-412e-8066-5f80b796b1c9",
+        "option_id": "220c4697-07ee-4721-b133-b4ea7e4baff9",
+        "product_title": "Evening Jazz Club Experience",
+        "option_title": "Premium Experience",
+        "realism": 0.65,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83",
+        "option_id": "38b333f4-92c1-4e17-91fe-cf72b30c68de",
+        "product_title": "Historic Berlin Walking Tour",
+        "option_title": "Standard Tour",
+        "realism": 0.85,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83",
+        "option_id": "1a0ae3c3-807c-45b5-9064-a8b614d82605",
+        "product_title": "Historic Berlin Walking Tour",
+        "option_title": "Premium Small Group Tour",
+        "realism": 0.65,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b",
+        "option_id": "d6ef5ec7-7e18-4f92-bab8-00780e34ec03",
+        "product_title": "Alpine Village Hiking & Cheese Fondue Tour",
+        "option_title": "Standard Hiking & Fondue",
+        "realism": 0.65,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      },
+      {
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b",
+        "option_id": "d65c59cf-4f79-44c1-9496-a1151ecbba8b",
+        "product_title": "Alpine Village Hiking & Cheese Fondue Tour",
+        "option_title": "Family Package (2 Adults + 2 Children)",
+        "realism": 0.65,
+        "coherence": 1.0,
+        "completeness": 1.0,
+        "day_count": 5
+      }
+    ],
+    "issues": [
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "db2c94f3-e35a-4db0-a529-90610a67060f",
+        "option_id": "17719dcc-e5c8-4ee6-9a8f-e5e5e4157e15"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "db2c94f3-e35a-4db0-a529-90610a67060f",
+        "option_id": "625e9f3a-a2c2-43a3-bb61-0dfc1ca5df51"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "8ebb0df9-b63e-4ffa-9494-8aef9587a042",
+        "option_id": "9c2dcd53-daab-41e0-b364-e910f1a4bea9"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "ad4eed57-ae21-4056-ba2d-192ead776153",
+        "option_id": "34a2b87c-7cc4-40be-a52d-6c3ba29f9b66"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "ad4eed57-ae21-4056-ba2d-192ead776153",
+        "option_id": "34a2b87c-7cc4-40be-a52d-6c3ba29f9b66"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "66ade64f-d34a-476c-af18-4d50328f2a23",
+        "option_id": "1ed36e44-1077-4973-999e-ba5fc4a0e726"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "66ade64f-d34a-476c-af18-4d50328f2a23",
+        "option_id": "1ed36e44-1077-4973-999e-ba5fc4a0e726"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75",
+        "option_id": "3a17fd34-5b86-4b3f-89f5-9c17d170bc24"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75",
+        "option_id": "3a17fd34-5b86-4b3f-89f5-9c17d170bc24"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75",
+        "option_id": "c1d91f55-4a7d-4cc3-9f46-ca4c1a184630"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "d7fb4abf-e9d6-423e-8056-bfbab4a86d75",
+        "option_id": "c1d91f55-4a7d-4cc3-9f46-ca4c1a184630"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "8037fb07-b459-4e83-863e-7884bceaf87d",
+        "option_id": "3c3950e2-4e42-4c6d-9bfd-cb86063f60e5"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "b6f65a21-e68c-4666-ac71-75435733a536",
+        "option_id": "23e2dc32-369b-4099-b2b4-d0aec5abcffe"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "b6f65a21-e68c-4666-ac71-75435733a536",
+        "option_id": "1c2d7bf2-3aac-4647-ab4d-9df4501e5315"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "b6f65a21-e68c-4666-ac71-75435733a536",
+        "option_id": "1c2d7bf2-3aac-4647-ab4d-9df4501e5315"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "d1452a27-aaa6-412e-8066-5f80b796b1c9",
+        "option_id": "761cedb3-b141-4f15-8f5d-168dc6b524d0"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "d1452a27-aaa6-412e-8066-5f80b796b1c9",
+        "option_id": "220c4697-07ee-4721-b133-b4ea7e4baff9"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "d1452a27-aaa6-412e-8066-5f80b796b1c9",
+        "option_id": "220c4697-07ee-4721-b133-b4ea7e4baff9"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83",
+        "option_id": "38b333f4-92c1-4e17-91fe-cf72b30c68de"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83",
+        "option_id": "1a0ae3c3-807c-45b5-9064-a8b614d82605"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "aa35211f-a105-485e-8d96-6d29407f4a83",
+        "option_id": "1a0ae3c3-807c-45b5-9064-a8b614d82605"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b",
+        "option_id": "d6ef5ec7-7e18-4f92-bab8-00780e34ec03"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b",
+        "option_id": "d6ef5ec7-7e18-4f92-bab8-00780e34ec03"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_status",
+        "message": "All 5 days have identical status 'AVAILABLE'",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b",
+        "option_id": "d65c59cf-4f79-44c1-9496-a1151ecbba8b"
+      },
+      {
+        "dimension": "realism",
+        "check": "monotonous_vacancies",
+        "message": "All 5 open days have identical vacancies=12",
+        "product_id": "296e19d4-355a-4670-9960-b77bb0964b3b",
+        "option_id": "d65c59cf-4f79-44c1-9496-a1151ecbba8b"
+      }
+    ],
+    "issue_summary": {
+      "by_dimension": {
+        "realism": 25
+      },
+      "by_check": {
+        "monotonous_status": 15,
+        "monotonous_vacancies": 10
+      },
+      "total": 25
+    }
+  },
+  "combined": {
+    "composite": 0.853,
+    "total_issues": 64
+  }
+}
